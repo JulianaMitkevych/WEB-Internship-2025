@@ -1,0 +1,616 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Font variables */
+  --font-lato: 'Lato', sans-serif;
+
+  /* Radix UI variables */
+  --radix-accordion-content-height: auto;
+  --bits-accordion-content-height: auto;
+  --reka-accordion-content-height: auto;
+  --kb-accordion-content-height: auto;
+
+  /* Dark shades */
+  --dark-100: #22222f;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+}
+
+@theme {
+  --breakpoint-xl: 1200px;
+  --breakpoint-3xl: 1920px;
+  --color-dark-100: #22222f;
+  --color-blue-50: #f5faff;
+  --color-blue-100: #ebeff4;
+  --color-blue-200: #c1dffc;
+  --color-blue-400: #666491;
+  --color-blue-500: #2554ff;
+  --color-blue-600: #163792;
+  --color-blue-650: #172286;
+  --color-green-200: #119040;
+  --color-yellow-200: #feaa2e;
+  --color-orange-200: #ff7a00;
+  --color-red-200: #ff5536;
+  --color-red-200-alt: #ed3615;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200-bg: #f0f0fd;
+  --color-gray-500: #d9d9d9;
+  --color-gray-700: #838383;
+  --color-gray-800: #637494;
+  --color-gray-900: #545666;
+
+  --color-primary: var(--color-blue-500);
+  --color-primary-foreground: var(--color-blue-50);
+  --color-secondary: var(--color-gray-100);
+  --color-secondary-foreground: var(--color-gray-900);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-700);
+  --color-accent: var(--color-blue-100);
+  --color-accent-foreground: var(--color-blue-600);
+  --color-destructive: var(--color-red);
+  --color-border: var(--color-gray-500);
+  --color-input: var(--color-gray-500);
+  --color-ring: var(--color-blue-500);
+  --color-background: var(--gray-100);
+  --color-foreground: var(--color-gray-900);
+  --color-card: #ffffff;
+  --color-card-foreground: var(--color-gray-900);
+  --color-popover: #ffffff;
+  --color-popover-foreground: var(--color-gray-900);
+  --color-bone: var(--bone);
+  --color-bone-white: var(--bone-white);
+  --color-bone-dark: var(--bone-dark);
+  --color-bone-x-dark: var(--bone-x-dark);
+  --color-night-sky: var(--night-sky);
+  --color-monochrome: var(--monochrome);
+  --color-grey-xxx-dark: var(--grey-xxx-dark);
+  --color-grey-x-dark: var(--grey-x-dark);
+  --color-grey: var(--grey);
+  --color-dust: var(--dust);
+  --color-sand: var(--sand);
+  --color-input-border: var(--input-border);
+  --color-rock: var(--rock);
+  --color-rock-x-dark: var(--rock-x-dark);
+  --color-rock-xx-dark: var(--rock-xx-dark);
+  --color-carrot: var(--carrot);
+  --color-red: var(--red);
+  --color-red-bright: var(--red-bright);
+  --color-grass: var(--grass);
+  --color-green: var(--green);
+  --color-dark-green: var(--dark-green);
+  --color-olive: var(--olive);
+  --color-lake: var(--lake);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-mono: var(--font-geist-mono), monospace;
+
+  --animation-accordion-down: accordion-down 0.2s ease-out;
+  --animation-accordion-up: accordion-up 0.2s ease-out;
+  --animation-fade-in: fade-in 0.5s ease-out;
+  --animation-slide-in-from-top: slide-in-from-top 0.3s ease-out;
+
+  --color-success: var(--color-green-200);
+  --color-warning: var(--color-yellow-200);
+  --color-error: var(--color-red-200);
+  --color-info: var(--color-blue-400);
+
+  /* Layout sizes */
+  --max-width-9xl: 1440px;
+
+  /* Tailwind CSS Animation Variables */
+  --tw-animation-duration: 0.2s;
+  --tw-duration: 0.2s;
+  --tw-ease: ease-out;
+  --tw-animation-delay: 0s;
+  --tw-animation-iteration-count: 1;
+  --tw-animation-direction: normal;
+  --tw-animation-fill-mode: none;
+
+  --animate-accordion-up: accordion-up
+    var(--tw-animation-duration, var(--tw-duration, 0.2s))
+    var(--tw-ease, ease-out) var(--tw-animation-delay, 0s)
+    var(--tw-animation-iteration-count, 1) var(--tw-animation-direction, normal)
+    var(--tw-animation-fill-mode, none);
+  --animate-accordion-down: accordion-down
+    var(--tw-animation-duration, var(--tw-duration, 0.2s))
+    var(--tw-ease, ease-out) var(--tw-animation-delay, 0s)
+    var(--tw-animation-iteration-count, 1) var(--tw-animation-direction, normal)
+    var(--tw-animation-fill-mode, none);
+
+  @keyframes accordion-down {
+    0% {
+      height: 0;
+    }
+    to {
+      height: var(
+        --radix-accordion-content-height,
+        var(
+          --bits-accordion-content-height,
+          var(
+            --reka-accordion-content-height,
+            var(--kb-accordion-content-height, auto)
+          )
+        )
+      );
+    }
+  }
+  @keyframes accordion-up {
+    0% {
+      height: var(
+        --radix-accordion-content-height,
+        var(
+          --bits-accordion-content-height,
+          var(
+            --reka-accordion-content-height,
+            var(--kb-accordion-content-height, auto)
+          )
+        )
+      );
+    }
+    to {
+      height: 0;
+    }
+  }
+  --animate-modal-in: modal-in
+    var(--tw-animation-duration, var(--tw-duration, 0.25s))
+    var(--tw-ease, ease-in-out) var(--tw-animation-delay, 0s)
+    var(--tw-animation-iteration-count, 1) var(--tw-animation-direction, normal)
+    var(--tw-animation-fill-mode, both);
+
+  --animate-modal-out: modal-out
+    var(--tw-animation-duration, var(--tw-duration, 0.25s))
+    var(--tw-ease, ease-in-out) var(--tw-animation-delay, 0s)
+    var(--tw-animation-iteration-count, 1) var(--tw-animation-direction, normal)
+    var(--tw-animation-fill-mode, both);
+
+  @keyframes modal-in {
+    0% {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-out {
+    0% {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Sheet animations for all sides */
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-search-result-from-top {
+  from {
+    transform: translateY(-20%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out-to-top {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out-to-bottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-out-to-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Sheet primitive animations */
+[class*='slide-in-from-top'] {
+  animation: slide-in-from-top 0.3s ease-out;
+}
+
+[class*='slide-in-search-result-from-top'] {
+  animation: slide-in-search-result-from-top 0.3s ease-out;
+}
+
+[class*='slide-out-to-top'] {
+  animation: slide-out-to-top 0.3s ease-in;
+}
+
+[class*='slide-in-from-bottom'] {
+  animation: slide-in-from-bottom 0.3s ease-out;
+}
+
+[class*='slide-out-to-bottom'] {
+  animation: slide-out-to-bottom 0.3s ease-in;
+}
+
+[class*='slide-in-from-left'] {
+  animation: slide-in-from-left 0.3s ease-out;
+}
+
+[class*='slide-out-to-left'] {
+  animation: slide-out-to-left 0.3s ease-in;
+}
+
+[class*='slide-in-from-right'] {
+  animation: slide-in-from-right 0.3s ease-out;
+}
+
+[class*='slide-out-to-right'] {
+  animation: slide-out-to-right 0.3s ease-in;
+}
+
+.dark {
+  --color-background: var(--color-dark-100);
+  --color-foreground: var(--color-gray-100);
+  --color-card: var(--color-dark-100);
+  --color-card-foreground: var(--color-gray-100);
+  --color-popover: var(--color-dark-100);
+  --color-popover-foreground: var(--color-gray-100);
+  --color-primary: var(--color-blue-500);
+  --color-primary-foreground: var(--color-blue-50);
+  --color-secondary: var(--color-gray-800);
+  --color-secondary-foreground: var(--color-gray-100);
+  --color-muted: var(--color-gray-800);
+  --color-muted-foreground: var(--color-gray-700);
+  --color-accent: var(--color-gray-800);
+  --color-accent-foreground: var(--color-gray-100);
+  --color-destructive: var(--color-red);
+  --color-border: var(--color-gray-800);
+  --color-input: var(--color-gray-800);
+  --color-ring: var(--color-blue-500);
+  --sidebar: var(--bone-white);
+  --sidebar-foreground: var(--rock-x-dark);
+  --sidebar-primary: var(--blue-500);
+  --sidebar-primary-foreground: var(--rock-x-dark);
+  --sidebar-accent: var(--blue-600);
+  --sidebar-accent-foreground: var(--rock-x-dark);
+  --sidebar-border: var(--blue-600);
+  --sidebar-ring: var(--blue-500);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--bone-white);
+    color: var(--color-foreground);
+  }
+}
+
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  direction: rtl;
+}
+
+.sidebar-scrollbar > * {
+  direction: ltr;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  border: none;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* SidebarMenu scrollbar on the left */
+[data-sidebar='menu'] {
+  direction: rtl;
+}
+
+[data-sidebar='menu'] > * {
+  direction: ltr;
+}
+
+[data-sidebar='menu']::-webkit-scrollbar {
+  left: 0;
+}
+
+[data-sidebar='menu'] {
+  scrollbar-width: thin;
+  scrollbar-color: var(--grey) transparent;
+}
+
+/* Default scrollbar styles - right positioned */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox default scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Mobile sidebar animations */
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Enhanced mobile sidebar transitions */
+[data-mobile='true'] {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-mobile='true'][data-state='open'] {
+  animation: slide-in-from-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+[data-mobile='true'][data-state='closed'] {
+  animation: slide-out-to-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Enhanced overlay animations */
+[data-slot='sheet-overlay'] {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-slot='sheet-overlay'][data-state='open'] {
+  animation: fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-slot='sheet-overlay'][data-state='closed'] {
+  animation: fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Error message animations */
+@keyframes error-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes error-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* CSS classes for error message animations */
+.error-message-enter {
+  animation: error-slide-in 0.3s ease-out forwards;
+}
+
+.error-message-exit {
+  animation: error-slide-out 0.3s ease-out forwards;
+}
+
+/* Notifications popup animations */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+}
+
+.animate-in {
+  animation: slideInFromTop 0.2s ease-out;
+}
+
+.animate-out {
+  animation: slideOutToTop 0.2s ease-in;
+}
+
+/* Dropdown Menu animations */
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dropdown-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-dropdown {
+  transition: opacity 0.2s ease-out;
+}
+
+[data-state='open'].animate-dropdown {
+  animation: dropdown-fade-in 0.2s ease-out forwards !important;
+}
+
+[data-state='closed'].animate-dropdown {
+  animation: dropdown-fade-out 0.15s ease-in forwards !important;
+}
