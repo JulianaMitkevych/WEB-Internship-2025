@@ -1,3 +1,11 @@
+import { LucideIcon } from 'lucide-react';
+
+export type TTab = {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+};
+
 export type TUser = {
   id: string;
   firstName: string | null;
@@ -5,3 +13,4 @@ export type TUser = {
   phoneNumber: string | null;
   email: string | null;
 };
+
