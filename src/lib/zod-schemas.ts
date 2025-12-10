@@ -1,11 +1,12 @@
 import { z } from 'zod';
-
-const EMAIL_REGEX =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import {EMAIL_REGEX} from '../utils/regex'
 
 export const SignUpSchema = z
   .object({
-    email: z.string().trim().regex(EMAIL_REGEX, 'Invalid email address'),
+    email: z
+      .string()
+      .trim()
+      .regex(EMAIL_REGEX.VALID_EMAIL, 'Invalid email format'),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters long')
@@ -26,7 +27,10 @@ export const SignUpSchema = z
 export type SignUpFormValues = z.infer<typeof SignUpSchema>;
 
 export const LogInSchema = z.object({
-  email: z.string().trim().regex(EMAIL_REGEX, 'Invalid email address'),
+  email: z
+    .string()
+    .trim()
+    .regex(EMAIL_REGEX.VALID_EMAIL, 'Invalid email address'),
   password: z.string().min(8, 'Password is required'),
 });
 
