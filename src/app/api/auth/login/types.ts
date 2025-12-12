@@ -1,18 +1,17 @@
 
 
-export interface UserProfile {
-  email: string;
-  createdAt: any;
-}
+import { z } from 'zod';
 
+import { LogInSchema, SignUpSchema } from '@/lib/zod-schemas';
 
-export interface SignUpFormValues {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+export type SignUpFormValues = z.infer<typeof SignUpSchema>;
+export type LogInFormValues = z.infer<typeof LogInSchema>;
 
-export interface LogInFormValues {
+export type UserProfile = {
+  id: string;
   email: string;
-  password: string;
-}
+  firstName: string | null;
+  lastName: string | null;
+  phoneNumber: string | null;
+  createdAt?: string | null;
+};

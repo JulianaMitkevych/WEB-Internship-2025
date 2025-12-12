@@ -13,7 +13,11 @@ export const ROUTES = {
   },
 } as const;
 
-export const PUBLIC_ROUTES = [ROUTES.LOGIN] as const;
+export const PUBLIC_ROUTES = [
+  ROUTES.LOGIN,
+  ROUTES.REGISTER,
+  ROUTES.HOME,
+] as const;
 
 export const PROTECTED_ROUTES = [ROUTES.HOME] as const;
 

@@ -18,10 +18,10 @@
 
 body {
   font-family: system-ui, sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
-@theme {
+@theme inline{
   --breakpoint-xl: 1200px;
   --breakpoint-3xl: 1920px;
   --color-dark-100: #22222f;
@@ -368,7 +368,7 @@ body {
   }
 }
 
-@theme inline {
+@theme {
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);

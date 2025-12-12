@@ -15,12 +15,11 @@ export type TUser = {
   cropType: ECropType;
 };
 
-
-enum ECropType {
+export enum ECropType {
   VEGETABLES = 'Vegetables',
 }
 
- export type TDevice = {
+export type TDevice = {
   id: string;
   name: string;
   settingsId: string;
