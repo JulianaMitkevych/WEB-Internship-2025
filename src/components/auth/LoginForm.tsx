@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +8,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Check, Eye, EyeOff } from 'lucide-react';
 
+import { PlantIcon } from '@/assets/svg/PlantIcon';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -33,13 +35,14 @@ const LoginForm = () => {
   const form = useForm<LogInFormValues>({
     resolver: zodResolver(LogInSchema),
     defaultValues: {
-      email: '',
+      email: 'nick.name@mail.com',
       password: '',
     },
     mode: 'onTouched',
   });
   const [, setStore] = useStorage();
   const { post, error, loading } = useApi<LoginResponse>();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const emailValue = form.watch('email');
@@ -70,12 +73,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-6 py-10">
-        <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="mx-auto w-full max-w-lg flex flex-col items-center justify-center px-6 py-10">
+                <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
+
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-[#EEF7EC] text-2xl">
-              🌱
+            <div className="grid place-items-center mb-6">
+              <PlantIcon size={50} />
             </div>
             <h1 className="text-3xl font-bold text-night-sky">Welcome back</h1>
             <p className="mt-2 text-base text-grey-x-dark">
@@ -84,20 +88,20 @@ const LoginForm = () => {
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm text-night-sky">
+                  <FormItem className="space-y-1">
+                    <FormLabel className="text-sm text-grey-x-dark">
                       Email
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           placeholder="nick.name@mail.com"
-                          className="h-12 rounded-xl border-2 border-[#4CAF50]/60 bg-white pr-12 text-night-sky"
+                          className="h-12 rounded-xl border border-[#2F9E44] border-opacity-70 bg-white pr-10 text-night-sky focus-visible:ring-0 focus-visible:border-[#2F9E44]"
                           {...field}
                         />
                         {showEmailCheck && (
@@ -117,16 +121,16 @@ const LoginForm = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm text-night-sky">
+                  <FormItem className="space-y-1">
+                    <FormLabel className="text-sm text-grey-x-dark">
                       Password
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="•••••••••••"
-                          className="h-12 rounded-xl border-2 border-[#4CAF50]/60 bg-white pr-12 text-night-sky"
+                          placeholder="••••••••"
+                          className="h-12 rounded-xl border border-[#2F9E44] border-opacity-70 bg-white pr-10 text-night-sky focus-visible:ring-0 focus-visible:border-[#2F9E44]"
                           {...field}
                         />
                         <button
@@ -158,7 +162,8 @@ const LoginForm = () => {
 
               <Button
                 type="submit"
-                className="h-12 w-full rounded-xl bg-gradient-to-r from-[#3FB44A] to-[#209123] text-base font-semibold text-white shadow-md hover:brightness-105"
+                variant="gradient"
+                className="w-full text-base rounded-2xl"
                 disabled={loading || !form.formState.isValid}
               >
                 {loading ? 'Signing in...' : 'Sign in'}
@@ -167,10 +172,10 @@ const LoginForm = () => {
           </Form>
 
           <p className="mt-6 text-center text-sm text-grey-x-dark">
-            Don`t have an account?
+            Don`t have an account?&nbsp;
             <Link
               href={ROUTES.REGISTER}
-              className="font-semibold h-[48px] rounded-[20px]  text-[#2F9E44] max-w-[327px] text-center leading-[48px]"
+              className="font-semibold text-[#2F9E44]"
             >
               Sign up
             </Link>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Check, Eye, EyeOff } from 'lucide-react';
+import {PlantIcon} from '@/assets/svg/PlantIcon'
 
 import { Button } from '@/components/ui/button';
 import {
@@ -61,9 +62,9 @@ const SignUpForm = () => {
       <div className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-6 py-10">
         <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-[#EEF7EC] text-2xl">
-              🌿
-            </div>
+              <div className="grid place-items-center mb-6">
+                          <PlantIcon size={50} />
+                        </div>
             <h1 className="text-3xl font-bold text-night-sky">
               Create an account
             </h1>
@@ -257,7 +258,8 @@ const SignUpForm = () => {
 
               <Button
                 type="submit"
-                className="w-full text-base md:w-auto"
+                variant="gradient"
+                className="w-full text-base rounded-2xl md:w-auto"
                 disabled={loading || !form.formState.isValid}
               >
                 {loading ? 'Creating account...' : 'Sign up'}
