@@ -62,6 +62,7 @@ const LoginForm = () => {
           firstName: response.user.firstName ?? null,
           lastName: response.user.lastName ?? null,
           phoneNumber: response.user.phoneNumber ?? null,
+          createdAt: response.user.createdAt ?? null,
         };
         setStore((prev) => ({ ...prev, user: normalizedUser }));
       }

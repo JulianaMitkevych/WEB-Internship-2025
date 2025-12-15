@@ -3,6 +3,7 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
+  PROFILE: '/profile',
 
   API: {
     AUTH: {
@@ -19,7 +20,7 @@ export const PUBLIC_ROUTES = [
   ROUTES.HOME,
 ] as const;
 
-export const PROTECTED_ROUTES = [ROUTES.HOME] as const;
+export const PROTECTED_ROUTES = [ROUTES.PROFILE] as const;
 
 export type Route = (typeof ROUTES)[keyof typeof ROUTES];
 export type PublicRoute = (typeof PUBLIC_ROUTES)[number];

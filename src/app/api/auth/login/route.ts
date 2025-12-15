@@ -46,11 +46,21 @@ export async function POST(request: NextRequest) {
     const userDoc = await adminDb.collection('users').doc(localId).get();
     const userProfile = userDoc.exists ? userDoc.data() : null;
 
+    const serializableProfile = userProfile ? {
+    firstName: userProfile.firstName ?? null,
+    lastName: userProfile.lastName ?? null,
+    phoneNumber: userProfile.phoneNumber ?? null,
+    createdAt: userProfile.createdAt 
+        ? (userProfile.createdAt as any).toDate().toISOString() 
+        : null,
+} : null;
+
+
     const response = NextResponse.json({
       user: {
         id: localId,
         email,
-        ...userProfile,
+        ... serializableProfile,
       },
       token: idToken,
     });

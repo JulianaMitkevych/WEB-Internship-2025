@@ -1,4 +1,10 @@
 import { LucideIcon } from 'lucide-react';
+import type { FieldValue, Timestamp } from 'firebase-admin/firestore';
+
+//  type for Next.js routs 
+export type TUserDb = Omit<TUser, 'createdAt'> & {
+  createdAt: Timestamp | FieldValue;
+};
 
 export type TTab = {
   value: string;
@@ -6,13 +12,16 @@ export type TTab = {
   icon: LucideIcon;
 };
 
+
+
 export type TUser = {
   id: string;
   firstName: string | null;
   lastName: string | null;
   phoneNumber: string | null;
   email: string | null;
-  cropType: ECropType;
+  createdAt: string | null;
+  cropType: ECropType | null;
 };
 
 export enum ECropType {

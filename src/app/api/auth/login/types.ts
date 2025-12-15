@@ -13,5 +13,5 @@ export type UserProfile = {
   firstName: string | null;
   lastName: string | null;
   phoneNumber: string | null;
-  createdAt?: string | null;
+  createdAt: string | null;
 };
