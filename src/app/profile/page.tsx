@@ -1,7 +1,5 @@
-// src/app/profile/page.tsx
 
-import React from 'react';
-import LogoutButton from '@/components/profile/LogOutButton';
+import LogoutButton from '@/components/profile-user/LogoutButton';
 
 export default function ProfilePage() {
   return (

@@ -46,8 +46,6 @@
 import * as admin from 'firebase-admin';
 import serviceAccount from '../../../serviceAccountKey.json';
 
-// console.log('Content of serviceAccount (after import):', serviceAccount); 
-// console.log('Type of serviceAccount:', typeof serviceAccount); 
 
 if (!admin.apps.length) {
   try {

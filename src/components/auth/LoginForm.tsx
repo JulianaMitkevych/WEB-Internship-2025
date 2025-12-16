@@ -67,7 +67,7 @@ const LoginForm = () => {
         setStore((prev) => ({ ...prev, user: normalizedUser }));
       }
 
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.ONBOARDING);
     } catch {
       // handled by hook state
     }

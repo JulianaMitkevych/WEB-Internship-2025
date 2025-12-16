@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-
 import { adminDb } from '@/lib/firebase/admin';
 import { LogInSchema } from '@/lib/zod-schemas';
+import type { Timestamp } from 'firebase-admin/firestore';
 
-const FIREBASE_WEB_API_KEY = process.env.FIREBASE_WEB_API_KEY;
+const FIREBASE_WEB_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_WEB_API_KEY;
 
 export async function POST(request: NextRequest) {
   if (!FIREBASE_WEB_API_KEY) {
     return NextResponse.json(
-      { message: 'Missing FIREBASE_WEB_API_KEY environment variable' },
+      {
+        message:
+          'Missing NEXT_PUBLIC_FIREBASE_WEB_API_KEY environment variable',
+      },
       { status: 500 }
     );
   }
@@ -36,7 +39,7 @@ export async function POST(request: NextRequest) {
       const errorMessage =
         data?.error?.message === 'INVALID_PASSWORD'
           ? 'Invalid email or password'
-          : data?.error?.message ?? 'Unable to login';
+          : (data?.error?.message ?? 'Unable to login');
 
       return NextResponse.json({ message: errorMessage }, { status: 401 });
     }
@@ -46,21 +49,22 @@ export async function POST(request: NextRequest) {
     const userDoc = await adminDb.collection('users').doc(localId).get();
     const userProfile = userDoc.exists ? userDoc.data() : null;
 
-    const serializableProfile = userProfile ? {
-    firstName: userProfile.firstName ?? null,
-    lastName: userProfile.lastName ?? null,
-    phoneNumber: userProfile.phoneNumber ?? null,
-    createdAt: userProfile.createdAt 
-        ? (userProfile.createdAt as any).toDate().toISOString() 
-        : null,
-} : null;
-
+    const serializableProfile = userProfile
+      ? {
+          firstName: userProfile.firstName ?? null,
+          lastName: userProfile.lastName ?? null,
+          phoneNumber: userProfile.phoneNumber ?? null,
+          createdAt: userProfile.createdAt 
+            ? (userProfile.createdAt as Timestamp).toDate().toISOString()
+            : null,
+        }
+      : null;
 
     const response = NextResponse.json({
       user: {
         id: localId,
         email,
-        ... serializableProfile,
+        ...serializableProfile,
       },
       token: idToken,
     });
@@ -77,6 +81,8 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error: unknown) {
+    console.error('Error while processing login:', error);
+
     if (error instanceof Error && 'issues' in (error as any)) {
       return NextResponse.json(
         { message: 'Validation failed', details: (error as any).issues },
@@ -88,4 +94,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message }, { status: 500 });
   }
 }
-

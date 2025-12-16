@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { useApi } from '@/hooks/useApi';
 import { useStorage } from '@/hooks/useStorage';
-import { ROUTES } from '@/utils';
+import { ROUTES } from '@/utils/constants';
 import { Button } from '@/components/ui/button';
 
 const LogoutButton = () => {

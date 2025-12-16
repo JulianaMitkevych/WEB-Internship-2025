@@ -1,48 +1,67 @@
-import { NextRequest, NextResponse } from 'next/server';
 
+
+import { NextRequest, NextResponse } from 'next/server';
 import admin, { adminAuth, adminDb } from '@/lib/firebase/admin';
 import { SignUpSchema } from '@/lib/zod-schemas';
 
 export async function POST(request: NextRequest) {
-  try {
-    const payload = await request.json();
-    const parsed = SignUpSchema.parse(payload);
-    const { email, password, firstName, lastName, phoneNumber } = parsed;
+    try {
+        const payload = await request.json();
+        const parsed = SignUpSchema.parse(payload);
+        
+      const { confirmPassword: _, ...dataForFirebase } = parsed;
+      const { email, password, firstName, lastName, phoneNumber } = dataForFirebase;
 
-    const userRecord = await adminAuth.createUser({
-      email,
-      password,
-      displayName: `${firstName} ${lastName}`.trim(),
-      ...(phoneNumber ? { phoneNumber } : {}),
-    });
+        const userRecord = await adminAuth.createUser({
+            email,
+            password,
+            displayName: `${firstName} ${lastName}`.trim(),
+            ...(phoneNumber ? { phoneNumber } : {}),
+        });
 
-    await adminDb.collection('users').doc(userRecord.uid).set({
-      firstName,
-      lastName,
-      phoneNumber: phoneNumber ?? null,
-      email,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+        await adminDb.collection('users').doc(userRecord.uid).set({
+            firstName,
+            lastName,
+            phoneNumber: phoneNumber ?? null,
+            email,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
 
-    return NextResponse.json(
-      {
-        uid: userRecord.uid,
-        email: userRecord.email,
-      },
-      { status: 201 }
-    );
-  } catch (error: unknown) {
-    if (error instanceof Error && 'issues' in (error as any)) {
-      return NextResponse.json(
-        { message: 'Validation failed', details: (error as any).issues },
-        { status: 400 }
-      );
+        return NextResponse.json(
+            {
+                uid: userRecord.uid,
+                email: userRecord.email,
+            },
+            { status: 201 }
+        );
+        
+    } catch (error: any) {
+        console.error('Error registration Firebase/Zod:', error);
+
+        if (error.issues) {
+            return NextResponse.json(
+                { message: 'Validation failed (Zod)', details: error.issues },
+                { status: 400 }
+            );
+        }
+
+        if (error.code) {
+            let errorMessage = 'Registration failed.';
+            
+            if (error.code === 'auth/weak-password') {
+                errorMessage = 'Password is to short.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'Incorect format.';
+            } else if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'User whit this email already exists.';
+            } else {
+                errorMessage = `Error Firebase: ${error.code}`;
+            }
+
+            return NextResponse.json({ message: errorMessage, code: error.code }, { status: 400 });
+        }
+        
+        const message = error.message ?? 'Unable to complete registration right now';
+        return NextResponse.json({ message }, { status: 500 });
     }
-
-    const message =
-      (error as any)?.message ?? 'Unable to complete registration right now';
-
-    return NextResponse.json({ message }, { status: 500 });
-  }
 }
-

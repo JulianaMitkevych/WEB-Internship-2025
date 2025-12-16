@@ -1,28 +1,4 @@
-// import { NextResponse } from 'next/server';
 
-// export async function POST() {
-//   const response = NextResponse.json({ success: true });
-
-//   response.cookies.set('authToken', '', {
-//     httpOnly: true,
-//     sameSite: 'lax',
-//     secure: process.env.NODE_ENV === 'production',
-//     path: '/',
-//     expires: new Date(0),
-//   });
-
-//   response.cookies.set('refreshToken', '', {
-//     httpOnly: true,
-//     sameSite: 'lax',
-//     secure: process.env.NODE_ENV === 'production',
-//     path: '/',
-//     expires: new Date(0),
-//   });
-
-//   return response;
-// }
-
-// src/app/api/auth/logout/route.ts
 
 import { NextResponse, NextRequest } from 'next/server';
 import { adminAuth } from '@/lib/firebase/admin';

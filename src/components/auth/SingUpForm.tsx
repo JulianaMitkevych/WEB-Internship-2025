@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useApi } from '@/hooks/useApi';
 import { SignUpFormValues, SignUpSchema } from '@/lib/zod-schemas';
-import { ROUTES } from '@/utils';
+import { ROUTES } from '@/utils/constants';
 
 const inputStyles =
   'h-12 rounded-xl border-2 border-[#4CAF50]/60 bg-white pr-12 text-night-sky';
@@ -251,7 +251,7 @@ const SignUpForm = () => {
               </div>
 
               {error && (
-                <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+                <div className="rounded-md border  border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-red-500 ">
                   {error}
                 </div>
               )}
