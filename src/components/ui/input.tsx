@@ -103,8 +103,8 @@ function Input({
   const computedStyle: React.CSSProperties | undefined = isAriaInvalid
     ? undefined
     : isFocused
-    ? styleWhenFocusedAndNotInvalid
-    : styleWhenNotInvalidAndNotFocused;
+      ? styleWhenFocusedAndNotInvalid
+      : styleWhenNotInvalidAndNotFocused;
 
   return (
     <input

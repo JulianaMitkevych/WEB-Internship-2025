@@ -1,11 +1,9 @@
-
-
 import { NextResponse, NextRequest } from 'next/server';
 import { adminAuth } from '@/lib/firebase/admin';
 
 export async function POST(request: NextRequest) {
   const authToken = request.cookies.get('authToken')?.value;
-  
+
   const response = NextResponse.json({ success: true });
 
   const clearCookieOptions = {

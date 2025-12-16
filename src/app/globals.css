@@ -21,7 +21,7 @@ body {
   /* overflow: hidden; */
 }
 
-@theme inline{
+@theme inline {
   --breakpoint-xl: 1200px;
   --breakpoint-3xl: 1920px;
   --color-dark-100: #22222f;

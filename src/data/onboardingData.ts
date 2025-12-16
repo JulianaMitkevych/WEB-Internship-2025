@@ -1,4 +1,3 @@
-
 export type OnboardingStep = {
   id: string;
   title: string;

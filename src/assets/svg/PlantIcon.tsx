@@ -29,8 +29,8 @@ export const PlantIcon: React.FC<PlantIconProps> = ({
         y2={77}
         gradientUnits="userSpaceOnUse"
       >
-      <stop stopColor="#53C904" />
-   <stop offset={1} stopColor="#2F7302" />
+        <stop stopColor="#53C904" />
+        <stop offset={1} stopColor="#2F7302" />
       </linearGradient>
     </defs>
   </svg>
