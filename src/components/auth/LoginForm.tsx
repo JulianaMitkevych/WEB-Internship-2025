@@ -179,7 +179,7 @@ const LoginForm = () => {
                         </button>
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage  className='text-red-500'/>
                   </FormItem>
                 )}
               />
