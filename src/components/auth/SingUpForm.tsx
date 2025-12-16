@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Check, Eye, EyeOff } from 'lucide-react';
-import {PlantIcon} from '@/assets/svg/PlantIcon'
+import { PlantIcon } from '@/assets/svg/PlantIcon';
 
 import { Button } from '@/components/ui/button';
 import {

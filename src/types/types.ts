@@ -1,7 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 import type { FieldValue, Timestamp } from 'firebase-admin/firestore';
 
-//  type for Next.js routs 
+//  type for Next.js routs
 export type TUserDb = Omit<TUser, 'createdAt'> & {
   createdAt: Timestamp | FieldValue;
 };
@@ -11,8 +11,6 @@ export type TTab = {
   label: string;
   icon: LucideIcon;
 };
-
-
 
 export type TUser = {
   id: string;

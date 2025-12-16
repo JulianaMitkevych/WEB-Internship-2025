@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Check, Eye, EyeOff } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { PlantIcon } from '@/assets/svg/PlantIcon';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ import { useStorage } from '@/hooks/useStorage';
 import { LogInFormValues, LogInSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils';
 import { UserWithoutCropType } from '@/context/types';
+import { auth } from '@/lib/firebase/client';
 
 type LoginResponse = {
   user: Partial<UserWithoutCropType> & { id: string; email: string | null };
@@ -44,6 +45,7 @@ const LoginForm = () => {
   const { post, error, loading } = useApi<LoginResponse>();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const emailValue = form.watch('email');
   const showEmailCheck =
@@ -52,8 +54,19 @@ const LoginForm = () => {
     !form.formState.errors.email;
 
   const onSubmit = async (values: LogInFormValues) => {
+    setAuthError(null);
     try {
-      const response = await post(ROUTES.API.AUTH.LOGIN, values);
+      // First, authenticate with Firebase to get the idToken
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+
+      const idToken = await userCredential.user.getIdToken();
+
+      // Then send the idToken to the backend to create a session cookie
+      const response = await post(ROUTES.API.AUTH.LOGIN, { idToken });
 
       if (response?.user) {
         const normalizedUser: UserWithoutCropType = {
@@ -68,16 +81,32 @@ const LoginForm = () => {
       }
 
       router.push(ROUTES.ONBOARDING);
-    } catch {
-      // handled by hook state
+    } catch (error: any) {
+      // Handle Firebase auth errors
+      if (error?.code?.startsWith('auth/')) {
+        const errorMessages: Record<string, string> = {
+          'auth/user-not-found': 'No account found with this email.',
+          'auth/wrong-password': 'Incorrect password.',
+          'auth/invalid-email': 'Invalid email address.',
+          'auth/user-disabled': 'This account has been disabled.',
+          'auth/too-many-requests':
+            'Too many failed attempts. Please try again later.',
+          'auth/invalid-credential': 'Invalid email or password.',
+        };
+
+        const errorMessage =
+          errorMessages[error.code] ??
+          'Authentication failed. Please try again.';
+        setAuthError(errorMessage);
+      }
+      // API errors are handled by useApi hook state
     }
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="mx-auto w-full max-w-xl flex flex-col items-center justify-center px-6 py-10">
-                <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
-
+      <div className="mx-auto w-full max-w-lg flex flex-col items-center justify-center px-6 py-10">
+        <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={50} />
@@ -155,9 +184,9 @@ const LoginForm = () => {
                 )}
               />
 
-              {error && (
+              {(error || authError) && (
                 <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-                  {error}
+                  {authError || error}
                 </div>
               )}
 

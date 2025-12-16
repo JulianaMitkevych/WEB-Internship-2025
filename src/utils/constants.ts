@@ -8,7 +8,6 @@ export const ROUTES = {
   // DEVICE_CONNECT: '/device-connect', сonnected with device
   DASHBOARD: '/dashboard', // home,settings, profile
 
-
   API: {
     AUTH: {
       LOGIN: '/api/auth/login',
@@ -25,7 +24,11 @@ export const PUBLIC_ROUTES = [
   ROUTES.HOME,
 ] as const;
 
-export const PROTECTED_ROUTES = [ROUTES.PROFILE, ROUTES.ONBOARDING, ROUTES.DASHBOARD] as const;
+export const PROTECTED_ROUTES = [
+  ROUTES.PROFILE,
+  ROUTES.ONBOARDING,
+  ROUTES.DASHBOARD,
+] as const;
 
 export type Route = (typeof ROUTES)[keyof typeof ROUTES];
 export type PublicRoute = (typeof PUBLIC_ROUTES)[number];
