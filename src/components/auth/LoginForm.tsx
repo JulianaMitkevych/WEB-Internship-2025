@@ -75,7 +75,7 @@ const LoginForm = () => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="mx-auto w-full max-w-lg flex flex-col items-center justify-center px-6 py-10">
+      <div className="mx-auto w-full max-w-xl flex flex-col items-center justify-center px-6 py-10">
                 <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
 
           <div className="mb-8 text-center">

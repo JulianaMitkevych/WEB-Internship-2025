@@ -17,10 +17,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useApi } from '@/hooks/useApi';
 import { SignUpFormValues, SignUpSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils/constants';
+import { Input } from '@/components/ui/input';
 
 const inputStyles =
   'h-12 rounded-xl border-2 border-[#4CAF50]/60 bg-white pr-12 text-night-sky';
@@ -59,12 +59,12 @@ const SignUpForm = () => {
 
   return (
     <div className="min-h-screen bg-white overflow-y-auto md:overflow-y-visible">
-      <div className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-6 py-10">
+      <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-center px-6 py-10">
         <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0px_14px_50px_rgba(0,0,0,0.08)]">
           <div className="mb-8 text-center">
-              <div className="grid place-items-center mb-6">
-                          <PlantIcon size={50} />
-                        </div>
+            <div className="grid place-items-center mb-6">
+              <PlantIcon size={50} />
+            </div>
             <h1 className="text-3xl font-bold text-night-sky">
               Create an account
             </h1>
@@ -75,7 +75,7 @@ const SignUpForm = () => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 ">
                 <FormField
                   control={form.control}
                   name="firstName"
@@ -111,13 +111,13 @@ const SignUpForm = () => {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500" />
                     </FormItem>
                   )}
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4">
                 <FormField
                   control={form.control}
                   name="phoneNumber"
@@ -172,7 +172,7 @@ const SignUpForm = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 ">
                 <FormField
                   control={form.control}
                   name="password"
