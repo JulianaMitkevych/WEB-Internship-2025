@@ -23,7 +23,7 @@ const WelcomeScreen = () => {
           <PlantIcon size={84} />
         </div>
 
-        <h1 className="mt-8 text-3xl font-bold text-night-sky md:text-4xl">
+        <h1 className="mt-8 text-3xl font-bold text-[#343434] md:text-4xl">
           Welcome to App
         </h1>
       </div>
