@@ -286,7 +286,7 @@ const SignUpForm = () => {
               <Button
                 type="submit"
                 variant="gradient"
-                className="w-full text-base rounded-2xl md:w-auto"
+                className="w-full text-base  text-white rounded-2xl md:w-auto"
                 disabled={loading || !form.formState.isValid}
               >
                 {loading ? 'Creating account...' : 'Sign up'}

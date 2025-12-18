@@ -1,11 +1,6 @@
-// 'use client';
-
-// import { Button } from '@/components/ui/button'; for charts
+'use client';
 
 const DashboardContent = () => {
-  // icon plants
-  // title
-  // slider
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 text-center">
       <h1 className="text-3xl font-bold text-[#4CAF50] mb-4">

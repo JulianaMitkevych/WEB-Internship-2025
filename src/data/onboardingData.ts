@@ -1,32 +1,35 @@
+import PlantOne from '@/assets/svg/PlantOne';
+import  PlantTwo from '@/assets/svg/PlantTwo';
+import PlantThree from '@/assets/svg/PlantThree';
+
 export type OnboardingStep = {
   id: string;
   title: string;
   description: string;
-  // icon: React.FC<React.SVGProps<SVGSVGElement>>; //for react component svg
-  iconName: 'plantOne' | 'plantTwo' | 'plantThree'; // name svg
+  Icon: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
 export const onboardingData: OnboardingStep[] = [
   {
     id: '1',
-    title: 'Choose Your Plants', // Onboarding 1
+    title: 'Choose Your Plants',
     description:
       'Welcome to GrowBox! Select your favorite plants and begin cultivating your personal garden.',
-    iconName: 'plantOne',
+    Icon: PlantOne,
   },
   {
     id: '2',
-    title: 'Connect and Control', // Onboarding 2
+    title: 'Connect and Control',
     description:
       'Connect your GrowBox and control watering, lighting, and temperature right from your smartphone.',
-    iconName: 'plantTwo',
+    Icon: PlantTwo,
   },
   {
     id: '3',
-    title: 'Observe and Grow', // Onboarding 3
+    title: 'Observe and Grow',
     description:
       "See your plants flourish with helpful graphs. You're set to grow and succeed!",
-    iconName: 'plantThree',
+    Icon: PlantThree,
   },
 ];
 

@@ -202,7 +202,7 @@ const LoginForm = () => {
               <Button
                 type="submit"
                 variant="gradient"
-                className="w-full text-base rounded-2xl h-12"
+                className="w-full text-base text-white rounded-2xl h-12"
                 disabled={loading || !form.formState.isValid}
               >
                 {loading ? 'Signing in...' : 'Sign in'}
