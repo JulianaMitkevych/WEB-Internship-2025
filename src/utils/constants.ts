@@ -5,7 +5,8 @@ export const ROUTES = {
   REGISTER: '/register',
   PROFILE: '/profile',
   ONBOARDING: '/onboarding',
-  // DEVICE_CONNECT: '/device-connect', сonnected with device
+  SELECT_PLANTS: '/onboarding/select-plants', 
+  CONNECT_DEVICE: '/onboarding/connect-device', 
   DASHBOARD: '/dashboard', // home,settings, profile
 
   API: {
