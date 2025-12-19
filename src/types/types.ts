@@ -22,10 +22,6 @@ export type TUser = {
   cropType: ECropType | null;
 };
 
-export enum ECropType {
-  VEGETABLES = 'Vegetables',
-}
-
 export type TDevice = {
   id: string;
   name: string;
@@ -70,4 +66,24 @@ export type TNutritionRecord = {
   date: Date;
   value: number;
   deviceId: string;
+};
+
+export type TCropTypeOption = {
+  id: keyof typeof ECropType;
+  name: ECropType;
+};
+
+export enum ECropType {
+  MICROGREENS = 'Microgreens',
+  HERBS = 'Herbs',
+  VEGETABLES = 'Vegetables',
+  MUSHROOMS = "Mushroom's",
+  FLOWERING = 'Flowering Plants',
+}
+
+// props for crop button component
+ export type CropButtonProps = {
+  label: string;
+  route: string;
+  className?: string;
 };
