@@ -5,11 +5,13 @@ import * as React from 'react';
 import { cn } from '@/utils/index';
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-base font-medium transition-all cursor-pointer disabled:pointer-events-none disabled:bg-grey disabled:text-grey-x-dark [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-base font-medium transition-all cursor-pointer disabled:pointer-events-none disabled:bg-grey disabled:text-white [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         default: 'bg-night-sky text-white shadow-xs hover:bg-night-sky/90',
+        gradient:
+          'bg-gradient-to-t from-[#2F9E44] to-[#4CAF50] text-white shadow-md hover:bg-none hover:bg-green-800  focus:text-white active:text-white',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
