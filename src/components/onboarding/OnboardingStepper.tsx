@@ -33,7 +33,7 @@ const OnboardingStepper = () => {
   //  button disabled={true} change = false
   const handleCardClick = () => {
     if (currentStep.title.includes('Plants')) {
-      router.push(ROUTES.SELECT_PLANTS);
+      router.push(ROUTES.USER_PLANTS);
     } else if (currentStep.title.includes('Connect')) {
       router.push(ROUTES.CONNECT_DEVICE);
     }
@@ -41,14 +41,14 @@ const OnboardingStepper = () => {
 
   const handleNext = () => {
     if (isLastStep) {
-      router.push(ROUTES.DASHBOARD);
+      router.push(ROUTES.USER_PLANTS);
     } else if (nextStepId) {
       setCurrentStepId(nextStepId);
     }
   };
 
   const handleSkip = () => {
-    router.push(ROUTES.DASHBOARD);
+    router.push(ROUTES.USER_PLANTS);
   };
 
   return (
@@ -63,7 +63,7 @@ const OnboardingStepper = () => {
         {/* button =disabled*/}
         <button
           onClick={handleCardClick}
-          disabled={true}
+          disabled={false}
           className="relative w-full h-[320px] mb-10 flex items-center justify-center transition-transform active:scale-95 disabled:opacity-100 disabled:pointer-events-none"
         >
           <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 w-[362px] h-[238px] bg-white rounded-[40px] shadow-lg"></div>
