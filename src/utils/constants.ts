@@ -7,22 +7,23 @@ export const ROUTES = {
   // Protected routes
   PROFILE: '/profile',
   ONBOARDING: '/onboarding',
-  SELECT_PLANTS: '/onboarding/select-plants',
+  SELECT_CROP_TYPE: '/crope-type',
   CONNECT_DEVICE: '/onboarding/connect-device',
   DASHBOARD: '/dashboard',
-  DASHBOARD_WITH_PLANT: (plantId: string) => `/dashboard?plantId=${plantId}`,
+  SETTINGS: '/settings',
 
-  // Plants
-  USER_PLANTS: '/userPlants',
-  PLANT: (plantId: string) => `/userPlants/${plantId}`,
+  // Plant management routes (for future use)
+  USER_PLANTS: '/user-plants',
+  PLANT: (plantId: string) => `/user-plants/${plantId}`,
 
-  PLANT_ROUTES: {
-    LIGHT: (plantId: string) => `/userPlants/${plantId}/light`,
-    HUMIDITY: (plantId: string) => `/userPlants/${plantId}/humidity`,
-    TEMPERATURE: (plantId: string) => `/userPlants/${plantId}/temperature`,
-    NUTRITION: (plantId: string) => `/userPlants/${plantId}/nutrition`,
-    WATERING: (plantId: string) => `/userPlants/${plantId}/watering`,
-    VENT: (plantId: string) => `/userPlants/${plantId}/vent`,
+  // Dashboard settings routes
+  PLANT_SETTINGS: {
+    LIGHT: '/dashboard/light',
+    HUMIDITY: '/dashboard/humidity',
+    TEMPERATURE: '/dashboard/temperature',
+    NUTRITION: '/dashboard/nutrition',
+    WATERING: '/dashboard/watering',
+    VENT: '/dashboard/vent',
   },
 
   // API routes
@@ -47,9 +48,10 @@ export const PUBLIC_ROUTES = [
 export const PROTECTED_ROUTES = [
   ROUTES.PROFILE,
   ROUTES.ONBOARDING,
-  ROUTES.SELECT_PLANTS,
+  ROUTES.SELECT_CROP_TYPE,
   ROUTES.CONNECT_DEVICE,
   ROUTES.DASHBOARD,
+  ROUTES.SETTINGS,
   ROUTES.USER_PLANTS,
 ] as const;
 

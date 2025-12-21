@@ -30,10 +30,10 @@ const OnboardingStepper = () => {
 
   const StepIcon = currentStep.Icon;
 
-  //  button disabled={true} change = false
+  // Handle card click navigation
   const handleCardClick = () => {
     if (currentStep.title.includes('Plants')) {
-      router.push(ROUTES.USER_PLANTS);
+      router.push(ROUTES.SELECT_CROP_TYPE);
     } else if (currentStep.title.includes('Connect')) {
       router.push(ROUTES.CONNECT_DEVICE);
     }
@@ -41,14 +41,16 @@ const OnboardingStepper = () => {
 
   const handleNext = () => {
     if (isLastStep) {
-      router.push(ROUTES.USER_PLANTS);
+      // TODO: Add check if crop type is selected before going to dashboard
+      // For now, just go to dashboard
+      router.push(ROUTES.DASHBOARD);
     } else if (nextStepId) {
       setCurrentStepId(nextStepId);
     }
   };
 
   const handleSkip = () => {
-    router.push(ROUTES.USER_PLANTS);
+    router.push(ROUTES.DASHBOARD);
   };
 
   return (

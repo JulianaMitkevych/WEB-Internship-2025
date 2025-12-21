@@ -84,6 +84,7 @@ export enum ECropType {
 // props for crop button component
  export type CropButtonProps = {
   label: string;
-  route: string;
+  route?: string;
+  onClick?: () => void;
   className?: string;
 };

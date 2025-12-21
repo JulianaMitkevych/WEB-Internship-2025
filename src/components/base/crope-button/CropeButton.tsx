@@ -1,26 +1,26 @@
-'use client';
 
-import { useRouter } from 'next/navigation';
+'use client';
 import { cn } from '@/utils/helpers';
 import type { CropButtonProps } from '@/types/types';
 
+interface ExtendedCropButtonProps extends CropButtonProps {
+  isActive?: boolean;
+}
+
 export default function CropButton({
   label,
-  route,
+  onClick,
   className,
-}: CropButtonProps) {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(route);
-  };
-
+  isActive,
+}: ExtendedCropButtonProps) {
   return (
     <button
-      onClick={handleClick}
+      onClick={onClick}
       className={cn(
-        'w-full px-6 py-4 rounded-xl bg-green-100 text-green-800 font-semibold text-lg transition-all',
-        'hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 active:scale-95',
+        'w-full py-3 text-xl transition-all duration-300 text-center outline-none',
+        isActive
+          ? 'text-[#2F7302] font-bold bg-[#D5E3CC] rounded-full scale-105'
+          : 'text-[#97B980] font-medium bg-transparent hover:text-[#2F7302]',
         className
       )}
     >
