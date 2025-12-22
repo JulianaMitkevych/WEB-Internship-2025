@@ -16,14 +16,14 @@ export const ROUTES = {
   USER_PLANTS: '/user-plants',
   PLANT: (plantId: string) => `/user-plants/${plantId}`,
 
-  // Dashboard settings routes
+  // Settings routes
   PLANT_SETTINGS: {
-    LIGHT: '/dashboard/light',
-    HUMIDITY: '/dashboard/humidity',
-    TEMPERATURE: '/dashboard/temperature',
-    NUTRITION: '/dashboard/nutrition',
-    WATERING: '/dashboard/watering',
-    VENT: '/dashboard/vent',
+    LIGHT: '/settings/light',
+    HUMIDITY: '/settings/humidity',
+    TEMPERATURE: '/settings/temperature',
+    NUTRITION: '/settings/nutrition',
+    WATERING: '/settings/watering',
+    VENT: '/settings/vent',
   },
 
   // API routes

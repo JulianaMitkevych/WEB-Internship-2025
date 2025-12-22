@@ -11,6 +11,10 @@ type TStorageProviderProps = {
 
 export const initialState: Store = {
   user: null,
+  error: null,
+  successMessage: null,
+  isLoading: false,
+  lastListUrlParams: null,
 };
 
 export const StorageProvider = (props: TStorageProviderProps) => {

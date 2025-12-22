@@ -81,6 +81,20 @@ export enum ECropType {
   FLOWERING = 'Flowering Plants',
 }
 
+export type TCountry = {
+  value: string;
+  label: string;
+  searchText?: string;
+  [key: string]: any;
+};
+
+export type TRegion = {
+  value: string;
+  label: string;
+  searchText?: string;
+  [key: string]: any;
+};
+
 // props for crop button component
  export type CropButtonProps = {
   label: string;

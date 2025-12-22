@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
           firstName: userProfile.firstName ?? null,
           lastName: userProfile.lastName ?? null,
           phoneNumber: userProfile.phoneNumber ?? null,
+          cropType: userProfile.cropType ?? null,
           createdAt: userProfile.createdAt
             ? (userProfile.createdAt as Timestamp).toDate().toISOString()
             : null,

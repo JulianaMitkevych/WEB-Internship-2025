@@ -24,11 +24,11 @@ import { useApi } from '@/hooks/useApi';
 import { useStorage } from '@/hooks/useStorage';
 import { LogInFormValues, LogInSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils';
-import { UserWithoutCropType } from '@/context/types';
+import { TUser } from '@/types/types';
 import { auth } from '@/lib/firebase/client';
 
 type LoginResponse = {
-  user: Partial<UserWithoutCropType> & { id: string; email: string | null };
+  user: Partial<TUser> & { id: string; email: string | null };
   token: string;
 };
 
@@ -64,12 +64,13 @@ const LoginForm = () => {
       const response = await post(ROUTES.API.AUTH.LOGIN, { idToken });
 
       if (response?.user) {
-        const normalizedUser: UserWithoutCropType = {
+        const normalizedUser: TUser = {
           id: response.user.id,
           email: response.user.email ?? null,
           firstName: response.user.firstName ?? null,
           lastName: response.user.lastName ?? null,
           phoneNumber: response.user.phoneNumber ?? null,
+          cropType: response.user.cropType ?? null,
           createdAt: response.user.createdAt ?? null,
         };
         setStore((prev) => ({ ...prev, user: normalizedUser }));

@@ -9,15 +9,45 @@ import { cropTypes } from '@/app/crope-type/cropeList';
 import CropButton from '@/components/base/crope-button/CropeButton';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/utils/constants';
+import { useStorage } from '@/hooks/useStorage';
+import { useApi } from '@/hooks/useApi';
+import { ECropType } from '@/types/types';
+
+type UpdateCropTypeResponse = {
+  message: string;
+  cropType: ECropType;
+};
 
 export default function SelectCropTypePage() {
   const router = useRouter();
+  const [store, setStore] = useStorage();
+  const { post } = useApi<UpdateCropTypeResponse>();
   const [selectedId, setSelectedId] = useState<string>('MICROGREENS');
 
-  const handleStartPlanting = () => {
-    // TODO: Save selected crop type to user profile/storage
-    //     // For now, just navigate to dashboard
-    router.push(ROUTES.DASHBOARD);
+  const handleStartPlanting = async () => {
+    if (!store.user) {
+      console.error('No user found');
+      return;
+    }
+
+    try {
+      const selectedCrop = cropTypes.find(crop => crop.id === selectedId);
+      if (!selectedCrop) return;
+
+      await post('/api/auth/update-crop-type', {
+        cropType: selectedCrop.name,
+      });
+
+      // Update local storage with the new crop type
+      setStore(prev => ({
+        ...prev,
+        user: prev.user ? { ...prev.user, cropType: selectedCrop.name } : null,
+      }));
+
+      router.push(ROUTES.DASHBOARD);
+    } catch (err) {
+      console.error('Failed to save crop type:', err);
+    }
   };
 
   return (
