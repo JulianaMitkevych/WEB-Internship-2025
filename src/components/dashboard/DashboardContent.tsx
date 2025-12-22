@@ -1,180 +1,140 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useApi } from '@/hooks/useApi';
-import { SimplePeriodSelector } from '@/components/ui/simple-period-selector';
-import { Lightbulb, Thermometer, Droplets, Beaker } from 'lucide-react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useStorage } from '@/hooks/useStorage';
+import { ROUTES } from '@/utils/constants';
+import LightIcon from '@/assets/svg/LightIcon';
+import TempIcon from '@/assets/svg/TempIcon';
+import NutritionIcon from '@/assets/svg/NutritionIcon';
+import HumidityIcon from '@/assets/svg/HumidityIcon';
+import VentIcon from '@/assets/svg/VentIcon';
+import WaterIcon from '@/assets/svg/WaterIcon';
+import PlantOne from '@/assets/svg/PlantOne';
+import PlantTwo from '@/assets/svg/PlantTwo';
+import PlantThree from '@/assets/svg/PlantThree';
+import { BottomNavigation } from '@/components/ui/bottom-navigation';
 
-type PeriodType = 'daily' | 'weekly' | 'monthly';
-
-type SettingsHistoryResponse = {
-  period: PeriodType;
-  parameter: string;
-  totalRecords: number;
-  data: any[];
-  averages: Record<string, number>;
-};
 
 const DashboardContent = () => {
-  const { get, loading, error } = useApi<SettingsHistoryResponse>();
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('daily');
-  const [settingsData, setSettingsData] = useState<Record<string, SettingsHistoryResponse>>({});
+  const router = useRouter();
+  const [store] = useStorage();
+  const [growthDays] = useState(14); // Mock data - should come from API
 
-  const parameters = ['light', 'temperature', 'humidity', 'nutrition'];
+  const parameters = ['light', 'temperature', 'humidity', 'nutrition', 'vent', 'watering'];
 
-  useEffect(() => {
-    const fetchSettingsData = async () => {
-      const newData: Record<string, SettingsHistoryResponse> = {};
 
-      for (const param of parameters) {
-        try {
-          const response = await get(`/api/settings/history?period=${selectedPeriod}&parameter=${param}`);
-          if (response) {
-            newData[param] = response;
-          }
-        } catch (err) {
-          console.error(`Failed to fetch ${param} data:`, err);
-        }
-      }
-
-      setSettingsData(newData);
-    };
-
-    fetchSettingsData();
-  }, [selectedPeriod, get]);
+  const getPlantIcon = (cropType: string | null) => {
+    switch (cropType) {
+      case 'Microgreens': return <PlantOne />;
+      case 'Herbs': return <PlantTwo />;
+      case 'Vegetables': return <PlantThree />;
+      case "Mushroom's": return <PlantOne />;
+      case 'Flowering Plants': return <PlantTwo />;
+      default: return <PlantOne />;
+    }
+  };
 
   const getParameterIcon = (param: string) => {
     switch (param) {
-      case 'light': return <Lightbulb className="size-5 text-yellow-500" />;
-      case 'temperature': return <Thermometer className="size-5 text-red-500" />;
-      case 'humidity': return <Droplets className="size-5 text-blue-500" />;
-      case 'nutrition': return <Beaker className="size-5 text-purple-500" />;
+      case 'light': return <LightIcon />;
+      case 'temperature': return <TempIcon />;
+      case 'humidity': return <HumidityIcon />;
+      case 'nutrition': return <NutritionIcon />;
+      case 'vent': return <VentIcon />;
+      case 'watering': return <WaterIcon />;
       default: return null;
     }
   };
 
   const getParameterLabel = (param: string) => {
     switch (param) {
-      case 'light': return 'Light Intensity';
+      case 'light': return 'Light';
       case 'temperature': return 'Temperature';
       case 'humidity': return 'Humidity';
       case 'nutrition': return 'Nutrition';
+      case 'vent': return 'Vent';
+      case 'watering': return 'Watering';
       default: return param;
     }
   };
 
-  const getParameterUnit = (param: string) => {
-    switch (param) {
-      case 'light': return '%';
-      case 'temperature': return '°C';
-      case 'humidity': return '%';
-      case 'nutrition': return '%';
-      default: return '';
+  const handleSettingClick = (setting: string) => {
+    switch (setting) {
+      case 'light': router.push(ROUTES.PLANT_SETTINGS.LIGHT);
+      break;
+      case 'temperature': router.push(ROUTES.PLANT_SETTINGS.TEMPERATURE);
+      break;
+      case 'humidity': router.push(ROUTES.PLANT_SETTINGS.HUMIDITY);
+      break;
+      case 'nutrition': router.push(ROUTES.PLANT_SETTINGS.NUTRITION);
+      break;
+      case 'vent': router.push(ROUTES.PLANT_SETTINGS.VENT);
+      break;
+      case 'watering': router.push(ROUTES.PLANT_SETTINGS.WATERING);
+      break;
     }
   };
 
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-[#4CAF50]">
-            🌱 Plant Settings Dashboard
-          </h1>
-          <SimplePeriodSelector
-            selectedPeriod={selectedPeriod}
-            onPeriodChange={setSelectedPeriod}
-          />
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Plant Info Section */}
+      <div className="bg-white p-6 shadow-sm">
+        <div className="max-w-md mx-auto flex flex-col items-center">
+          <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            {getPlantIcon(store.user?.cropType || null)}
           </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {parameters.map((param) => {
-            const data = settingsData[param];
-            const average = data?.averages[param] || 0;
-            const records = data?.totalRecords || 0;
-
-            return (
-              <Card key={param} className="bg-white">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    {getParameterLabel(param)}
-                  </CardTitle>
-                  {getParameterIcon(param)}
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {loading ? '...' : `${average.toFixed(1)}${getParameterUnit(param)}`}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {loading ? 'Loading...' : `${records} records`}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {parameters.map((param) => {
-            const data = settingsData[param];
-
-            return (
-              <Card key={param} className="bg-white">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    {getParameterIcon(param)}
-                    {getParameterLabel(param)} - {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)} View
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {loading ? (
-                    <div className="flex items-center justify-center h-32">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-                    </div>
-                  ) : data && data.data.length > 0 ? (
-                    <div className="space-y-2">
-                      <div className="text-sm text-gray-600">
-                        Latest: {data.data[0][param]} {getParameterUnit(param)}
-                      </div>
-                      <div className="h-32 bg-gray-100 rounded p-2">
-                        <div className="text-xs text-gray-500 mb-1">
-                          Recent changes ({data.data.length} entries)
-                        </div>
-                        <div className="flex items-end h-20 gap-1">
-                          {data.data.slice(0, 10).reverse().map((entry, index) => {
-                            const value = parseFloat(entry[param] || '0');
-                            const maxValue = param === 'temperature' ? 35 : 100;
-                            const height = (value / maxValue) * 100;
-
-                            return (
-                              <div
-                                key={index}
-                                className="bg-green-500 rounded-sm flex-1 min-w-2"
-                                style={{ height: `${height}%` }}
-                                title={`${value} ${getParameterUnit(param)}`}
-                              />
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center h-32 text-gray-500">
-                      No data available
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            {store.user?.cropType || 'Select Plant'}
+          </h2>
         </div>
       </div>
+
+      {/* Growth Days Scale */}
+      <div className="bg-white mx-6 mt-6 p-4 rounded-2xl shadow-sm">
+        <div className="flex justify-center gap-2 mb-4">
+          {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
+            <button
+              key={day}
+              className={`w-8 h-8 rounded-xl border-2 transition-colors ${
+                day <= growthDays
+                  ? 'bg-green-500 border-green-500 text-white'
+                  : 'bg-gray-100 border-gray-200 text-gray-400'
+              }`}
+              disabled={day > growthDays}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+        <p className="text-center text-sm text-gray-600">
+          Day {growthDays} of growth
+        </p>
+      </div>
+
+      {/* Settings Buttons */}
+      <div className="flex-1 p-6">
+        <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
+          {parameters.map((param) => (
+            <button
+              key={param}
+              onClick={() => handleSettingClick(param)}
+              className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-3"
+            >
+              <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
+                {getParameterIcon(param)}
+              </div>
+              <span className="text-sm font-medium text-gray-700">
+                {getParameterLabel(param)}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation activeTab="home" />
     </div>
   );
 };
