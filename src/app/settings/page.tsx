@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
+import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useSettings } from '@/hooks/useSettings';
 // import { ROUTES } from '@/utils/constants';
-import 
+import
   TempIcon
  from '@/assets/svg/TempIcon';
 import  HumidityIcon  from '@/assets/svg/HumidityIcon';
@@ -49,26 +50,61 @@ export default function SettingsPage() {
   }, [settings]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-[#323232]">Settings</h1>
-          <Button
-            onClick={() => router.back()}
-            variant="outline"
-            className="px-4 py-2"
-          >
-            Back
-          </Button>
-        </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <h1 className="text-lg font-bold text-gray-800">Settings</h1>
+          <div className="w-8"></div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
-          <div className="border-b pb-4">
-            <h2 className="text-lg font-semibold mb-2">Plant Settings</h2>
-            <p className="text-gray-600 text-sm">
-              Configure your plant growing parameters
-            </p>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 p-6">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+            
+
+              {/* Ventilation Settings */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <VentIcon className="w-6 h-6 text-gray-600" />
+                <div>
+                  <div className="font-medium">Vent</div>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push('/settings/vent')}
+                className="text-green-600"
+              >
+                Edit
+              </Button>
+            </div>
+            <div className="flex items-center gap-4 pl-9">
+              <div className="flex-1">
+                <Slider
+                  value={[ventValue]}
+                  onValueChange={(value) => setVentValue(value[0])}
+                  max={24}
+                  min={1}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>1h</span>
+                  <span>12h</span>
+                  <span>24h</span>
+                </div>
+              </div>
+              <Switch
+                checked={ventEnabled}
+                onCheckedChange={setVentEnabled}
+              />
+            </div>
           </div>
+
 
           {/* Light Settings */}
           <div className="space-y-3">
@@ -76,8 +112,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <LightIcon className="w-6 h-6 text-green-600" />
                 <div>
-                  <div className="font-medium">Light Settings</div>
-                  <div className="text-sm text-gray-600">Configure lighting schedule</div>
+                  <div className="font-medium">Light </div>
                 </div>
               </div>
               <Button
@@ -118,8 +153,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <TempIcon className="w-6 h-6 text-red-500" />
                 <div>
-                  <div className="font-medium">Temperature Settings</div>
-                  <div className="text-sm text-gray-600">Set temperature range</div>
+                  <div className="font-medium">Temperature</div>
                 </div>
               </div>
               <Button
@@ -154,8 +188,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <HumidityIcon className="w-6 h-6 text-blue-500" />
                 <div>
-                  <div className="font-medium">Humidity Settings</div>
-                  <div className="text-sm text-gray-600">Configure humidity levels</div>
+                  <div className="font-medium">Humidity</div>
                 </div>
               </div>
               <Button
@@ -190,8 +223,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <NutritionIcon className="w-6 h-6 text-purple-500" />
                 <div>
-                  <div className="font-medium">Nutrition Settings</div>
-                  <div className="text-sm text-gray-600">Manage nutrient delivery</div>
+                  <div className="font-medium">Nutrition </div>
                 </div>
               </div>
               <Button
@@ -226,8 +258,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <WaterIcon className="w-6 h-6 text-blue-600" />
                 <div>
-                  <div className="font-medium">Watering Settings</div>
-                  <div className="text-sm text-gray-600">Set watering schedule</div>
+                  <div className="font-medium">Watering </div>
                 </div>
               </div>
               <Button
@@ -256,47 +287,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Ventilation Settings */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <VentIcon className="w-6 h-6 text-gray-600" />
-                <div>
-                  <div className="font-medium">Ventilation Settings</div>
-                  <div className="text-sm text-gray-600">Configure air circulation</div>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => router.push('/settings/vent')}
-                className="text-green-600"
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="flex items-center gap-4 pl-9">
-              <div className="flex-1">
-                <Slider
-                  value={[ventValue]}
-                  onValueChange={(value) => setVentValue(value[0])}
-                  max={24}
-                  min={1}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>1h</span>
-                  <span>12h</span>
-                  <span>24h</span>
-                </div>
-              </div>
-              <Switch
-                checked={ventEnabled}
-                onCheckedChange={setVentEnabled}
-              />
-            </div>
-          </div>
+        
 
           {/* Save Button */}
           <div className="border-t pt-4">
@@ -329,6 +320,10 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
+      </div>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation activeTab="settings" />
     </div>
   );
 }
