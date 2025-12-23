@@ -14,68 +14,83 @@ import PlantOne from '@/assets/svg/PlantOne';
 import PlantTwo from '@/assets/svg/PlantTwo';
 import PlantThree from '@/assets/svg/PlantThree';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
-
+import { Switch } from '@/components/ui/switch';
 
 const DashboardContent = () => {
   const router = useRouter();
   const [store] = useStorage();
   const [growthDays] = useState(14); // Mock data - should come from API
+  const [wateringEnabled, setWateringEnabled] = useState<boolean>(true);
+  const [ventEnabled, setVentEnabled] = useState<boolean>(true);
 
-  const parameters = ['light', 'temperature', 'humidity', 'nutrition', 'vent', 'watering'];
-
+  const parameters = [
+    'light',
+    'temperature',
+    'humidity',
+    'nutrition',
+    'vent',
+    'watering',
+  ];
 
   const getPlantIcon = (cropType: string | null) => {
     switch (cropType) {
-      case 'Microgreens': return <PlantOne />;
-      case 'Herbs': return <PlantTwo />;
-      case 'Vegetables': return <PlantThree />;
-      case "Mushroom's": return <PlantOne />;
-      case 'Flowering Plants': return <PlantTwo />;
-      default: return <PlantOne />;
+      case 'Microgreens':
+        return <PlantOne />;
+      case 'Herbs':
+        return <PlantTwo />;
+      case 'Vegetables':
+        return <PlantThree />;
+      case "Mushroom's":
+        return <PlantOne />;
+      case 'Flowering Plants':
+        return <PlantTwo />;
+      default:
+        return <PlantOne />;
     }
   };
 
   const getParameterIcon = (param: string) => {
     switch (param) {
-      case 'light': return <LightIcon />;
-      case 'temperature': return <TempIcon />;
-      case 'humidity': return <HumidityIcon />;
-      case 'nutrition': return <NutritionIcon />;
-      case 'vent': return <VentIcon />;
-      case 'watering': return <WaterIcon />;
-      default: return null;
+      case 'light':
+        return <LightIcon />;
+      case 'temperature':
+        return <TempIcon />;
+      case 'humidity':
+        return <HumidityIcon />;
+      case 'nutrition':
+        return <NutritionIcon />;
+      case 'vent':
+        return <VentIcon />;
+      case 'watering':
+        return <WaterIcon />;
+      default:
+        return null;
     }
   };
 
   const getParameterLabel = (param: string) => {
     switch (param) {
-      case 'light': return 'Light';
-      case 'temperature': return 'Temperature';
-      case 'humidity': return 'Humidity';
-      case 'nutrition': return 'Nutrition';
-      case 'vent': return 'Vent';
-      case 'watering': return 'Watering';
-      default: return param;
+      case 'light':
+        return 'Light';
+      case 'temperature':
+        return 'Temperature';
+      case 'humidity':
+        return 'Humidity';
+      case 'nutrition':
+        return 'Nutrition';
+      case 'vent':
+        return 'Vent';
+      case 'watering':
+        return 'Watering';
+      default:
+        return param;
     }
   };
 
-  const handleSettingClick = (setting: string) => {
-    switch (setting) {
-      case 'light': router.push(ROUTES.PLANT_SETTINGS.LIGHT);
-      break;
-      case 'temperature': router.push(ROUTES.PLANT_SETTINGS.TEMPERATURE);
-      break;
-      case 'humidity': router.push(ROUTES.PLANT_SETTINGS.HUMIDITY);
-      break;
-      case 'nutrition': router.push(ROUTES.PLANT_SETTINGS.NUTRITION);
-      break;
-      case 'vent': router.push(ROUTES.PLANT_SETTINGS.VENT);
-      break;
-      case 'watering': router.push(ROUTES.PLANT_SETTINGS.WATERING);
-      break;
-    }
+  const handleSettingClick = (_setting: string) => {
+    // All settings now route to the main settings page
+    router.push(ROUTES.SETTINGS);
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -117,18 +132,29 @@ const DashboardContent = () => {
       <div className="flex-1 p-6">
         <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
           {parameters.map((param) => (
-            <button
+            <div
               key={param}
-              onClick={() => handleSettingClick(param)}
               className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-3"
             >
-              <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
-                {getParameterIcon(param)}
-              </div>
-              <span className="text-sm font-medium text-gray-700">
-                {getParameterLabel(param)}
-              </span>
-            </button>
+              <button
+                onClick={() => handleSettingClick(param)}
+                className="flex flex-col items-center gap-3 w-full"
+              >
+                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
+                  {getParameterIcon(param)}
+                </div>
+                <span className="text-sm font-medium text-gray-700">
+                  {getParameterLabel(param)}
+                </span>
+              </button>
+              {(param === 'watering' || param === 'vent') && (
+                <Switch
+                  checked={param === 'watering' ? wateringEnabled : ventEnabled}
+                  onCheckedChange={param === 'watering' ? setWateringEnabled : setVentEnabled}
+                  className="mt-2"
+                />
+              )}
+            </div>
           ))}
         </div>
       </div>

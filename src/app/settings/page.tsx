@@ -1,11 +1,26 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { useStorage } from '@/hooks/useStorage';
+import { useApi } from '@/hooks/useApi';
 import { ROUTES } from '@/utils/constants';
+
+type UpdateSettingsResponse = {
+  message: string;
+  settings: any;
+};
 
 export default function SettingsPage() {
   const router = useRouter();
+  const [store] = useStorage();
+  const { post } = useApi<UpdateSettingsResponse>();
+
+  // Initialize toggle states - in a real app, these would come from API
+  const [wateringEnabled, setWateringEnabled] = useState<boolean>(true);
+  const [ventEnabled, setVentEnabled] = useState<boolean>(true);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -30,53 +45,60 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-3">
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.LIGHT)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Light Settings</div>
               <div className="text-sm text-gray-600">Configure lighting schedule</div>
-            </button>
+            </div>
 
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.TEMPERATURE)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Temperature Settings</div>
               <div className="text-sm text-gray-600">Set temperature range</div>
-            </button>
+            </div>
 
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.HUMIDITY)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Humidity Settings</div>
               <div className="text-sm text-gray-600">Configure humidity levels</div>
-            </button>
+            </div>
 
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.NUTRITION)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Nutrition Settings</div>
               <div className="text-sm text-gray-600">Manage nutrient delivery</div>
-            </button>
+            </div>
 
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.WATERING)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Watering Settings</div>
               <div className="text-sm text-gray-600">Set watering schedule</div>
-            </button>
+            </div>
 
-            <button
-              onClick={() => router.push(ROUTES.PLANT_SETTINGS.VENT)}
-              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
-            >
+            <div className="w-full text-left p-3 rounded-lg border bg-gray-50">
               <div className="font-medium">Ventilation Settings</div>
               <div className="text-sm text-gray-600">Configure air circulation</div>
-            </button>
+            </div>
+          </div>
+
+          {/* Toggle Switches for Watering and Vent */}
+          <div className="space-y-4 border-t pt-4">
+            <div className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+              <div>
+                <div className="font-medium">Watering System</div>
+                <div className="text-sm text-gray-600">Enable/disable automatic watering</div>
+              </div>
+              <Switch
+                checked={wateringEnabled}
+                onCheckedChange={setWateringEnabled}
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+              <div>
+                <div className="font-medium">Ventilation System</div>
+                <div className="text-sm text-gray-600">Enable/disable ventilation</div>
+              </div>
+              <Switch
+                checked={ventEnabled}
+                onCheckedChange={setVentEnabled}
+              />
+            </div>
           </div>
         </div>
       </div>
