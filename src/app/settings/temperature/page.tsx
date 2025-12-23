@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useApi } from '@/hooks/useApi';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -185,13 +186,13 @@ export default function TemperatureSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Temperature: {tempValue}°C
                 </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="35"
-                  value={tempValue}
-                  onChange={(e) => setTempValue(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                <Slider
+                  value={[tempValue]}
+                  onValueChange={(value) => setTempValue(value[0])}
+                  max={35}
+                  min={10}
+                  step={1}
+                  className="w-full"
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
                   <span>10°C</span>

@@ -3,7 +3,13 @@ import admin, { adminAuth, adminDb } from '@/lib/firebase/admin';
 import { z } from 'zod';
 
 const SettingUpdateSchema = z.object({
-  light: z.string().optional(),
+  light: z.union([
+    z.string(),
+    z.object({
+      isEnabled: z.boolean(),
+      value: z.string(),
+    })
+  ]).optional(),
   temperature: z.string().optional(),
   humidity: z.string().optional(),
   nutrition: z.string().optional(),

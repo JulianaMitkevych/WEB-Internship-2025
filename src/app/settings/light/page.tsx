@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useApi } from '@/hooks/useApi';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -26,6 +28,7 @@ type ChartDataResponse = {
 export default function LightSettingsPage() {
   const router = useRouter();
   const { post, get } = useApi<UpdateSettingsResponse | ChartDataResponse>();
+  const [isEnabled, setIsEnabled] = useState<boolean>(true);
   const [lightValue, setLightValue] = useState<number>(50);
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('day');
   const [chartData, setChartData] = useState<any[]>([]);
@@ -77,7 +80,10 @@ export default function LightSettingsPage() {
   const handleSave = async () => {
     try {
       await post('/api/settings/update', {
-        light: lightValue.toString(),
+        light: {
+          isEnabled,
+          value: lightValue.toString(),
+        },
       });
       router.back();
     } catch (err) {
@@ -182,23 +188,35 @@ export default function LightSettingsPage() {
           {/* Settings Control */}
           <div className="bg-white rounded-2xl p-4 shadow-sm">
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Light Level: {lightValue}%
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-gray-700">
+                  Automatic Lighting
                 </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={lightValue}
-                  onChange={(e) => setLightValue(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                <Switch
+                  checked={isEnabled}
+                  onCheckedChange={setIsEnabled}
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>0%</span>
-                  <span>100%</span>
-                </div>
               </div>
+
+              {isEnabled && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Light Level: {lightValue}%
+                  </label>
+                  <Slider
+                    value={[lightValue]}
+                    onValueChange={(value) => setLightValue(value[0])}
+                    max={100}
+                    min={0}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              )}
 
               <Button
                 onClick={handleSave}

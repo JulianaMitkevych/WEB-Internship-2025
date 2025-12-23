@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { TUser } from '@/types/types';
+import { TUser, TSetting } from '@/types/types';
 
 export type Store = {
   user: TUser | null;
@@ -7,6 +7,7 @@ export type Store = {
   successMessage: string | null;
   isLoading: boolean;
   lastListUrlParams: Record<string, string> | null;
+  settings: TSetting | null;
 };
 
 export type SetStore = Dispatch<SetStateAction<Store>>;

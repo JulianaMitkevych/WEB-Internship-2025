@@ -99,6 +99,7 @@ export { UnderlineTabs } from './underline-tabs';
 export { RadioButton } from './radio-button';
 export { SuccessPopup } from './success-popup';
 export { PercentageIndicator } from './percentage-indicator';
+export { Slider } from './slider';
 export {
   DropdownMenu,
   DropdownMenuTrigger,

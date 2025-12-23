@@ -15,6 +15,7 @@ export const initialState: Store = {
   successMessage: null,
   isLoading: false,
   lastListUrlParams: null,
+  settings: null,
 };
 
 export const StorageProvider = (props: TStorageProviderProps) => {
