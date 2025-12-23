@@ -1,31 +1,45 @@
-// 'use client';
+'use client';
 
-// import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
-// import { ChevronLeft } from 'lucide-react';
-// import { Button } from '@/components/ui/button';
-// import { Switch } from '@/components/ui/switch';
-// import { Slider } from '@/components/ui/slider';
-// import { BottomNavigation } from '@/components/ui/bottom-navigation';
-// import { useApi } from '@/hooks/useApi';
-// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useRouter } from 'next/navigation';
+import { ChevronLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-// type UpdateSettingsResponse = {
-//   message: string;
-//   settings: any;
-// };
+export default function WateringSettingsPage() {
+  const router = useRouter();
 
-// type PeriodType = 'day' | 'week' | 'month';
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="bg-white p-4 shadow-sm">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <Button
+            onClick={() => router.back()}
+            variant="ghost"
+            size="sm"
+            className="px-2"
+          >
+            <ChevronLeft className="size-5" />
+          </Button>
+          <h1 className="text-lg font-bold text-gray-800">Watering Settings</h1>
+          <div className="w-8"></div>
+        </div>
+      </div>
 
-// type ChartDataResponse = {
-//   period: PeriodType;
-//   parameter: string;
-//   totalRecords: number;
-//   data: any[];
-//   averages: Record<string, number>;
-// };
-
-// export default function WateringSettingsPage() {
+      <div className="flex-1 p-6">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
+            <p className="text-gray-600">Watering settings page is under development.</p>
+            <Button
+              onClick={() => router.back()}
+              className="mt-4 bg-green-600 hover:bg-green-700"
+            >
+              Back to Settings
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 //   const router = useRouter();
 //   const { post, get } = useApi<UpdateSettingsResponse | ChartDataResponse>();
 //   const [isEnabled, setIsEnabled] = useState<boolean>(true);

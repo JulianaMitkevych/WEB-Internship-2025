@@ -69,7 +69,7 @@ export type TNutritionRecord = {
 };
 
 export type TCropTypeOption = {
-  id: keyof typeof ECropType;
+  id: number;
   name: ECropType;
 };
 
@@ -96,7 +96,7 @@ export type TRegion = {
 };
 
 // props for crop button component
- export type CropButtonProps = {
+export type CropButtonProps = {
   label: string;
   route?: string;
   onClick?: () => void;

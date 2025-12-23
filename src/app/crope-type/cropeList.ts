@@ -1,9 +1,9 @@
 import { ECropType } from '@/types/types';
 
-export const cropTypes: { id: keyof typeof ECropType; name: ECropType }[] = [
-  { id: 'MICROGREENS', name: ECropType.MICROGREENS },
-  { id: 'HERBS', name: ECropType.HERBS },
-  { id: 'VEGETABLES', name: ECropType.VEGETABLES },
-  { id: 'MUSHROOMS', name: ECropType.MUSHROOMS },
-  { id: 'FLOWERING', name: ECropType.FLOWERING },
+export const cropTypes: { id: number; name: ECropType }[] = [
+  { id: 1, name: ECropType.MICROGREENS },
+  { id: 2, name: ECropType.HERBS },
+  { id: 3, name: ECropType.VEGETABLES },
+  { id: 4, name: ECropType.MUSHROOMS },
+  { id: 5, name: ECropType.FLOWERING },
 ];

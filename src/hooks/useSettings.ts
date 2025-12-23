@@ -12,7 +12,7 @@ type UpdateSettingsResponse = {
 
 export const useSettings = () => {
   const [store, setStore] = useContext(StorageContext);
-  const { get, post } = useApi<UpdateSettingsResponse>();
+  const { post } = useApi<UpdateSettingsResponse>();
   const [isLoading, setIsLoading] = useState(false);
 
   // Load settings on mount

@@ -26,22 +26,24 @@ export default function SettingsPage() {
   const { settings, updateSettings, isLoading } = useSettings();
 
   // Local state for sliders
-  const [lightValue, setLightValue] = useState<number>(50);
-  const [temperatureValue, setTemperatureValue] = useState<number>(22);
-  const [humidityValue, setHumidityValue] = useState<number>(60);
-  const [nutritionValue, setNutritionValue] = useState<number>(30);
-  const [wateringEnabled, setWateringEnabled] = useState<boolean>(true);
+  const [lightValue, setLightValue] = useState<number>(8);
+  const [temperatureValue, setTemperatureValue] = useState<number>(24);
+  const [humidityValue, setHumidityValue] = useState<number>(50);
+  const [nutritionValue, setNutritionValue] = useState<number>(250);
+  const [wateringValue, setWateringValue] = useState<number>(250);
+  const [ventValue, setVentValue] = useState<number>(12);
   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
   const [lightEnabled, setLightEnabled] = useState<boolean>(true);
 
   // Sync with settings when loaded
   useEffect(() => {
     if (settings) {
-      setLightValue(parseInt(settings.light) || 50);
-      setTemperatureValue(parseInt(settings.temperature) || 22);
-      setHumidityValue(parseInt(settings.humidity) || 60);
-      setNutritionValue(parseInt(settings.nutrition) || 30);
-      setWateringEnabled(settings.watering?.isEnabled ?? true);
+      setLightValue(parseInt(settings.light) || 8);
+      setTemperatureValue(parseInt(settings.temperature) || 24);
+      setHumidityValue(parseInt(settings.humidity) || 50);
+      setNutritionValue(parseInt(settings.nutrition) || 250);
+      setWateringValue(parseInt(settings.watering?.value) || 250);
+      setVentValue(parseInt(settings.vent?.value) || 12);
       setVentEnabled(settings.vent?.isEnabled ?? true);
     }
   }, [settings]);
@@ -92,14 +94,15 @@ export default function SettingsPage() {
                 <Slider
                   value={[lightValue]}
                   onValueChange={(value) => setLightValue(value[0])}
-                  max={100}
-                  min={0}
+                  max={16}
+                  min={1}
                   step={1}
                   className="w-full"
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>0%</span>
-                  <span>100%</span>
+                  <span>1h</span>
+                  <span>8h</span>
+                  <span>16h</span>
                 </div>
               </div>
               <Switch
@@ -132,14 +135,15 @@ export default function SettingsPage() {
               <Slider
                 value={[temperatureValue]}
                 onValueChange={(value) => setTemperatureValue(value[0])}
-                max={35}
+                max={36}
                 min={10}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>10°C</span>
-                <span>35°C</span>
+                <span>24°C</span>
+                <span>36°C</span>
               </div>
             </div>
           </div>
@@ -167,14 +171,15 @@ export default function SettingsPage() {
               <Slider
                 value={[humidityValue]}
                 onValueChange={(value) => setHumidityValue(value[0])}
-                max={90}
-                min={30}
+                max={100}
+                min={0}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>30%</span>
-                <span>90%</span>
+                <span>Off</span>
+                <span>50%</span>
+                <span>100%</span>
               </div>
             </div>
           </div>
@@ -202,14 +207,15 @@ export default function SettingsPage() {
               <Slider
                 value={[nutritionValue]}
                 onValueChange={(value) => setNutritionValue(value[0])}
-                max={100}
+                max={500}
                 min={0}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>0%</span>
-                <span>100%</span>
+                <span>Off</span>
+                <span>250mg</span>
+                <span>500mg</span>
               </div>
             </div>
           </div>
@@ -233,12 +239,20 @@ export default function SettingsPage() {
                 Edit
               </Button>
             </div>
-            <div className="flex items-center justify-between pl-9">
-              <div className="text-sm text-gray-600">Enable/disable automatic watering</div>
-              <Switch
-                checked={wateringEnabled}
-                onCheckedChange={setWateringEnabled}
+            <div className="pl-9">
+              <Slider
+                value={[wateringValue]}
+                onValueChange={(value) => setWateringValue(value[0])}
+                max={500}
+                min={0}
+                step={1}
+                className="w-full"
               />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>Off</span>
+                <span>250mg</span>
+                <span>500mg</span>
+              </div>
             </div>
           </div>
 
@@ -261,8 +275,22 @@ export default function SettingsPage() {
                 Edit
               </Button>
             </div>
-            <div className="flex items-center justify-between pl-9">
-              <div className="text-sm text-gray-600">Enable/disable ventilation</div>
+            <div className="flex items-center gap-4 pl-9">
+              <div className="flex-1">
+                <Slider
+                  value={[ventValue]}
+                  onValueChange={(value) => setVentValue(value[0])}
+                  max={24}
+                  min={1}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>1h</span>
+                  <span>12h</span>
+                  <span>24h</span>
+                </div>
+              </div>
               <Switch
                 checked={ventEnabled}
                 onCheckedChange={setVentEnabled}
@@ -282,11 +310,11 @@ export default function SettingsPage() {
                     nutrition: nutritionValue.toString(),
                     vent: {
                       isEnabled: ventEnabled,
-                      value: settings?.vent?.value || '45',
+                      value: ventValue.toString(),
                     },
                     watering: {
-                      isEnabled: wateringEnabled,
-                      value: settings?.watering?.value || '60',
+                      isEnabled: true,
+                      value: wateringValue.toString(),
                     },
                   });
                 } catch (error) {

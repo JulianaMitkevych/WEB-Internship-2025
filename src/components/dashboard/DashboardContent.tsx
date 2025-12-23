@@ -87,9 +87,30 @@ const DashboardContent = () => {
     }
   };
 
-  const handleSettingClick = (_setting: string) => {
-    // All settings now route to the main settings page
-    router.push(ROUTES.SETTINGS);
+  const handleSettingClick = (setting: string) => {
+    // Vent and watering go directly to main settings page
+    if (setting === 'vent' || setting === 'watering') {
+      router.push(ROUTES.SETTINGS);
+      return;
+    }
+
+    // Other settings have individual pages
+    switch (setting) {
+      case 'light':
+        router.push(ROUTES.PLANT_SETTINGS.LIGHT);
+        break;
+      case 'temperature':
+        router.push(ROUTES.PLANT_SETTINGS.TEMPERATURE);
+        break;
+      case 'humidity':
+        router.push(ROUTES.PLANT_SETTINGS.HUMIDITY);
+        break;
+      case 'nutrition':
+        router.push(ROUTES.PLANT_SETTINGS.NUTRITION);
+        break;
+      default:
+        router.push(ROUTES.SETTINGS);
+    }
   };
 
   return (

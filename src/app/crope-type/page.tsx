@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useState } from 'react';
@@ -22,7 +20,7 @@ export default function SelectCropTypePage() {
   const router = useRouter();
   const [store, setStore] = useStorage();
   const { post } = useApi<UpdateCropTypeResponse>();
-  const [selectedId, setSelectedId] = useState<string>('MICROGREENS');
+  const [selectedId, setSelectedId] = useState<number>(1);
 
   const handleStartPlanting = async () => {
     if (!store.user) {
@@ -31,7 +29,7 @@ export default function SelectCropTypePage() {
     }
 
     try {
-      const selectedCrop = cropTypes.find(crop => crop.id === selectedId);
+      const selectedCrop = cropTypes.find((crop) => crop.id === selectedId);
       if (!selectedCrop) return;
 
       await post('/api/auth/update-crop-type', {
@@ -39,7 +37,7 @@ export default function SelectCropTypePage() {
       });
 
       // Update local storage with the new crop type
-      setStore(prev => ({
+      setStore((prev) => ({
         ...prev,
         user: prev.user ? { ...prev.user, cropType: selectedCrop.name } : null,
       }));
