@@ -1,235 +1,214 @@
-'use client';
 
-import { useState, useEffect } from 'react';
+'use client'
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
+import { Calendar } from '@/components/ui/calendar';
 import { useApi } from '@/hooks/useApi';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-type UpdateSettingsResponse = {
-  message: string;
-  settings: any;
-};
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+} from 'recharts';
+import LightIcon from '@/assets/svg/LightIcon';
+import { cn } from '@/utils';
 
 type PeriodType = 'day' | 'week' | 'month';
 
-type ChartDataResponse = {
-  period: PeriodType;
-  parameter: string;
-  totalRecords: number;
-  data: any[];
-  averages: Record<string, number>;
-};
-
 export default function LightSettingsPage() {
   const router = useRouter();
-  const { post, get } = useApi<UpdateSettingsResponse | ChartDataResponse>();
-  const [isEnabled, setIsEnabled] = useState<boolean>(true);
-  const [lightValue, setLightValue] = useState<number>(50);
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('day');
+  const { get } = useApi<any>();
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('week');
   const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Mock energy consumption data
-  const weeklyEnergyConsumption = 245; // kWh
-  const totalEnergyConsumption = 1847; // kWh
-  const currentPower = 125; // watts
-  const recommendedPower = 150; // watts
+  const metrics = useMemo(
+    () => [
+      { label: 'Current', value: '60%' },
+      { label: 'Recommended', value: '72%' },
+      { label: 'Week', value: '60 kw' },
+      { label: 'Total', value: '456 kw' },
+    ],
+    []
+  );
 
   useEffect(() => {
     const fetchChartData = async () => {
       setLoading(true);
       try {
-        const response = await get(`/api/settings/history?period=${selectedPeriod}&parameter=light`);
-        if (response && (response as ChartDataResponse).data) {
-          setChartData((response as ChartDataResponse).data);
+        const response = await get(
+          `/api/settings/history?period=${selectedPeriod}&parameter=light`
+        );
+        if (response && response.data) {
+          setChartData(response.data);
         } else {
-          // Mock data if API doesn't return data
           setChartData([
-            { time: '00:00', value: 45 },
-            { time: '04:00', value: 30 },
-            { time: '08:00', value: 75 },
-            { time: '12:00', value: 90 },
-            { time: '16:00', value: 85 },
-            { time: '20:00', value: 60 },
+            { name: 'Mon', date: '08', value: 20 },
+            { name: 'Tue', date: '09', value: 36 },
+            { name: 'Wed', date: '10', value: 18 },
+            { name: 'Thu', date: '11', value: 60 },
+            { name: 'Fri', date: '12', value: 40 },
+            { name: 'Sat', date: '13', value: 25 },
+            { name: 'Sun', date: '14', value: 18 },
           ]);
         }
-      } catch (err) {
-        console.error('Failed to fetch chart data:', err);
-        // Mock data fallback
+      } catch{
         setChartData([
-          { time: '00:00', value: 45 },
-          { time: '04:00', value: 30 },
-          { time: '08:00', value: 75 },
-          { time: '12:00', value: 90 },
-          { time: '16:00', value: 85 },
-          { time: '20:00', value: 60 },
+          { name: 'Mon', date: '08', value: 20 },
+          { name: 'Tue', date: '09', value: 36 },
+          { name: 'Wed', date: '10', value: 18 },
+          { name: 'Thu', date: '11', value: 60 },
+          { name: 'Fri', date: '12', value: 40 },
+          { name: 'Sat', date: '13', value: 25 },
+          { name: 'Sun', date: '14', value: 18 },
         ]);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 500);
       }
     };
-
     fetchChartData();
   }, [selectedPeriod, get]);
 
-  const handleSave = async () => {
-    try {
-      await post('/api/settings/update', {
-        light: {
-          isEnabled,
-          value: lightValue.toString(),
-        },
-      });
-      router.back();
-    } catch (err) {
-      console.error('Failed to save light settings:', err);
-    }
-  };
-
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="bg-white p-4 shadow-sm">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <Button
-            onClick={() => router.back()}
-            variant="ghost"
-            size="sm"
-            className="px-2"
-          >
-            <ChevronLeft className="size-5" />
-          </Button>
-          <h1 className="text-lg font-bold text-gray-800">Light Settings</h1>
-          <div className="w-8"></div> {/* Spacer for centering */}
+    <div className="min-h-screen bg-white flex flex-col pb-24">
+      <div className="p-4 flex items-center">
+        <Button
+          onClick={() => router.back()}
+          variant="ghost"
+          size="icon"
+          className="mr-2"
+        >
+          <ChevronLeft className="size-8 stroke-[3px]" />
+        </Button>
+        <h1 className="text-2xl font-bold">Light</h1>
+      </div>
+
+      <div className="px-6 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="text-[#65D11F]">
+            <LightIcon />
+          </div>
+          <p className="text-gray-400 text-[13px] leading-tight max-w-[160px]">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+          </p>
+        </div>
+        <span className="text-4xl font-bold text-[#65D11F]">60%</span>
+      </div>
+
+      <div className="px-6 mt-6">
+        <div className="flex border-b border-gray-100 relative">
+          {(['Day', 'Week', 'Month'] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setSelectedPeriod(p.toLowerCase() as PeriodType)}
+              className={cn(
+                'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
+                selectedPeriod === p.toLowerCase()
+                  ? 'text-[#65D11F]'
+                  : 'text-gray-300'
+              )}
+            >
+              {p}
+              {selectedPeriod === p.toLowerCase() && (
+                <div className="absolute bottom-[-1px] left-0 w-full h-[3px] bg-[#65D11F] rounded-full" />
+              )}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-6">
-        <div className="max-w-md mx-auto space-y-6">
-          {/* Period Selector */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <div className="flex gap-2">
-              {(['day', 'week', 'month'] as PeriodType[]).map((period) => (
-                <button
-                  key={period}
-                  onClick={() => setSelectedPeriod(period)}
-                  className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-colors ${
-                    selectedPeriod === period
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}
+      <div className="mx-4 mt-8 p-4 bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 flex flex-row min-h-[260px]">
+        <div className="w-[42%] border-r border-gray-50 pr-2">
+          <Calendar
+            mode="single"
+            selected={new Date()}
+            className="p-0 scale-90 origin-top-left"
+            classNames={{
+              month_caption: 'hidden',
+              nav: 'hidden',
+              head_cell: 'text-gray-400 font-normal text-[10px]',
+              cell: 'p-0',
+              day: 'h-7 w-7 text-[11px] font-medium p-0',
+              day_selected:
+                'bg-[#65D11F] text-white rounded-full hover:bg-[#65D11F]',
+              day_today: 'text-[#65D11F] font-bold',
+            }}
+          />
+        </div>
+
+        <div className="w-[58%] pl-3 flex flex-col relative">
+          <h3 className="text-gray-700 text-[13px] font-bold mb-6">
+            Light Intensity Chart
+          </h3>
+
+          <div className="flex-1 w-full h-full relative min-h-[150px]">
+            {loading ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+                <div className="size-6 border-2 border-[#65D11F] border-t-transparent animate-spin rounded-full" />
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={chartData}
+                  margin={{ top: 20, right: 5, left: 5, bottom: 5 }}
                 >
-                  {period.charAt(0).toUpperCase() + period.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Chart */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Light Intensity Chart</h3>
-            <div className="h-64">
-              {loading ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-                </div>
-              ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#10B981"
-                      strokeWidth={2}
-                      dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              )}
-            </div>
-          </div>
-
-          {/* Energy Consumption */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
-                <p className="text-sm text-gray-600">Weekly Energy</p>
-                <p className="text-xl font-bold text-gray-800">{weeklyEnergyConsumption} kWh</p>
-              </div>
-              <div className="text-center">
-                <p className="text-sm text-gray-600">Total Energy</p>
-                <p className="text-xl font-bold text-gray-800">{totalEnergyConsumption} kWh</p>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center pt-2 border-t">
-              <div>
-                <p className="text-sm text-gray-600">Current Power</p>
-                <p className="text-lg font-semibold">{currentPower} W</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-600">Recommended</p>
-                <p className="text-lg font-semibold text-green-600">{recommendedPower} W</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Settings Control */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">
-                  Automatic Lighting
-                </label>
-                <Switch
-                  checked={isEnabled}
-                  onCheckedChange={setIsEnabled}
-                />
-              </div>
-
-              {isEnabled && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Light Level: {lightValue}%
-                  </label>
-                  <Slider
-                    value={[lightValue]}
-                    onValueChange={(value) => setLightValue(value[0])}
-                    max={100}
-                    min={0}
-                    step={1}
-                    className="w-full"
+                  <CartesianGrid horizontal={false} stroke="#F2F2F2" vertical />
+                  <XAxis dataKey="name" hide />
+                  <YAxis hide domain={[0, 100]} />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#65D11F"
+                    strokeWidth={2}
+                    dot={{
+                      r: 3,
+                      fill: '#fff',
+                      stroke: '#65D11F',
+                      strokeWidth: 2,
+                    }}
+                    label={({ x, y, value }) => (
+                      <text
+                        x={x}
+                        y={y - 12}
+                        fill="#65D11F"
+                        fontSize={10}
+                        fontWeight="600"
+                        textAnchor="middle"
+                      >
+                        {value}%
+                      </text>
+                    )}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>0%</span>
-                    <span>100%</span>
-                  </div>
-                </div>
-              )}
+                </LineChart>
+              </ResponsiveContainer>
+            )}
 
-              <Button
-                onClick={handleSave}
-                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-bold rounded-2xl"
-              >
-                Save Settings
-              </Button>
+            <div className="absolute bottom-[-5px] right-2 text-[10px] text-gray-400 font-medium">
+              20:00
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Navigation */}
+      <div className="grid grid-cols-2 gap-4 px-4 mt-8">
+        {metrics.map((item) => (
+          <div
+            key={item.label}
+            className="bg-white p-6 rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+          >
+            <div className="text-3xl font-bold text-[#65D11F] mb-1">
+              {item.value}
+            </div>
+            <div className="text-gray-900 font-bold text-sm">{item.label}</div>
+          </div>
+        ))}
+      </div>
+
       <BottomNavigation activeTab="settings" />
     </div>
   );
