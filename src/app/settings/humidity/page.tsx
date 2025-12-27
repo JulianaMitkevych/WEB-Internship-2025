@@ -1,217 +1,168 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useApi } from '@/hooks/useApi';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-type UpdateSettingsResponse = {
-  message: string;
-  settings: any;
-};
+import HumidityIcon from '@/assets/svg/HumidityIcon'; 
+import { SmartChart } from '@/components/SmartChart/SmartChart';
 
 type PeriodType = 'day' | 'week' | 'month';
 
-type ChartDataResponse = {
-  period: PeriodType;
-  parameter: string;
-  totalRecords: number;
-  data: any[];
-  averages: Record<string, number>;
-};
-
 export default function HumiditySettingsPage() {
   const router = useRouter();
-  const { post, get } = useApi<UpdateSettingsResponse | ChartDataResponse>();
-  const [humidityValue, setHumidityValue] = useState<number>(60);
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('day');
+  const { get } = useApi<any>();
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('week');
   const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Mock energy consumption data
-  const weeklyEnergyConsumption = 156; // kWh
-  const totalEnergyConsumption = 1178; // kWh
-  const currentHumidity = 65; // %
-  const recommendedHumidity = 70; // %
+  // Mock data - аналогічно сторінці світла
+  const getMockData = (period: PeriodType) => {
+    if (period === 'day') {
+      return [
+        { name: '08:00', value: 50 },
+        { name: '12:00', value: 70 },
+        { name: '16:00', value: 65 },
+        { name: '20:00', value: 58 },
+        { name: '00:00', value: 55 },
+      ];
+    }
+    if (period === 'month') {
+      return Array.from({ length: 30 }, (_, i) => ({
+        name: (i + 1).toString(),
+        value: Math.floor(Math.random() * 40) + 40,
+      }));
+    }
+    // Default: Week
+    return [
+      { name: 'Mon', date: '08', value: 20 },
+      { name: 'Tue', date: '09', value: 36 },
+      { name: 'Wed', date: '10', value: 18 },
+      { name: 'Thu', date: '11', value: 60 },
+      { name: 'Fri', date: '12', value: 40 },
+      { name: 'Sat', date: '13', value: 25 },
+      { name: 'Sun', date: '14', value: 18 },
+    ];
+  };
+
+  const metrics = useMemo(
+    () => [
+      { label: 'Current', value: '58%' },
+      { label: 'Recommended', value: '74%' },
+      { label: 'Week', value: '40 ml' },
+      { label: 'Total', value: '142 ml' },
+    ],
+    []
+  );
 
   useEffect(() => {
     const fetchChartData = async () => {
       setLoading(true);
       try {
-        const response = await get(`/api/settings/history?period=${selectedPeriod}&parameter=humidity`);
-        if (response && (response as ChartDataResponse).data) {
-          setChartData((response as ChartDataResponse).data);
+        const response = await get(
+          `/api/settings/history?period=${selectedPeriod}&parameter=humidity`
+        );
+        if (response?.data) {
+          setChartData(response.data);
         } else {
-          // Mock data if API doesn't return data
-          setChartData([
-            { time: '00:00', value: 55 },
-            { time: '04:00', value: 50 },
-            { time: '08:00', value: 70 },
-            { time: '12:00', value: 75 },
-            { time: '16:00', value: 72 },
-            { time: '20:00', value: 65 },
-          ]);
+          setChartData(getMockData(selectedPeriod));
         }
-      } catch (err) {
-        console.error('Failed to fetch chart data:', err);
-        // Mock data fallback
-        setChartData([
-          { time: '00:00', value: 55 },
-          { time: '04:00', value: 50 },
-          { time: '08:00', value: 70 },
-          { time: '12:00', value: 75 },
-          { time: '16:00', value: 72 },
-          { time: '20:00', value: 65 },
-        ]);
+      } catch {
+        setChartData(getMockData(selectedPeriod));
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 300);
       }
     };
-
     fetchChartData();
-  }, [selectedPeriod, get]);
-
-  const handleSave = async () => {
-    try {
-      await post('/api/settings/update', {
-        humidity: humidityValue.toString(),
-      });
-      router.back();
-    } catch (err) {
-      console.error('Failed to save humidity settings:', err);
-    }
-  };
+  }, [selectedPeriod]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="flex flex-col max-w-[768px] mx-auto">
       {/* Header */}
-      <div className="bg-white p-4 shadow-sm">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <Button
-            onClick={() => router.back()}
-            variant="ghost"
-            size="sm"
-            className="px-2"
-          >
-            <ChevronLeft className="size-5" />
-          </Button>
-          <h1 className="text-lg font-bold text-gray-800">Humidity Settings</h1>
-          <div className="w-8"></div> {/* Spacer for centering */}
-        </div>
+      <div className="p-4 flex items-center">
+        <Button
+          onClick={() => router.back()}
+          variant="ghost"
+          size="icon"
+          className="mr-2"
+        >
+          <ChevronLeft className="size-8 stroke-[3px]" />
+        </Button>
+        <h1 className="text-2xl font-bold">Humidity</h1>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-6">
-        <div className="max-w-md mx-auto space-y-6">
-          {/* Period Selector */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <div className="flex gap-2">
-              {(['day', 'week', 'month'] as PeriodType[]).map((period) => (
-                <button
-                  key={period}
-                  onClick={() => setSelectedPeriod(period)}
-                  className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-colors ${
-                    selectedPeriod === period
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  {period.charAt(0).toUpperCase() + period.slice(1)}
-                </button>
-              ))}
-            </div>
+      {/* Info Section */}
+      <div className="px-6 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="text-[#53C904]">
+            <HumidityIcon />
           </div>
+          <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
+            Maintain the optimal humidity levels for your plants health.
+          </p>
+        </div>
+        <span className="text-4xl font-bold text-[#53C904]">58%</span>
+      </div>
 
-          {/* Chart */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Humidity Chart</h3>
-            <div className="h-64">
-              {loading ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-                </div>
-              ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" />
-                    <YAxis domain={[30, 90]} />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+      {/* Tabs */}
+      <div className="px-6 mt-6">
+        <div className="flex border-b border-gray-100 relative">
+          {(['Day', 'Week', 'Month'] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setSelectedPeriod(p.toLowerCase() as PeriodType)}
+              className={cn(
+                'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
+                selectedPeriod === p.toLowerCase()
+                  ? 'text-[#53C904]'
+                  : 'text-gray-300'
               )}
-            </div>
-          </div>
-
-          {/* Energy Consumption */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
-                <p className="text-sm text-gray-600">Weekly Energy</p>
-                <p className="text-xl font-bold text-gray-800">{weeklyEnergyConsumption} kWh</p>
-              </div>
-              <div className="text-center">
-                <p className="text-sm text-gray-600">Total Energy</p>
-                <p className="text-xl font-bold text-gray-800">{totalEnergyConsumption} kWh</p>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center pt-2 border-t">
-              <div>
-                <p className="text-sm text-gray-600">Current Humidity</p>
-                <p className="text-lg font-semibold">{currentHumidity}%</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-600">Recommended</p>
-                <p className="text-lg font-semibold text-green-600">{recommendedHumidity}%</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Settings Control */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Humidity: {humidityValue}%
-                </label>
-                <Slider
-                  value={[humidityValue]}
-                  onValueChange={(value) => setHumidityValue(value[0])}
-                  max={90}
-                  min={30}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>30%</span>
-                  <span>90%</span>
-                </div>
-              </div>
-
-              <Button
-                onClick={handleSave}
-                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-bold rounded-2xl"
-              >
-                Save Settings
-              </Button>
-            </div>
-          </div>
+            >
+              {p}
+              {selectedPeriod === p.toLowerCase() && (
+                <div className="absolute bottom-[-1px] left-0 w-full h-[3px] bg-[#65D11F] rounded-full" />
+              )}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Bottom Navigation */}
+      {/* Chart Block */}
+      <div className="mx-4 mt-8 bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 overflow-hidden">
+        <div className="h-64 w-full relative">
+          {loading ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <div className="size-6 border-2 border-[#53C904] border-t-transparent animate-spin rounded-full" />
+            </div>
+          ) : (
+            <SmartChart
+              data={chartData}
+              period={selectedPeriod}
+              color="#65D11F"
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-24">
+        {metrics.map((item) => (
+          <div
+            key={item.label}
+            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+          >
+            <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
+              {item.value}
+            </div>
+            <div className="text-black font-semibold text-[clamp(14px,4vw,16px)]">
+              {item.label}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <BottomNavigation activeTab="settings" />
     </div>
   );

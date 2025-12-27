@@ -1,5 +1,5 @@
 import * as React from 'react';
-const SVGComponent = (props) => (
+const TempIcon = (props) => (
   <svg
     width={24}
     height={24}
@@ -14,4 +14,4 @@ const SVGComponent = (props) => (
     />
   </svg>
 );
-export default SVGComponent;
+export default TempIcon;

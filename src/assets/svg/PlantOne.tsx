@@ -1,5 +1,5 @@
 import * as React from 'react';
-const SVGComponent = (props) => (
+const PlantOne = (props) => (
   <svg
     width={100}
     height={168}
@@ -5438,4 +5438,4 @@ const SVGComponent = (props) => (
     </defs>
   </svg>
 );
-export default SVGComponent;
+export default PlantOne;
