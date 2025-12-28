@@ -39,7 +39,7 @@ export const useSettings = () => {
           },
         };
 
-        setStore(prev => ({
+        setStore((prev) => ({
           ...prev,
           settings: defaultSettings,
         }));
@@ -60,11 +60,11 @@ export const useSettings = () => {
 
       if (response) {
         // Update local state
-        setStore(prev => ({
+        setStore((prev) => ({
           ...prev,
           settings: prev.settings
             ? { ...prev.settings, ...newSettings }
-            : { id: store.user!.id, ...newSettings } as TSetting,
+            : ({ id: store.user!.id, ...newSettings } as TSetting),
         }));
       }
     } catch (error) {

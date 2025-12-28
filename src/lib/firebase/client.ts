@@ -3,6 +3,7 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+// import { getFirestore, collection, query, where, orderBy, getDocs, Timestamp, doc, setDoc, getDoc } from "firebase/firestore";
 
 const clientConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_WEB_API_KEY,
@@ -24,3 +25,4 @@ if (getApps().length === 0) {
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export default app;
+// export { collection, query, where, orderBy, getDocs, Timestamp, doc, setDoc, getDoc };
