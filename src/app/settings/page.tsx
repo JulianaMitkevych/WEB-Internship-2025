@@ -18,7 +18,6 @@ export default function SettingsPage() {
   const router = useRouter();
   const { settings, updateSettings, isLoading } = useSettings();
 
-  // 1.local state for each setting
   const [lightValue, setLightValue] = useState<number>(8);
   const [temperatureValue, setTemperatureValue] = useState<number>(24);
   const [humidityValue, setHumidityValue] = useState<number>(50);
@@ -29,29 +28,61 @@ export default function SettingsPage() {
   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
   const [lightEnabled, setLightEnabled] = useState<boolean>(true);
 
+  // --- DELETE THIS FUNCTION START ---
+  const generateMonthlyStats = async () => {
+    try {
+      const stats = [];
+      const now = new Date();
+
+      for (let i = 30; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(now.getDate() - i);
+
+        // Генеруємо реалістичні дані
+        const temp = (22 + Math.random() * 4).toFixed(1);
+        const hum = Math.floor(45 + Math.random() * 15);
+
+        stats.push({
+          date: date.toISOString().split('T')[0],
+          timestamp: date.getTime(),
+          temperature: parseFloat(temp),
+          humidity: hum,
+        });
+      }
+
+      await updateSettings({
+        history: stats,
+      } as any);
+
+      console.log('Success: Monthly data saved to Firestore!');
+      // eslint-disable-next-line no-alert
+      alert('Monthly data has been successfully saved to Firestore!');
+    } catch (error) {
+      console.error('Firebase Error:', error);
+      // eslint-disable-next-line no-alert
+      alert('Failed to save data. Check console for details.');
+    }
+  };
+  // --- DELETE THIS FUNCTION END ---
+
   useEffect(() => {
     if (settings) {
-      // function to get value from fiels which can be string or object
       const getVal = (field: any) =>
         field && typeof field === 'object' ? field.value : field;
-
-      // function to get isEnabled of default true
       const getEnabled = (field: any) =>
         field && typeof field === 'object' ? (field.isEnabled ?? true) : true;
 
       setLightValue(parseInt(getVal(settings.light)) || 8);
       setLightEnabled(getEnabled(settings.light));
-
       setVentValue(parseInt(getVal(settings.vent)) || 12);
       setVentEnabled(getEnabled(settings.vent));
-
       setTemperatureValue(parseInt(getVal(settings.temperature)) || 24);
       setHumidityValue(parseInt(getVal(settings.humidity)) || 50);
       setNutritionValue(parseInt(getVal(settings.nutrition)) || 250);
       setWateringValue(parseInt(getVal(settings.watering)) || 250);
     }
   }, [settings]);
-  // config array to map
+
   const config = [
     {
       id: 'vent',
@@ -145,13 +176,11 @@ export default function SettingsPage() {
                 <item.icon className="w-6 h-6 text-green-700" />
                 <span className="font-bold text-gray-800">{item.title}</span>
               </div>
-
               {item.hasSwitch && (
                 <Switch
                   checked={item.enabled}
                   onCheckedChange={(checked) => {
                     item.setEnabled?.(checked);
-                    // (Toggle)
                     updateSettings({
                       [item.id]: {
                         isEnabled: checked,
@@ -163,9 +192,7 @@ export default function SettingsPage() {
                 />
               )}
             </div>
-
             <div className="px-1">
-              {/* independent  slider values and setters */}
               <Slider
                 value={[item.val]}
                 onValueChange={(v) => item.setVal(v[0])}
@@ -174,7 +201,6 @@ export default function SettingsPage() {
                   const payload = item.hasSwitch
                     ? { [item.id]: { isEnabled: item.enabled, value: valStr } }
                     : { [item.id]: valStr };
-                  //(Commit)
                   updateSettings(payload);
                 }}
                 max={item.max}
@@ -195,6 +221,17 @@ export default function SettingsPage() {
             </div>
           </div>
         ))}
+
+        {/* --- DELETE THIS BUTTON START --- */}
+        <div className="mt-8 pt-4 border-t border-dashed border-gray-200">
+          <button
+            onClick={generateMonthlyStats}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+          >
+            📊 Generate Monthly Stats
+          </button>
+        </div>
+        {/* --- DELETE THIS BUTTON END --- */}
       </div>
 
       <BottomNavigation activeTab="settings" />

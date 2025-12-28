@@ -30,7 +30,10 @@ export type TDevice = {
 
 export type TSetting = {
   id: string;
-  light: string;
+  light: {
+    isEnabled: boolean;
+    value: string;
+  };
   temperature: string;
   humidity: string;
   nutrition: string;
