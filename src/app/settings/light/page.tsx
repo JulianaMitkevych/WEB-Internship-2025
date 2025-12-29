@@ -168,3 +168,27 @@ export default function LightSettingsPage() {
     </div>
   );
 }
+// Всередині LightSettingsPage
+// const { settings } = useSettings();
+
+// useEffect(() => {
+//   if (settings?.history) {
+//     const now = new Date().getTime();
+//     const DAY_MS = 24 * 60 * 60 * 1000;
+
+//     // 1. Фільтруємо за періодом
+//     const filtered = settings.history.filter((item: any) => {
+//       if (selectedPeriod === 'day') return (now - item.timestamp) <= DAY_MS;
+//       if (selectedPeriod === 'week') return (now - item.timestamp) <= DAY_MS * 7;
+//       return true; // для місяця беремо все
+//     });
+
+//     // 2. Форматуємо для графіка (беремо поле 'light')
+//     const formattedData = filtered.map((item: any) => ({
+//       name: item.date.split('-')[2], // число місяця для осі X
+//       value: item.light            // значення світла
+//     }));
+
+//     setChartData(formattedData);
+//   }
+// }, [selectedPeriod, settings]);

@@ -65,6 +65,49 @@ export default function SettingsPage() {
   };
   // --- DELETE THIS FUNCTION END ---
 
+  // _____________________________________________
+  // --- DELETE THIS FUNCTION START ---
+  // const generateMonthlyStats = async () => {
+  //   try {
+  //     const stats = [];
+  //     const now = new Date();
+
+  //     // Цикл на 30 днів назад
+  //     for (let i = 30; i >= 0; i--) {
+  //       const date = new Date();
+  //       date.setDate(now.getDate() - i);
+
+  //       // Генеруємо випадкові, але реалістичні дані для всіх типів сторінок
+  //       stats.push({
+  //         date: date.toISOString().split('T')[0],
+  //         timestamp: date.getTime(),
+  //         temperature: parseFloat((22 + Math.random() * 5).toFixed(1)), // 22-27°C
+  //         humidity: Math.floor(40 + Math.random() * 20), // 40-60%
+  //         light: Math.floor(50 + Math.random() * 40), // 50-90%
+  //         nutrition: Math.floor(200 + Math.random() * 100), // 200-300mg
+  //         watering: Math.floor(150 + Math.random() * 150), // 150-300mg
+  //         vent: Math.floor(10 + Math.random() * 10), // 10-20h
+  //       });
+  //     }
+
+  //     // Записуємо масив history в документ користувача
+  //     await updateSettings({
+  //       history: stats,
+  //     } as any);
+
+  //     console.log('Success: Full history saved!');
+  //     // eslint-disable-next-line no-alert
+  //     alert(
+  //       'Success! Data for Light, Temp, Humidity, etc., saved for the last 30 days.'
+  //     );
+  //   } catch (error) {
+  //     console.error('Firebase Error:', error);
+  //     // eslint-disable-next-line no-alert
+  //     alert('Error saving data.');
+  //   }
+  // };
+  // --- DELETE THIS FUNCTION END ---
+
   useEffect(() => {
     if (settings) {
       const getVal = (field: any) =>
