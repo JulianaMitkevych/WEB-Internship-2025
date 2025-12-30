@@ -1,250 +1,154 @@
 
-// import { useState, useEffect, useCallback } from 'react';
-// import { useApi } from './useApi';
-// import { TChartPeriod } from '@/types/types';
 
-// interface ChartDataItem {
-//   name: string;
-//   value: number;
-// }
 
-// interface UseChartDataOptions {
-//   parameter: string;
-//   period: TChartPeriod;
-// }
+    import { useState, useEffect, useCallback } from 'react';
+    import { useApi } from './useApi';
+    import { TChartPeriod } from '@/types/types';
 
-// export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
-//   const { get } = useApi<any>();
-//   const [chartData, setChartData] = useState<ChartDataItem[]>([]);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-
-//   const fetchAndProcessData = useCallback(async () => {
-//     setLoading(true);
-//     setError(null);
-//     try {
-//       const response = await get(
-//         `/api/settings/history?period=${period}&parameter=${parameter}`
-//       );
-
-//       const incomingData = response?.data || response;
-//       const historyItems = Array.isArray(incomingData?.data)
-//         ? incomingData.data
-//         : [];
-
-//       if (historyItems.length > 0) {
-//         let formattedChartData: ChartDataItem[] = [];
-
-//         if (period === 'day') {
-//           formattedChartData = historyItems
-//             .sort(
-//               (a: any, b: any) =>
-//                 new Date(a.timestamp).getTime() -
-//                 new Date(b.timestamp).getTime()
-//             )
-//             .map((item: any) => ({
-//               name: new Date(item.timestamp).toLocaleTimeString([], {
-//                 hour: '2-digit',
-//                 minute: '2-digit',
-//               }),
-//               value: Number(item[parameter]) || 0,
-//             }));
-//         } else if (period === 'week') {
-//           const dailyData: { [key: string]: { sum: number; count: number } } =
-//             {};
-//           const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-//           historyItems.forEach((item: any) => {
-//             const date = new Date(item.timestamp);
-//             const dayKey = daysOfWeek[date.getDay()];
-//             if (!dailyData[dayKey]) dailyData[dayKey] = { sum: 0, count: 0 };
-//             dailyData[dayKey].sum += Number(item[parameter]) || 0;
-//             dailyData[dayKey].count += 1;
-//           });
-
-//           const today = new Date();
-//           formattedChartData = Array.from({ length: 7 }, (_, i) => {
-//             const date = new Date();
-//             date.setDate(today.getDate() - (6 - i));
-//             const dayKey = daysOfWeek[date.getDay()];
-//             const stats = dailyData[dayKey];
-//             return {
-//               name: dayKey,
-//               value: stats ? Math.round(stats.sum / stats.count) : 0,
-//             };
-//           });
-//         } else if (period === 'month') {
-//           const dailyData: { [key: string]: { sum: number; count: number } } =
-//             {};
-//           historyItems.forEach((item: any) => {
-//             const dayOfMonth = new Date(item.timestamp).getDate().toString();
-//             if (!dailyData[dayOfMonth])
-//               dailyData[dayOfMonth] = { sum: 0, count: 0 };
-//             dailyData[dayOfMonth].sum += Number(item[parameter]) || 0;
-//             dailyData[dayOfMonth].count += 1;
-//           });
-
-//           const now = new Date();
-//           const daysInMonth = new Date(
-//             now.getFullYear(),
-//             now.getMonth() + 1,
-//             0
-//           ).getDate();
-
-//           formattedChartData = Array.from({ length: daysInMonth }, (_, i) => {
-//             const dayKey = (i + 1).toString();
-//             const stats = dailyData[dayKey];
-//             return {
-//               name: dayKey,
-//               value: stats ? Math.round(stats.sum / stats.count) : 0,
-//             };
-//           });
-//         }
-//         setChartData(formattedChartData);
-//       } else {
-//         setChartData([]);
-//       }
-//     } catch (err: any) {
-//       console.error('Error fetching chart data:', err?.message || err);
-//       setError(err?.message || 'Failed to fetch data from database');
-//       setChartData([]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, [get, parameter, period]);
-
-//   useEffect(() => {
-//     fetchAndProcessData();
-//   }, [fetchAndProcessData]);
-
-//   return { chartData, loading, error };
-// };
-import { useState, useEffect, useCallback } from 'react';
-import { useApi } from './useApi';
-import { TChartPeriod } from '@/types/types';
-
-interface ChartDataItem {
-  name: string;
-  value: number;
-  date?: string; // Додаємо поле date для SmartChart
-}
-
-interface UseChartDataOptions {
-  parameter: string;
-  period: TChartPeriod;
-}
-
-export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
-  const { get } = useApi<any>();
-  const [chartData, setChartData] = useState<ChartDataItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchAndProcessData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await get(
-        `/api/settings/history?period=${period}&parameter=${parameter}`
-      );
-
-      const incomingData = response?.data || response;
-      const historyItems = Array.isArray(incomingData?.data) ? incomingData.data : [];
-
-      if (historyItems.length > 0) {
-        let formattedChartData: ChartDataItem[] = [];
-
-        // --- ОБРОБКА ДЕННОГО ПЕРІОДУ ---
-        if (period === 'day') {
-          formattedChartData = historyItems
-            .sort((a: any, b: any) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-            .map((item: any) => ({
-              name: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              value: Number(item[parameter]) || 0,
-            }));
-        } 
-        
-        // --- ОБРОБКА ТИЖНЯ ---
-        else if (period === 'week') {
-          const dailyStats: Record<string, { sum: number; count: number; fullDate: string }> = {};
-          const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-          historyItems.forEach((item: any) => {
-            // Пріоритет: якщо timestamp однаковий, Date об'єкт з поля item.date (напр. "2025-12-04") буде точнішим
-            const dateObj = item.date ? new Date(item.date) : new Date(item.timestamp);
-            const dayKey = daysOfWeek[dateObj.getDay()];
-            
-            if (!dailyStats[dayKey]) {
-              dailyStats[dayKey] = { sum: 0, count: 0, fullDate: item.date || dateObj.toLocaleDateString() };
-            }
-            dailyStats[dayKey].sum += Number(item[parameter]) || 0;
-            dailyStats[dayKey].count += 1;
-          });
-
-          const today = new Date();
-          formattedChartData = Array.from({ length: 7 }, (_, i) => {
-            const date = new Date();
-            date.setDate(today.getDate() - (6 - i));
-            const dayKey = daysOfWeek[date.getDay()];
-            const stats = dailyStats[dayKey];
-            
-            return {
-              name: dayKey,
-              value: stats ? Math.round(stats.sum / stats.count) : 0,
-              date: stats ? stats.fullDate : date.toLocaleDateString() // Передаємо дату для SmartChart
-            };
-          });
-        } 
-        
-        // --- ОБРОБКА МІСЯЦЯ ---
-        else if (period === 'month') {
-          const monthlyStats: Record<string, { sum: number; count: number; fullDate: string }> = {};
-          
-          historyItems.forEach((item: any) => {
-            // Витягуємо число місяця (з "2025-12-04" отримуємо "4")
-            let dayNumber = "";
-            if (item.date) {
-              dayNumber = parseInt(item.date.split('-')[2], 10).toString();
-            } else {
-              dayNumber = new Date(item.timestamp).getDate().toString();
-            }
-
-            if (!monthlyStats[dayNumber]) {
-              monthlyStats[dayNumber] = { sum: 0, count: 0, fullDate: item.date || "" };
-            }
-            monthlyStats[dayNumber].sum += Number(item[parameter]) || 0;
-            monthlyStats[dayNumber].count += 1;
-          });
-
-          const now = new Date();
-          const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-
-          formattedChartData = Array.from({ length: daysInMonth }, (_, i) => {
-            const dayKey = (i + 1).toString();
-            const stats = monthlyStats[dayKey];
-            return {
-              name: dayKey,
-              value: stats ? Math.round(stats.sum / stats.count) : 0,
-              date: stats?.fullDate || ""
-            };
-          });
-        }
-        setChartData(formattedChartData);
-      } else {
-        setChartData([]);
-      }
-    } catch (err: any) {
-      console.error('Error fetching chart data:', err);
-      setError(err?.message || 'Failed to fetch data');
-      setChartData([]);
-    } finally {
-      setLoading(false);
+    interface ChartDataItem {
+      name: string;
+      value: number;
+      date?: string; 
     }
-  }, [get, parameter, period]);
 
-  useEffect(() => {
-    fetchAndProcessData();
-  }, [fetchAndProcessData]);
+    interface UseChartDataOptions {
+      parameter: string;
+      period: TChartPeriod;
+    }
 
-  return { chartData, loading, error };
-};
+    export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
+      const { get } = useApi<any>();
+      const [chartData, setChartData] = useState<ChartDataItem[]>([]);
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState<string | null>(null);
+
+      const fetchAndProcessData = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const response = await get(
+            `/api/settings/history?period=${period}&parameter=${parameter}`
+          );
+
+          const incomingData = response?.data || response;
+          const historyItems = Array.isArray(incomingData?.data) ? incomingData.data : [];
+
+          if (historyItems.length > 0) {
+            let formattedChartData: ChartDataItem[] = [];
+
+            // --- ОБРОБКА ДЕННОГО ПЕРІОДУ ---
+            // Для "day" dataKey="name" 
+            if (period === 'day') {
+              formattedChartData = historyItems
+                .sort((a: any, b: any) => a.timestamp - b.timestamp)
+                // .sort((a: any, b: any) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+                .map((item: any) => ({
+                  name: new Date(item.timestamp).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }),
+                  value: Number(item[parameter]) || 0,
+                  date: item.date, // item.date
+                }));
+            } 
+            
+            // --- ОБРОБКА ТИЖНЯ ---
+            //  "week" dataKey="name"  date 
+            else if (period === 'week') {
+              const dailyStats: Record<string, { sum: number; count: number; fullDate: string }> = {};
+              const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+              historyItems.forEach((item: any) => {
+                const dateObj = item.date ? new Date(item.date) : new Date(item.timestamp);
+                const dayKey = daysOfWeek[dateObj.getDay()];
+                const fullDateString = item.date || dateObj.toISOString().split('T')[0]; // Формат "YYYY-MM-DD"
+
+                if (!dailyStats[dayKey]) {
+                  dailyStats[dayKey] = { sum: 0, count: 0, fullDate: fullDateString };
+                }
+                dailyStats[dayKey].sum += Number(item[parameter]) || 0;
+                dailyStats[dayKey].count += 1;
+                // Оновлюємо fullDate, якщо timestamp свіжий 
+                dailyStats[dayKey].fullDate = fullDateString; 
+              });
+
+              const today = new Date();
+              // Генеруємо 7 днів назад від сьогодні, щоб охопити поточний тиждень
+              formattedChartData = Array.from({ length: 7 }, (_, i) => {
+                const date = new Date();
+                date.setDate(today.getDate() - (6 - i)); // від 6 днів назад до сьогодні
+                const dayKey = daysOfWeek[date.getDay()];
+                const stats = dailyStats[dayKey];
+                
+                return {
+                  name: dayKey, // "Sun", "Mon"
+                  value: stats ? Math.round(stats.sum / stats.count) : 0,
+                  date: stats ? stats.fullDate : date.toISOString().split('T')[0], // "YYYY-MM-DD"
+                };
+              });
+            } 
+            
+            // --- mount transform ---
+            // For "month" dataKey="name" 
+            else if (period === 'month') {
+              const monthlyStats: Record<string, { sum: number; count: number; fullDate: string }> = {};
+              
+              historyItems.forEach((item: any) => {
+                let dayNumber = "";
+                let fullDateString = "";
+
+                if (item.date) {
+                  dayNumber = parseInt(item.date.split('-')[2], 10).toString();
+                  fullDateString = item.date;
+                } else {
+                  const dateObj = new Date(item.timestamp);
+                  dayNumber = dateObj.getDate().toString();
+                  fullDateString = dateObj.toISOString().split('T')[0];
+                }
+
+                if (!monthlyStats[dayNumber]) {
+                  monthlyStats[dayNumber] = { sum: 0, count: 0, fullDate: fullDateString };
+                }
+                monthlyStats[dayNumber].sum += Number(item[parameter]) || 0;
+                monthlyStats[dayNumber].count += 1;
+                monthlyStats[dayNumber].fullDate = fullDateString; // full date
+              });
+
+              const now = new Date();
+              const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
+              formattedChartData = Array.from({ length: daysInMonth }, (_, i) => {
+                const dayKey = (i + 1).toString();
+                const stats = monthlyStats[dayKey];
+                
+                // object null
+                const dateForDay = new Date(now.getFullYear(), now.getMonth(), i + 1);
+                const fullDate = dateForDay.toISOString().split('T')[0];
+
+                return {
+                  name: dayKey, // "1", "2", ... "30"
+                  value: stats ? Math.round(stats.sum / stats.count) : 0,
+                  date: stats?.fullDate || fullDate, // "YYYY-MM-DD"
+                };
+              });
+            }
+            setChartData(formattedChartData);
+          } else {
+            setChartData([]);
+          }
+        } catch (err: any) {
+          console.error('Error fetching chart data:', err);
+          setError(err?.message || 'Failed to fetch data');
+          setChartData([]);
+        } finally {
+          setLoading(false);
+        }
+      }, [get, parameter, period]);
+
+      useEffect(() => {
+        fetchAndProcessData();
+      }, [fetchAndProcessData]);
+
+      return { chartData, loading, error };
+    };
+   

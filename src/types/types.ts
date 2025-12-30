@@ -20,6 +20,8 @@ export type TUser = {
   email: string | null;
   createdAt: string | null;
   cropType: ECropType | null;
+  growthDay?: number;
+  totalGrowthDays?: number;
 };
 
 export type TDevice = {
@@ -83,6 +85,15 @@ export enum ECropType {
   MUSHROOMS = "Mushroom's",
   FLOWERING = 'Flowering Plants',
 }
+// _____________________
+
+export const CropTypeLabels: Record<number, string> = {
+  1: ECropType.MICROGREENS,
+  2: ECropType.HERBS,
+  3: ECropType.VEGETABLES,
+  4: ECropType.MUSHROOMS,
+  5: ECropType.FLOWERING,
+};
 
 export type TCountry = {
   value: string;

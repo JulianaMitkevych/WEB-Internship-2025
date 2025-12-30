@@ -1,51 +1,23 @@
 'use client';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useChartData } from '@/hooks/useChartData'; 
+import { TChartPeriod } from '@/types/types';
 import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
-import { useApi } from '@/hooks/useApi';
-import HumidityIcon from '@/assets/svg/HumidityIcon'; 
-import { SmartChart } from '@/components/SmartChart/SmartChart';
-
-type PeriodType = 'day' | 'week' | 'month';
+import {SmartChart} from '@/components/SmartChart/SmartChart';
+import HumidityIcon from '@/assets/svg/HumidityIcon';
 
 export default function HumiditySettingsPage() {
   const router = useRouter();
-  const { get } = useApi<any>();
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('week');
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
-  // Mock data - аналогічно сторінці світла
-  const getMockData = (period: PeriodType) => {
-    if (period === 'day') {
-      return [
-        { name: '08:00', value: 50 },
-        { name: '12:00', value: 70 },
-        { name: '16:00', value: 65 },
-        { name: '20:00', value: 58 },
-        { name: '00:00', value: 55 },
-      ];
-    }
-    if (period === 'month') {
-      return Array.from({ length: 30 }, (_, i) => ({
-        name: (i + 1).toString(),
-        value: Math.floor(Math.random() * 40) + 40,
-      }));
-    }
-    // Default: Week
-    return [
-      { name: 'Mon', date: '08', value: 20 },
-      { name: 'Tue', date: '09', value: 36 },
-      { name: 'Wed', date: '10', value: 18 },
-      { name: 'Thu', date: '11', value: 60 },
-      { name: 'Fri', date: '12', value: 40 },
-      { name: 'Sat', date: '13', value: 25 },
-      { name: 'Sun', date: '14', value: 18 },
-    ];
-  };
+  const { chartData, loading } = useChartData({
+    parameter: 'humidity', 
+    period: selectedPeriod,
+  });
 
   const metrics = useMemo(
     () => [
@@ -56,27 +28,6 @@ export default function HumiditySettingsPage() {
     ],
     []
   );
-
-  useEffect(() => {
-    const fetchChartData = async () => {
-      setLoading(true);
-      try {
-        const response = await get(
-          `/api/settings/history?period=${selectedPeriod}&parameter=humidity`
-        );
-        if (response?.data) {
-          setChartData(response.data);
-        } else {
-          setChartData(getMockData(selectedPeriod));
-        }
-      } catch {
-        setChartData(getMockData(selectedPeriod));
-      } finally {
-        setTimeout(() => setLoading(false), 300);
-      }
-    };
-    fetchChartData();
-  }, [selectedPeriod]);
 
   return (
     <div className="flex flex-col max-w-[768px] mx-auto">
@@ -112,7 +63,7 @@ export default function HumiditySettingsPage() {
           {(['Day', 'Week', 'Month'] as const).map((p) => (
             <button
               key={p}
-              onClick={() => setSelectedPeriod(p.toLowerCase() as PeriodType)}
+              onClick={() => setSelectedPeriod(p.toLowerCase() as TChartPeriod)} 
               className={cn(
                 'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
                 selectedPeriod === p.toLowerCase()
@@ -141,6 +92,7 @@ export default function HumiditySettingsPage() {
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
+              unit="%" 
             />
           )}
         </div>

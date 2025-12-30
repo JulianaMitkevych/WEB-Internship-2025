@@ -9,6 +9,7 @@ import LightIcon from '@/assets/svg/LightIcon';
 import { SmartChart } from '@/components/SmartChart/SmartChart';
 import { useChartData } from '@/hooks/useChartData'; //import hook
 import { TChartPeriod } from '@/types/types'; 
+
 export default function LightSettingsPage() {
   const router = useRouter();
   

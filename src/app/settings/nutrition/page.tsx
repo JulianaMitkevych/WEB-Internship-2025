@@ -1,83 +1,33 @@
 'use client';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
+import { useChartData } from '@/hooks/useChartData'; 
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
-import { useApi } from '@/hooks/useApi';
-import NutritionIcon from '@/assets/svg/NutritionIcon'; // Переконайтеся, що назва файлу вірна
+import NutritionIcon from '@/assets/svg/NutritionIcon';
 import { SmartChart } from '@/components/SmartChart/SmartChart';
-
-type PeriodType = 'day' | 'week' | 'month';
+import { TChartPeriod } from '@/types/types';
 
 export default function NutritionSettingsPage() {
   const router = useRouter();
-  const { get } = useApi<any>();
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('week');
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
-  // Mock data для графіку (значення у mg)
-  const getMockData = (period: PeriodType) => {
-    if (period === 'day') {
-      return [
-        { name: '08:00', value: 10 },
-        { name: '12:00', value: 15 },
-        { name: '16:00', value: 12 },
-        { name: '20:00', value: 8 },
-        { name: '00:00', value: 5 },
-      ];
-    }
-    if (period === 'month') {
-      return Array.from({ length: 30 }, (_, i) => ({
-        name: (i + 1).toString(),
-        value: Math.floor(Math.random() * 15) + 5,
-      }));
-    }
-    // Default: Week (відповідає вашому скріншоту)
-    return [
-      { name: 'Mon', date: '08', value: 10 },
-      { name: 'Tue', date: '09', value: 15 },
-      { name: 'Wed', date: '10', value: 8 },
-      { name: 'Thu', date: '11', value: 18 },
-      { name: 'Fri', date: '12', value: 10 },
-      { name: 'Sat', date: '13', value: 15 },
-      { name: 'Sun', date: '14', value: 5 },
-    ];
-  };
+  const { chartData, loading } = useChartData({
+    parameter: 'nutrition',
+    period: selectedPeriod,
+  });
 
-  // Метрики у відсотках та міліграмах згідно з макетом
   const metrics = useMemo(
     () => [
-      { label: 'Current', value: '78 %' },
-      { label: 'Recommended', value: '65 %' },
+      { label: 'Current', value: '78%' },
+      { label: 'Recommended', value: '65%' },
       { label: 'Week', value: '15 mg' },
       { label: 'Total', value: '24 mg' },
     ],
     []
   );
-
-  useEffect(() => {
-    const fetchChartData = async () => {
-      setLoading(true);
-      try {
-        const response = await get(
-          `/api/settings/history?period=${selectedPeriod}&parameter=nutrition`
-        );
-        if (response?.data) {
-          setChartData(response.data);
-        } else {
-          setChartData(getMockData(selectedPeriod));
-        }
-      } catch {
-        setChartData(getMockData(selectedPeriod));
-      } finally {
-        setTimeout(() => setLoading(false), 300);
-      }
-    };
-    fetchChartData();
-  }, [selectedPeriod]);
 
   return (
     <div className="flex flex-col max-w-[768px] mx-auto">
@@ -105,6 +55,7 @@ export default function NutritionSettingsPage() {
             development.
           </p>
         </div>
+        {/*  */}
         <span className="text-4xl font-bold text-[#53C904]">78%</span>
       </div>
 
@@ -114,7 +65,7 @@ export default function NutritionSettingsPage() {
           {(['Day', 'Week', 'Month'] as const).map((p) => (
             <button
               key={p}
-              onClick={() => setSelectedPeriod(p.toLowerCase() as PeriodType)}
+              onClick={() => setSelectedPeriod(p.toLowerCase() as TChartPeriod)}
               className={cn(
                 'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
                 selectedPeriod === p.toLowerCase()
@@ -143,6 +94,7 @@ export default function NutritionSettingsPage() {
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
+              unit="%" // Додано одиницю виміру
             />
           )}
         </div>
@@ -153,7 +105,7 @@ export default function NutritionSettingsPage() {
         {metrics.map((item) => (
           <div
             key={item.label}
-            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30_rgba(0,0,0,0.04)] border border-gray-50"
           >
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}

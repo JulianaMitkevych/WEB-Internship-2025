@@ -1,5 +1,6 @@
-
 'use client';
+import { TChartPeriod } from '@/types/types';
+
 import {
   LineChart,
   Line,
@@ -9,11 +10,9 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-type PeriodType = 'day' | 'week' | 'month';
-
 interface SmartChartProps {
-  data: any[];
-  period: PeriodType;
+  data: any[]; // 'data' include: name, value, date
+  period: TChartPeriod; 
   color?: string;
   unit?: string;
 }
@@ -24,7 +23,8 @@ export const SmartChart = ({
   color = '#65D11F',
   unit = '',
 }: SmartChartProps) => {
-  const labelInterval = period === 'month' ? 5 : 0;
+  // interval
+  const labelInterval = period === 'month' ? Math.floor(data.length / 5) : 0;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -39,31 +39,39 @@ export const SmartChart = ({
           axisLine={false}
           tickLine={false}
           interval={labelInterval}
-          tick={({ x, y, payload, index }) => (
-            <g key={`tick-${index}`} transform={`translate(${x},${y + 15})`}>
-              <text
-                x={0}
-                y={0}
-                textAnchor="middle"
-                fill="#A3A3A3"
-                fontSize={12}
-                fontWeight="500"
-              >
-                {payload.value}
-              </text>
-              {period === 'week' && data[index]?.date && (
+          tick={({ x, y, payload, index }) => {
+            const item = data[index];
+            return (
+              <g key={`tick-${index}`} transform={`translate(${x},${y + 15})`}>
                 <text
                   x={0}
-                  y={18}
+                  y={0}
                   textAnchor="middle"
                   fill="#A3A3A3"
-                  fontSize={11}
+                  fontSize={12}
+                  fontWeight="500"
                 >
-                  {data[index].date}
+                  {payload.value}
                 </text>
-              )}
-            </g>
-          )}
+                
+                {/* additional date */}
+                {(period === 'week' || period === 'month') && item?.date && (
+                  <text
+                    x={0}
+                    y={18}
+                    textAnchor="middle"
+                    fill="#A3A3A3"
+                    fontSize={11}
+                  >
+                    {new Date(item.date).toLocaleDateString('uk-UA', {
+                      day: '2-digit',
+                      month: 'short',
+                    })}
+                  </text>
+                )}
+              </g>
+            );
+          }}
         />
 
         <YAxis hide domain={['auto', 'auto']} />
@@ -88,11 +96,11 @@ export const SmartChart = ({
             );
           }}
           label={(props: any) => {
-            const { x, value, index } = props;
+            const { x, y, value, index } = props;
 
             const shouldShow =
-              labelInterval === 0 ||
-              index % labelInterval === 0 ||
+              labelInterval === 0 || 
+              index % labelInterval === 0 || 
               index === data.length - 1;
 
             if (!shouldShow) return <g key={`label-empty-${index}`} />;
@@ -101,14 +109,13 @@ export const SmartChart = ({
               <text
                 key={`label-${index}`}
                 x={x}
-                y={25}
+                y={y - 15} // точки для кращої читаємості
                 fill={color}
                 fontSize={12}
                 fontWeight="700"
                 textAnchor="middle"
               >
-                {value}
-                {unit}
+                {value}{unit}
               </text>
             );
           }}

@@ -1,83 +1,33 @@
 'use client';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
-import { useApi } from '@/hooks/useApi';
 import TempIcon from '@/assets/svg/TempIcon';
 import { SmartChart } from '@/components/SmartChart/SmartChart';
-
-type PeriodType = 'day' | 'week' | 'month';
+import { useChartData } from '@/hooks/useChartData';
+import { TChartPeriod } from '@/types/types';
 
 export default function TemperatureSettingsPage() {
   const router = useRouter();
-  const { get } = useApi<any>();
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('week');
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
-  // Дані для графіку згідно з макетом (24, 26, 23, 28, 24, 26, 23)
-  const getMockData = (period: PeriodType) => {
-    if (period === 'day') {
-      return [
-        { name: '08:00', value: 22 },
-        { name: '12:00', value: 25 },
-        { name: '16:00', value: 24 },
-        { name: '20:00', value: 21 },
-        { name: '00:00', value: 20 },
-      ];
-    }
-    if (period === 'month') {
-      return Array.from({ length: 30 }, (_, i) => ({
-        name: (i + 1).toString(),
-        value: Math.floor(Math.random() * 8) + 20,
-      }));
-    }
-    // Default: Week (точно як на макеті)
-    return [
-      { name: 'Mon', date: '08', value: 24 },
-      { name: 'Tue', date: '09', value: 26 },
-      { name: 'Wed', date: '10', value: 23 },
-      { name: 'Thu', date: '11', value: 28 },
-      { name: 'Fri', date: '12', value: 24 },
-      { name: 'Sat', date: '13', value: 26 },
-      { name: 'Sun', date: '14', value: 23 },
-    ];
-  };
+  const { chartData, loading } = useChartData({
+    parameter: 'temperature',
+    period: selectedPeriod,
+  });
 
-  // Метрики точно за вашим макетом
   const metrics = useMemo(
     () => [
       { label: 'Current', value: '24 °C' },
       { label: 'Recommended', value: '26 °C' },
-      { label: 'Week', value: '60 kw' },
-      { label: 'Total', value: '456 kw' },
+      { label: 'Week', value: '25.2 °C' }, 
+      { label: 'Total', value: 'Avg 24.5' },
     ],
     []
   );
-
-  useEffect(() => {
-    const fetchChartData = async () => {
-      setLoading(true);
-      try {
-        const response = await get(
-          `/api/settings/history?period=${selectedPeriod}&parameter=temperature`
-        );
-        if (response?.data) {
-          setChartData(response.data);
-        } else {
-          setChartData(getMockData(selectedPeriod));
-        }
-      } catch {
-        setChartData(getMockData(selectedPeriod));
-      } finally {
-        setTimeout(() => setLoading(false), 300);
-      }
-    };
-    fetchChartData();
-  }, [selectedPeriod]);
 
   return (
     <div className="flex flex-col max-w-[768px] mx-auto">
@@ -101,7 +51,7 @@ export default function TemperatureSettingsPage() {
             <TempIcon />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full max-w-[200px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            Set the ideal temperature range for your plants to thrive.
           </p>
         </div>
         <span className="text-4xl font-bold text-[#53C904]">24 °C</span>
@@ -113,7 +63,7 @@ export default function TemperatureSettingsPage() {
           {(['Day', 'Week', 'Month'] as const).map((p) => (
             <button
               key={p}
-              onClick={() => setSelectedPeriod(p.toLowerCase() as PeriodType)}
+              onClick={() => setSelectedPeriod(p.toLowerCase() as TChartPeriod)}
               className={cn(
                 'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
                 selectedPeriod === p.toLowerCase()
@@ -142,6 +92,7 @@ export default function TemperatureSettingsPage() {
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
+              unit="°C" 
             />
           )}
         </div>
