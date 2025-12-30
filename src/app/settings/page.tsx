@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useSettings } from '@/hooks/useSettings';
+import { useApi } from './../../hooks/useApi';
 
 import TempIcon from '@/assets/svg/TempIcon';
 import HumidityIcon from '@/assets/svg/HumidityIcon';
@@ -17,7 +18,8 @@ import LightIcon from '@/assets/svg/LightIcon';
 export default function SettingsPage() {
   const router = useRouter();
   const { settings, updateSettings, isLoading } = useSettings();
-
+  const { post: apiPost } = useApi();
+  // const { post: apiPost } = useApi();
   const [lightValue, setLightValue] = useState<number>(8);
   const [temperatureValue, setTemperatureValue] = useState<number>(24);
   const [humidityValue, setHumidityValue] = useState<number>(50);
@@ -34,78 +36,38 @@ export default function SettingsPage() {
       const stats = [];
       const now = new Date();
 
+      // Цикл на 30 днів назад
       for (let i = 30; i >= 0; i--) {
         const date = new Date();
         date.setDate(now.getDate() - i);
 
-        // Генеруємо реалістичні дані
-        const temp = (22 + Math.random() * 4).toFixed(1);
-        const hum = Math.floor(45 + Math.random() * 15);
-
+        // generate random data
         stats.push({
           date: date.toISOString().split('T')[0],
           timestamp: date.getTime(),
-          temperature: parseFloat(temp),
-          humidity: hum,
+          temperature: parseFloat((22 + Math.random() * 5).toFixed(1)), // 22-27°C
+          humidity: Math.floor(40 + Math.random() * 20), // 40-60%
+          light: Math.floor(50 + Math.random() * 40), // 50-90%
+          nutrition: Math.floor(200 + Math.random() * 100), // 200-300mg
+          watering: Math.floor(150 + Math.random() * 150), // 150-300mg
+          vent: Math.floor(10 + Math.random() * 10), // 10-20h
         });
       }
 
-      await updateSettings({
-        history: stats,
-      } as any);
+      
+       await apiPost('/api/settings/history', { monthlyStats: stats });
 
-      console.log('Success: Monthly data saved to Firestore!');
+      console.log('Success: Full history saved!');
       // eslint-disable-next-line no-alert
-      alert('Monthly data has been successfully saved to Firestore!');
+      alert(
+        'Success! Data for Light, Temp, Humidity, etc., saved for the last 30 days.'
+      );
     } catch (error) {
       console.error('Firebase Error:', error);
       // eslint-disable-next-line no-alert
-      alert('Failed to save data. Check console for details.');
+      alert('Error saving data.');
     }
   };
-  // --- DELETE THIS FUNCTION END ---
-
-  // _____________________________________________
-  // --- DELETE THIS FUNCTION START ---
-  // const generateMonthlyStats = async () => {
-  //   try {
-  //     const stats = [];
-  //     const now = new Date();
-
-  //     // Цикл на 30 днів назад
-  //     for (let i = 30; i >= 0; i--) {
-  //       const date = new Date();
-  //       date.setDate(now.getDate() - i);
-
-  //       // Генеруємо випадкові, але реалістичні дані для всіх типів сторінок
-  //       stats.push({
-  //         date: date.toISOString().split('T')[0],
-  //         timestamp: date.getTime(),
-  //         temperature: parseFloat((22 + Math.random() * 5).toFixed(1)), // 22-27°C
-  //         humidity: Math.floor(40 + Math.random() * 20), // 40-60%
-  //         light: Math.floor(50 + Math.random() * 40), // 50-90%
-  //         nutrition: Math.floor(200 + Math.random() * 100), // 200-300mg
-  //         watering: Math.floor(150 + Math.random() * 150), // 150-300mg
-  //         vent: Math.floor(10 + Math.random() * 10), // 10-20h
-  //       });
-  //     }
-
-  //     // Записуємо масив history в документ користувача
-  //     await updateSettings({
-  //       history: stats,
-  //     } as any);
-
-  //     console.log('Success: Full history saved!');
-  //     // eslint-disable-next-line no-alert
-  //     alert(
-  //       'Success! Data for Light, Temp, Humidity, etc., saved for the last 30 days.'
-  //     );
-  //   } catch (error) {
-  //     console.error('Firebase Error:', error);
-  //     // eslint-disable-next-line no-alert
-  //     alert('Error saving data.');
-  //   }
-  // };
   // --- DELETE THIS FUNCTION END ---
 
   useEffect(() => {

@@ -25,7 +25,10 @@ export const useSettings = () => {
         // In a real app, you'd call an API to get current settings
         const defaultSettings: TSetting = {
           id: store.user.id,
-          light: '50',
+          light: {
+            isEnabled: true,
+            value: '50',
+          },
           temperature: '22',
           humidity: '60',
           nutrition: '30',

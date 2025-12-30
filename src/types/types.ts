@@ -105,3 +105,5 @@ export type CropButtonProps = {
   onClick?: () => void;
   className?: string;
 };
+//  chart typeData
+export type TChartPeriod = 'day' | 'week' | 'month';

@@ -15,12 +15,14 @@ interface SmartChartProps {
   data: any[];
   period: PeriodType;
   color?: string;
+  unit?: string;
 }
 
 export const SmartChart = ({
   data,
   period,
   color = '#65D11F',
+  unit = '',
 }: SmartChartProps) => {
   const labelInterval = period === 'month' ? 5 : 0;
 
@@ -64,19 +66,18 @@ export const SmartChart = ({
           )}
         />
 
-        <YAxis hide domain={[0, 110]} />
+        <YAxis hide domain={['auto', 'auto']} />
 
         <Line
           type="monotone"
           dataKey="value"
           stroke={color}
           strokeWidth={2.5}
-          
           dot={(props: any) => {
             const { cx, cy, index } = props;
             return (
               <circle
-                key={`dot-${index}`} 
+                key={`dot-${index}`}
                 cx={cx}
                 cy={cy}
                 r={4}
@@ -98,7 +99,7 @@ export const SmartChart = ({
 
             return (
               <text
-                key={`label-${index}`} 
+                key={`label-${index}`}
                 x={x}
                 y={25}
                 fill={color}
@@ -106,7 +107,8 @@ export const SmartChart = ({
                 fontWeight="700"
                 textAnchor="middle"
               >
-                {value}%
+                {value}
+                {unit}
               </text>
             );
           }}
