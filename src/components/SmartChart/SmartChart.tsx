@@ -74,7 +74,8 @@ export const SmartChart = ({
           }}
         />
 
-        <YAxis hide domain={['auto', 'auto']} />
+        {/* <YAxis hide domain={['auto', 'auto']} /> */}
+        <YAxis hide={false} width={40}  fontSize ={10}/>
 
         <Line
           type="monotone"

@@ -30,45 +30,62 @@ export default function SettingsPage() {
   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
   const [lightEnabled, setLightEnabled] = useState<boolean>(true);
 
-  // --- DELETE THIS FUNCTION START ---
-  const generateMonthlyStats = async () => {
-    try {
-      const stats = [];
-      const now = new Date();
+ const generateMonthlyStats = async () => {
+   try {
+     const stats = [];
+     const now = new Date(); // 1 Jan 2026
 
-      // Цикл на 30 днів назад
-      for (let i = 30; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(now.getDate() - i);
+     for (let i = 30; i >= 0; i--) {
+       // Створюємо копію поточної дати
+       const currentDate = new Date(now.getTime());
+       // Віднімаємо i днів (це закине нас у грудень 2025)
+       currentDate.setDate(now.getDate() - i);
 
-        // generate random data
-        stats.push({
-          date: date.toISOString().split('T')[0],
-          timestamp: date.getTime(),
-          temperature: parseFloat((22 + Math.random() * 5).toFixed(1)), // 22-27°C
-          humidity: Math.floor(40 + Math.random() * 20), // 40-60%
-          light: Math.floor(50 + Math.random() * 40), // 50-90%
-          nutrition: Math.floor(200 + Math.random() * 100), // 200-300mg
-          watering: Math.floor(150 + Math.random() * 150), // 150-300mg
-          vent: Math.floor(10 + Math.random() * 10), // 10-20h
-        });
-      }
+       if (i === 0) {
+         // Сьогодні (1 січня): генеруємо 4 точки, щоб графік "Day" був красивим
+         for (let hour = 0; hour < 24; hour += 6) {
+           const hourlyPoint = new Date(currentDate.getTime());
+           hourlyPoint.setHours(hour, 0, 0, 0);
 
-      
-       await apiPost('/api/settings/history', { monthlyStats: stats });
+           stats.push({
+             date: hourlyPoint.toISOString().split('T')[0], // YYYY-MM-DD
+             timestamp: hourlyPoint.getTime(), // Число (ms)
+             temperature: parseFloat((22 + Math.random() * 5).toFixed(1)),
+             humidity: Math.floor(40 + Math.random() * 20),
+             light: Math.floor(50 + Math.random() * 40),
+             nutrition: Math.floor(200 + Math.random() * 100),
+             watering: Math.floor(150 + Math.random() * 150),
+             vent: Math.floor(10 + Math.random() * 10),
+           });
+         }
+       } else {
+         // Минулі дні (грудень): 1 точка на день
+         currentDate.setHours(12, 0, 0, 0);
+         stats.push({
+           date: currentDate.toISOString().split('T')[0],
+           timestamp: currentDate.getTime(), // Число (ms)
+           temperature: parseFloat((22 + Math.random() * 5).toFixed(1)),
+           humidity: Math.floor(40 + Math.random() * 20),
+           light: Math.floor(50 + Math.random() * 40),
+           nutrition: Math.floor(200 + Math.random() * 100),
+           watering: Math.floor(150 + Math.random() * 150),
+           vent: Math.floor(10 + Math.random() * 10),
+         });
+       }
+     }
 
-      console.log('Success: Full history saved!');
-      // eslint-disable-next-line no-alert
-      alert(
-        'Success! Data for Light, Temp, Humidity, etc., saved for the last 30 days.'
-      );
-    } catch (error) {
-      console.error('Firebase Error:', error);
-      // eslint-disable-next-line no-alert
-      alert('Error saving data.');
-    }
-  };
-  // --- DELETE THIS FUNCTION END ---
+     // ВАЖЛИВО: Перед відправкою сортуємо масив за часом
+     const sortedStats = stats.sort((a, b) => a.timestamp - b.timestamp);
+
+     await apiPost('/api/settings/history', { monthlyStats: sortedStats });
+  // eslint-disable-next-line no-alert
+     alert('Success! Data for Dec 2025 - Jan 2026 generated correctly.');
+   } catch (error) {
+     console.error('Firebase Error:', error);
+     // eslint-disable-next-line no-alert
+     alert('Error saving data.');
+   }
+ };
 
   useEffect(() => {
     if (settings) {
