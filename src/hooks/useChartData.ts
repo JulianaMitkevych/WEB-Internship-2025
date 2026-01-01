@@ -27,10 +27,14 @@ export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
         `/api/settings/history?period=${period}&parameter=${parameter}`
       );
 
-      const incomingData = response?.data || response;
-      const historyItems = Array.isArray(incomingData?.data)
-        ? incomingData.data
-        : [];
+      let historyItems = [];
+      if (Array.isArray(response)) {
+        historyItems = response;
+      } else if (response?.data && Array.isArray(response.data)) {
+        historyItems = response.data;
+      }
+
+      console.log('useChartData:', { parameter, period, response, historyItems });
 
       if (historyItems.length > 0) {
         let formattedChartData: ChartDataItem[] = [];
@@ -172,8 +176,10 @@ export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
             };
           });
         }
+        console.log('formattedChartData:', formattedChartData);
         setChartData(formattedChartData);
       } else {
+        console.log('No history items found');
         setChartData([]);
       }
     } catch (err: any) {
@@ -189,5 +195,5 @@ export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
     fetchAndProcessData();
   }, [fetchAndProcessData]);
 
-  return { chartData, loading, error };
+  return { chartData, loading, error, refetch: fetchAndProcessData };
 };

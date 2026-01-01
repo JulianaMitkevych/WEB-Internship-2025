@@ -34,6 +34,7 @@ export function useApi<T = unknown>() {
             'Content-Type': 'application/json',
             ...options.headers,
           },
+          credentials: 'include',
         };
 
         if (options.body && options.method !== 'GET') {

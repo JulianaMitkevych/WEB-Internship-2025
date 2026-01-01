@@ -16,7 +16,7 @@ export default function LightSettingsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week'); // use TChartPeriod
 
   // call hook useChartData
-  const { chartData, loading } = useChartData({
+  const { chartData, loading, error } = useChartData({
     parameter: 'light', // 'light' as a parameter
     period: selectedPeriod, // selected period
   });
@@ -89,6 +89,10 @@ export default function LightSettingsPage() {
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
               <div className="size-6 border-2 border-[#53C904] border-t-transparent animate-spin rounded-full" />
+            </div>
+          ) : error ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <div className="text-red-500 text-sm">{error}</div>
             </div>
           ) : (
             <SmartChart

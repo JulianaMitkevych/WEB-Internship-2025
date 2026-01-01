@@ -193,6 +193,7 @@ import { useRouter } from 'next/navigation';
 import { useStorage } from '@/hooks/useStorage';
 import { ROUTES } from '@/utils/constants';
 import { CropTypeLabels } from '@/types/types';
+import { useCurrentValues } from '@/hooks';
 
 import LightIcon from '@/assets/svg/LightIcon';
 import TempIcon from '@/assets/svg/TempIcon';
@@ -208,6 +209,7 @@ import { Switch } from '@/components/ui/switch';
 const DashboardContent = () => {
   const router = useRouter();
   const [store] = useStorage();
+  const { currentValues, loading: valuesLoading } = useCurrentValues();
 
   const currentDay = store.user?.growthDay || 12;
   const totalDays = store.user?.totalGrowthDays || 21;
@@ -314,10 +316,11 @@ const DashboardContent = () => {
 
                 <div className="flex flex-col">
                   <span className="text-2xl font-bold text-black">
-                    {store.user?.[param as keyof typeof store.user] !==
-                    undefined
-                      ? `${store.user[param as keyof typeof store.user]}${param === 'temperature' ? '°C' : '%'}`
-                      : '--'}
+                    {valuesLoading
+                      ? '...'
+                      : currentValues?.[param] !== undefined
+                        ? `${currentValues[param]}${param === 'temperature' ? '°C' : '%'}`
+                        : '--'}
                   </span>
                   <span className="text-gray-500 font-semibold text-sm">
                     {param.charAt(0).toUpperCase() + param.slice(1)}

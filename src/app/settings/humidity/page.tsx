@@ -14,8 +14,8 @@ export default function HumiditySettingsPage() {
   const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
-  const { chartData, loading } = useChartData({
-    parameter: 'humidity', 
+  const { chartData, loading, error } = useChartData({
+    parameter: 'humidity',
     period: selectedPeriod,
   });
 
@@ -87,12 +87,20 @@ export default function HumiditySettingsPage() {
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
               <div className="size-6 border-2 border-[#53C904] border-t-transparent animate-spin rounded-full" />
             </div>
+          ) : error ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <div className="text-red-500 text-sm">{error}</div>
+            </div>
+          ) : chartData.length === 0 ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <div className="text-gray-500 text-sm">No data available</div>
+            </div>
           ) : (
             <SmartChart
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
-              unit="%" 
+              unit="%"
             />
           )}
         </div>

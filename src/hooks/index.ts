@@ -6,3 +6,4 @@ export { useTimer } from './useTimer';
 export { useDebounce } from './useDebounce';
 export { useStorage } from './useStorage';
 export { useUrlTab } from './useUrlTab';
+export { useCurrentValues } from './useCurrentValues';

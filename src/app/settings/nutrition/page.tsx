@@ -14,7 +14,7 @@ export default function NutritionSettingsPage() {
   const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
-  const { chartData, loading } = useChartData({
+  const { chartData, loading, error } = useChartData({
     parameter: 'nutrition',
     period: selectedPeriod,
   });
@@ -88,6 +88,10 @@ export default function NutritionSettingsPage() {
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
               <div className="size-6 border-2 border-[#53C904] border-t-transparent animate-spin rounded-full" />
+            </div>
+          ) : error ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <div className="text-red-500 text-sm">{error}</div>
             </div>
           ) : (
             <SmartChart
