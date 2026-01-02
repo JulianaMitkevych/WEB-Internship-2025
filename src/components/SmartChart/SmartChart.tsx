@@ -74,8 +74,8 @@ export const SmartChart = ({
           }}
         />
 
-        {/* <YAxis hide domain={['auto', 'auto']} /> */}
-        <YAxis hide={false} width={40}  fontSize ={10}/>
+        <YAxis hide={true} domain={['auto', 'auto']} />
+        {/* <YAxis hide={true} domain={[0, 'dataMax + 20']}/> */}
 
         <Line
           type="monotone"
@@ -97,7 +97,7 @@ export const SmartChart = ({
             );
           }}
           label={(props: any) => {
-            const { x, y, value, index } = props;
+            const { x, value, index } = props;
 
             const shouldShow =
               labelInterval === 0 || 
@@ -110,10 +110,10 @@ export const SmartChart = ({
               <text
                 key={`label-${index}`}
                 x={x}
-                y={y - 15} // точки для кращої читаємості
+                y={15} // точки для кращої читаємості
                 fill={color}
                 fontSize={12}
-                fontWeight="700"
+                fontWeight="400"
                 textAnchor="middle"
               >
                 {value}{unit}

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -19,7 +20,8 @@ type UpdateCropTypeResponse = {
 export default function SelectCropTypePage() {
   const router = useRouter();
   const [store, setStore] = useStorage();
-  const { post } = useApi<UpdateCropTypeResponse>();
+  //  loading 
+  const { post, loading } = useApi<UpdateCropTypeResponse>();
   const [selectedId, setSelectedId] = useState<number>(1);
 
   const handleStartPlanting = async () => {
@@ -36,7 +38,6 @@ export default function SelectCropTypePage() {
         cropType: selectedCrop.name,
       });
 
-      // Update local storage with the new crop type
       setStore((prev) => ({
         ...prev,
         user: prev.user ? { ...prev.user, cropType: selectedCrop.name } : null,
@@ -50,20 +51,22 @@ export default function SelectCropTypePage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="max-w-md mx-auto w-full px-6 py-6 sm:py-10 flex flex-col flex-grow">
-        <div className="relative flex items-center mb-10 sm:mb-16">
-          <button
-            onClick={() => router.back()}
-            className="absolute left-0 z-10 p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ChevronLeft className="size-7 sm:size-8 text-black" />
-          </button>
-          <h1 className="w-full text-center text-2xl sm:text-3xl font-bold text-black leading-tight px-10">
-            Select crop type
-          </h1>
-        </div>
-
-        <div className="flex flex-col gap-1 sm:gap-2 flex-grow justify-center">
+      <div className="max-w-md mx-auto w-full px-6 py-8  flex flex-col min-h-screen">
+      {/* Header */}
+<div className=" mb-8 w-full">
+  <button
+    onClick={() => router.back()}
+    className="mb-[16px] p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
+    aria-label="Go back"
+  >
+    <ChevronLeft className="size-7 sm:size-8 text-black" />
+  </button>
+  
+  <h1 className="text-[28px] text-center font-bold text-black leading-tight">
+    Select crop type
+  </h1>
+</div>
+         <div className="flex flex-col sm:gap-1  flex-grow justify-center items-center">
           {cropTypes.map((crop) => (
             <CropButton
               key={crop.id}
@@ -72,16 +75,18 @@ export default function SelectCropTypePage() {
               onClick={() => setSelectedId(crop.id)}
             />
           ))}
-        </div>
-
-        <div className="mt-auto pt-6 sm:pt-10">
+        </div> 
+         
+        {/* Bottom Button Container */}
+        <div className="mt-auto pt-6 sm:pt-10 flex justify-center">
           <Button
+            type="button"
             variant="gradient"
-            size="default"
             onClick={handleStartPlanting}
-            className="w-full h-12 sm:h-14 text-lg sm:text-xl font-bold rounded-2xl shadow-lg"
+            disabled={loading}
+            className="w-full max-w-[327px] h-12 text-base font-semibold text-white rounded-2xl shadow-md transition-all"
           >
-            Start planting
+            {loading ? 'Saving...' : 'Start planting'}
           </Button>
         </div>
       </div>

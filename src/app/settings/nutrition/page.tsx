@@ -37,11 +37,12 @@ export default function NutritionSettingsPage() {
           onClick={() => router.back()}
           variant="ghost"
           size="icon"
-          className="mr-2"
+          className="mr-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
+
         >
-          <ChevronLeft className="size-8 stroke-[3px]" />
+          <ChevronLeft className="size-6 stroke-[3px]" />
         </Button>
-        <h1 className="text-2xl font-bold">Nutrition</h1>
+        <h1 className="text-[24px] font-bold">Nutrition</h1>
       </div>
 
       {/* Info Section */}
@@ -56,7 +57,7 @@ export default function NutritionSettingsPage() {
           </p>
         </div>
         {/*  */}
-        <span className="text-4xl font-bold text-[#53C904]">78%</span>
+        <span className="text-[24px] font-bold text-[#53C904]">78%</span>
       </div>
 
       {/* Tabs */}
@@ -83,7 +84,7 @@ export default function NutritionSettingsPage() {
       </div>
 
       {/* Chart Block */}
-      <div className="mx-4 mt-8 bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 overflow-hidden">
+      <div className="mx-4 mt-8">
         <div className="h-64 w-full relative">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">

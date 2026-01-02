@@ -24,7 +24,7 @@ export const BottomNavigation = ({ activeTab }: BottomNavigationProps) => {
   };
 
   return (
-    <div className="bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] px-6 p-4">
+    <div className="bg-white border-t border-gray-50 shadow-[0_-10px_15px_-10px_rgba(0,0,0,0.04)] px-6 p-4">
       <div className="max-w-md mx-auto flex justify-around">
         <button
           onClick={() => handleNavigation(ROUTES.DASHBOARD)}
