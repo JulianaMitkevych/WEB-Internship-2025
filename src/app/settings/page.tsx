@@ -49,7 +49,7 @@ export default function SettingsPage() {
 
            stats.push({
              date: hourlyPoint.toISOString().split('T')[0], // YYYY-MM-DD
-             timestamp: hourlyPoint.getTime(), 
+             timestamp: hourlyPoint.getTime(),
              temperature: parseFloat((22 + Math.random() * 5).toFixed(1)),
              humidity: Math.floor(40 + Math.random() * 20),
              light: Math.floor(50 + Math.random() * 40),
@@ -176,7 +176,7 @@ export default function SettingsPage() {
 
   return (
     <div
-      className={`min-h-screen bg-gray-50 flex flex-col pb-24 ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
+      className={`h-screen max-w-[768px] mx-auto  flex flex-col pb-24 ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
     >
       <div className="p-6">
         <h1 className="text-xl font-bold text-center text-gray-900">
