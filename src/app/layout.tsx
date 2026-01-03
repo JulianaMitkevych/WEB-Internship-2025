@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import React, { ReactNode } from 'react';
 
 import { StorageProvider } from '@/context/storageProvider';
+import { AuthInitializer } from '@/components/auth/AuthInitializer';
 import './globals.css';
 
 const inter = Inter({
@@ -26,7 +27,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
-        <StorageProvider>{children}</StorageProvider>
+        <StorageProvider>
+          <AuthInitializer />
+          {children}
+        </StorageProvider>
       </body>
     </html>
   );

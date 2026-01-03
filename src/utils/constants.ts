@@ -6,6 +6,9 @@ export const ROUTES = {
 
   // Protected routes
   PROFILE: '/profile',
+  CHANGE_CROP_TYPE: '/profile/change-crop-type',
+  MY_HARVEST: '/profile/my-harvest',
+  HISTORIC_DATA: '/profile/historic-data',
   ONBOARDING: '/onboarding',
   SELECT_CROP_TYPE: '/crope-type',
   CONNECT_DEVICE: '/onboarding/connect-device',
@@ -47,6 +50,9 @@ export const PUBLIC_ROUTES = [
 // Protected routes
 export const PROTECTED_ROUTES = [
   ROUTES.PROFILE,
+  ROUTES.CHANGE_CROP_TYPE,
+  ROUTES.MY_HARVEST,
+  ROUTES.HISTORIC_DATA,
   ROUTES.ONBOARDING,
   ROUTES.SELECT_CROP_TYPE,
   ROUTES.CONNECT_DEVICE,
