@@ -33,23 +33,23 @@ export default function SettingsPage() {
  const generateMonthlyStats = async () => {
    try {
      const stats = [];
-     const now = new Date(); // 1 Jan 2026
+     const now = new Date(); // date today
 
      for (let i = 30; i >= 0; i--) {
-       // Створюємо копію поточної дати
+       // add data for past 30 days including today
        const currentDate = new Date(now.getTime());
-       // Віднімаємо i днів (це закине нас у грудень 2025)
+       //past 2025 December and today 2026 January
        currentDate.setDate(now.getDate() - i);
 
        if (i === 0) {
-         // Сьогодні (1 січня): генеруємо 4 точки, щоб графік "Day" був красивим
+         //today: 2026 January - 4 dot per day
          for (let hour = 0; hour < 24; hour += 6) {
            const hourlyPoint = new Date(currentDate.getTime());
            hourlyPoint.setHours(hour, 0, 0, 0);
 
            stats.push({
              date: hourlyPoint.toISOString().split('T')[0], // YYYY-MM-DD
-             timestamp: hourlyPoint.getTime(), // Число (ms)
+             timestamp: hourlyPoint.getTime(), 
              temperature: parseFloat((22 + Math.random() * 5).toFixed(1)),
              humidity: Math.floor(40 + Math.random() * 20),
              light: Math.floor(50 + Math.random() * 40),
@@ -59,11 +59,11 @@ export default function SettingsPage() {
            });
          }
        } else {
-         // Минулі дні (грудень): 1 точка на день
+         // other days: 2025 December - 1 dot per day
          currentDate.setHours(12, 0, 0, 0);
          stats.push({
            date: currentDate.toISOString().split('T')[0],
-           timestamp: currentDate.getTime(), // Число (ms)
+           timestamp: currentDate.getTime(), // number (ms)
            temperature: parseFloat((22 + Math.random() * 5).toFixed(1)),
            humidity: Math.floor(40 + Math.random() * 20),
            light: Math.floor(50 + Math.random() * 40),
@@ -74,7 +74,7 @@ export default function SettingsPage() {
        }
      }
 
-     // ВАЖЛИВО: Перед відправкою сортуємо масив за часом
+     // Sort by timestamp ascending
      const sortedStats = stats.sort((a, b) => a.timestamp - b.timestamp);
 
      await apiPost('/api/settings/history', { monthlyStats: sortedStats });
@@ -250,7 +250,7 @@ export default function SettingsPage() {
             onClick={generateMonthlyStats}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
           >
-            📊 Generate Monthly Stats
+            📊 Generate Monthly Data
           </button>
         </div>
         {/* --- DELETE THIS BUTTON END --- */}

@@ -1,199 +1,13 @@
-// 'use client';
 
-// import { useState } from 'react';
-// import { useRouter } from 'next/navigation';
-// import { useStorage } from '@/hooks/useStorage';
-// import { ROUTES } from '@/utils/constants';
-// import LightIcon from '@/assets/svg/LightIcon';
-// import TempIcon from '@/assets/svg/TempIcon';
-// import NutritionIcon from '@/assets/svg/NutritionIcon';
-// import HumidityIcon from '@/assets/svg/HumidityIcon';
-// import VentIcon from '@/assets/svg/VentIcon';
-// import WaterIcon from '@/assets/svg/WaterIcon';
-// import PlantOne from '@/assets/svg/PlantOne';
-// import PlantTwo from '@/assets/svg/PlantTwo';
-// import PlantThree from '@/assets/svg/PlantThree';
-// import { BottomNavigation } from '@/components/ui/bottom-navigation';
-// import { Switch } from '@/components/ui/switch';
-
-// const DashboardContent = () => {
-//   const router = useRouter();
-//   const [store] = useStorage();
-//   const [growthDays] = useState(14); // Mock data - should come from API
-//   const [wateringEnabled, setWateringEnabled] = useState<boolean>(true);
-//   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
-
-//   const parameters = [
-//     'light',
-//     'temperature',
-//     'humidity',
-//     'nutrition',
-//     'vent',
-//     'watering',
-//   ];
-
-//   const getPlantIcon = (cropType: string | null) => {
-//     switch (cropType) {
-//       case 'Microgreens':
-//         return <PlantOne />;
-//       case 'Herbs':
-//         return <PlantTwo />;
-//       case 'Vegetables':
-//         return <PlantThree />;
-//       case "Mushroom's":
-//         return <PlantOne />;
-//       case 'Flowering Plants':
-//         return <PlantTwo />;
-//       default:
-//         return <PlantOne />;
-//     }
-//   };
-
-//   const getParameterIcon = (param: string) => {
-//     switch (param) {
-//       case 'light':
-//         return <LightIcon />;
-//       case 'temperature':
-//         return <TempIcon />;
-//       case 'humidity':
-//         return <HumidityIcon />;
-//       case 'nutrition':
-//         return <NutritionIcon />;
-//       case 'vent':
-//         return <VentIcon />;
-//       case 'watering':
-//         return <WaterIcon />;
-//       default:
-//         return null;
-//     }
-//   };
-
-//   const getParameterLabel = (param: string) => {
-//     switch (param) {
-//       case 'light':
-//         return 'Light';
-//       case 'temperature':
-//         return 'Temperature';
-//       case 'humidity':
-//         return 'Humidity';
-//       case 'nutrition':
-//         return 'Nutrition';
-//       case 'vent':
-//         return 'Vent';
-//       case 'watering':
-//         return 'Watering';
-//       default:
-//         return param;
-//     }
-//   };
-
-//   const handleSettingClick = (setting: string) => {
-//     // Vent and watering go directly to main settings page
-//     if (setting === 'vent' || setting === 'watering') {
-//       router.push(ROUTES.SETTINGS);
-//       return;
-//     }
-
-//     // Other settings have individual pages
-//     switch (setting) {
-//       case 'light':
-//         router.push(ROUTES.PLANT_SETTINGS.LIGHT);
-//         break;
-//       case 'temperature':
-//         router.push(ROUTES.PLANT_SETTINGS.TEMPERATURE);
-//         break;
-//       case 'humidity':
-//         router.push(ROUTES.PLANT_SETTINGS.HUMIDITY);
-//         break;
-//       case 'nutrition':
-//         router.push(ROUTES.PLANT_SETTINGS.NUTRITION);
-//         break;
-//       default:
-//         router.push(ROUTES.SETTINGS);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 flex flex-col">
-//       {/* Plant Info Section */}
-//       <div className="bg-white p-6 shadow-sm">
-//         <div className="max-w-md mx-auto flex flex-col items-center">
-//           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
-//             {getPlantIcon(store.user?.cropType || null)}
-//           </div>
-//           <h2 className="text-xl font-semibold text-gray-800 mb-2">
-//             {store.user?.cropType || 'Select Plant'}
-//           </h2>
-//         </div>
-//       </div>
-
-//       {/* Growth Days Scale */}
-//       <div className="bg-white mx-6 mt-6 p-4 rounded-2xl shadow-sm">
-//         <div className="flex justify-center gap-2 mb-4">
-//           {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
-//             <button
-//               key={day}
-//               className={`w-8 h-8 rounded-xl border-2 transition-colors ${
-//                 day <= growthDays
-//                   ? 'bg-green-500 border-green-500 text-white'
-//                   : 'bg-gray-100 border-gray-200 text-gray-400'
-//               }`}
-//               disabled={day > growthDays}
-//             >
-//               {day}
-//             </button>
-//           ))}
-//         </div>
-//         <p className="text-center text-sm text-gray-600">
-//           Day {growthDays} of growth
-//         </p>
-//       </div>
-
-//       {/* Settings Buttons */}
-//       <div className="flex-1 p-6">
-//         <div className="max-w-md mx-auto grid grid-cols-2 gap-4">
-//           {parameters.map((param) => (
-//             <div
-//               key={param}
-//               className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-3"
-//             >
-//               <button
-//                 onClick={() => handleSettingClick(param)}
-//                 className="flex flex-col items-center gap-3 w-full"
-//               >
-//                 <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
-//                   {getParameterIcon(param)}
-//                 </div>
-//                 <span className="text-sm font-medium text-gray-700">
-//                   {getParameterLabel(param)}
-//                 </span>
-//               </button>
-//               {(param === 'watering' || param === 'vent') && (
-//                 <Switch
-//                   checked={param === 'watering' ? wateringEnabled : ventEnabled}
-//                   onCheckedChange={param === 'watering' ? setWateringEnabled : setVentEnabled}
-//                   className="mt-2"
-//                 />
-//               )}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Bottom Navigation */}
-//       <BottomNavigation activeTab="home" />
-//     </div>
-//   );
-// };
-
-// export default DashboardContent;
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { useStorage } from '@/hooks/useStorage';
+import Image from 'next/image';
 import { ROUTES } from '@/utils/constants';
 import { CropTypeLabels } from '@/types/types';
-import { useCurrentValues } from '@/hooks';
+import { useCurrentValues } from '@/hooks/useCurrentValues';
+import { useSettings } from '@/hooks/useSettings';
 
 import LightIcon from '@/assets/svg/LightIcon';
 import TempIcon from '@/assets/svg/TempIcon';
@@ -201,7 +15,6 @@ import NutritionIcon from '@/assets/svg/NutritionIcon';
 import HumidityIcon from '@/assets/svg/HumidityIcon';
 import VentIcon from '@/assets/svg/VentIcon';
 import WaterIcon from '@/assets/svg/WaterIcon';
-import PlantOne from '@/assets/svg/PlantOne';
 
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { Switch } from '@/components/ui/switch';
@@ -210,47 +23,52 @@ const DashboardContent = () => {
   const router = useRouter();
   const [store] = useStorage();
   const { currentValues, loading: valuesLoading } = useCurrentValues();
+  const { settings, updateSettings } = useSettings();
 
   const currentDay = store.user?.growthDay || 12;
   const totalDays = store.user?.totalGrowthDays || 21;
-  const daysLeft = totalDays - currentDay;
-
   const progressPercentage = Math.min((currentDay / totalDays) * 100, 100);
 
   const parameters = [
-    'light',
-    'temperature',
-    'humidity',
-    'nutrition',
-    'vent',
-    'watering',
+    'Light',
+    'Temperature',
+    'Humidity',
+    'Nutrition',
+    'Vent',
+    'Watering',
   ];
 
-  const getCropName = (id: any) => {
-    if (!id) return 'Select Plant';
+  const getIsActive = (param: string) => {
+    const key = param.toLowerCase();
+    if (!settings || !settings[key]) return false;
+    return typeof settings[key] === 'object' ? settings[key].isEnabled : true;
+  };
 
-    // if id - number, map to label
-    // if id - string, return as is
-    if (typeof id === 'number') {
-      return CropTypeLabels[id] || 'Unknown Plant';
-    }
+  const handleToggle = (param: string, checked: boolean) => {
+    const key = param.toLowerCase();
+    const currentValue =
+      typeof settings?.[key] === 'object'
+        ? settings[key].value
+        : currentValues?.[key]?.toString() || '0';
 
-    return id;
+    updateSettings({
+      [key]: { isEnabled: checked, value: currentValue },
+    });
   };
 
   const getParameterIcon = (param: string) => {
     switch (param) {
-      case 'light':
+      case 'Light':
         return <LightIcon />;
-      case 'temperature':
+      case 'Temperature':
         return <TempIcon />;
-      case 'humidity':
+      case 'Humidity':
         return <HumidityIcon />;
-      case 'nutrition':
+      case 'Nutrition':
         return <NutritionIcon />;
-      case 'vent':
+      case 'Vent':
         return <VentIcon />;
-      case 'watering':
+      case 'Watering':
         return <WaterIcon />;
       default:
         return null;
@@ -258,86 +76,106 @@ const DashboardContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col max-w-[768px] mx-auto">
+    <div className="h-screen bg-white flex flex-col max-w-[768px] mx-auto">
       {/* Plant Info Section */}
-      <div className="p-6 flex flex-col items-center">
-        <div className="w-32 h-32 rounded-full border-2 border-[#53C904] p-1 mb-4 overflow-hidden">
-          <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center">
-            <PlantOne />
-          </div>
+      <div className="pt-[5px] pr-[20px] pb-[12px] pl-[20px]  flex flex-col items-center">
+        <div className="w-[148px] h-[148px] md:w-[168px] md:h-[168px] relative rounded-full border-2 border-[#53C904] p-1 overflow-hidden">
+          <Image
+            src="/images/green.png"
+            alt="Plant"
+            fill
+            sizes="sizes=(max-width: 768px) 148px, 158px"
+            priority
+            className="object-cover"
+          />
         </div>
-        <h1 className="text-3xl font-bold text-black mb-1">
-          {getCropName(store.user?.cropType as any)}
+        <h1 className="text-[24px] font-bold text-black ">
+          {store.user?.cropType
+            ? CropTypeLabels[store.user.cropType]
+            : 'Microgreens'}
         </h1>
-        {/* Growth Range Section */}
 
-        <div className="w-full mt-4 px-4">
-          <div className="relative w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+        <div className="w-full mt-[4px] px-4 flex flex-col items-center">
+          <div className="relative w-[196px] md:w-[450px] h-[8px] bg-gray-100 rounded-full overflow-hidden">
             <div
-              className="absolute left-0 top-0 h-full bg-[#53C904] transition-all duration-1000 ease-out rounded-full"
+              className="absolute left-0 top-0 bg-[#53C904] h-[8px] transition-all duration-1000 ease-out rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
           <div className="flex justify-between mt-2 px-1">
             <span className="text-[#53C904] font-bold text-sm">
               {currentDay}
-              <span className="text-gray-300 font-medium">
+              <span className="text-gray-300 font-medium ml-1">
                 /{totalDays} days
               </span>
             </span>
             <span className="text-gray-400 text-sm font-medium">
-              ({daysLeft} days till harvest)
+              ({totalDays - currentDay} days till harvest)
             </span>
           </div>
         </div>
       </div>
 
-      {/* Settings Grid */}
-      <div className="flex-1 px-4 py-2">
+      <div className="px-4 py-2  mb-[38px]">
         <div className="grid grid-cols-2 gap-4">
-          {parameters.map((param) => (
-            <div
-              key={param}
-              className="bg-white p-5 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50 flex flex-col items-start"
-            >
-              <button
+          {parameters.map((param) => {
+            const key = param.toLowerCase();
+            const realValue = currentValues?.[key];
+            const hasData = realValue !== undefined && realValue !== null;
+            const isSwitchable = param === 'Vent' || param === 'Watering';
+
+            return (
+              <div
+                key={param}
+                className="bg-white p-[12px] md:p-[14px]  rounded-[12px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col justify-between h-[107px]  md:h-[118px]  w-full md:w-[300px] mx-auto cursor-pointer"
                 onClick={() =>
                   router.push(
-                    ROUTES.PLANT_SETTINGS[
-                      param.toUpperCase() as keyof typeof ROUTES.PLANT_SETTINGS
-                    ] || ROUTES.SETTINGS
+                    ROUTES.PLANT_SETTINGS[param.toUpperCase() as any] ||
+                      ROUTES.SETTINGS
                   )
                 }
-                className="w-full text-left"
               >
-                <div className="text-[#53C904] mb-3 size-6">
+                <div className="text-[#53C904] size-6 flex items-center justify-center mb-2">
                   {getParameterIcon(param)}
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-black">
-                    {valuesLoading
-                      ? '...'
-                      : currentValues?.[param] !== undefined
-                        ? `${currentValues[param]}${param === 'temperature' ? '°C' : '%'}`
-                        : '--'}
-                  </span>
-                  <span className="text-gray-500 font-semibold text-sm">
-                    {param.charAt(0).toUpperCase() + param.slice(1)}
-                  </span>
-                </div>
-              </button>
+                <div className="flex flex-col mt-auto">
+                  {!isSwitchable && (
+                    <span
+                      className={`text-[24px] font-bold leading-tight ${
+                        hasData ? 'text-black' : 'text-gray-300'
+                      }`}
+                    >
+                      {valuesLoading
+                        ? '...'
+                        : hasData
+                          ? `${realValue}${param === 'Temperature' ? '°C' : '%'}`
+                          : 'No data'}
+                    </span>
+                  )}
 
-              {(param === 'watering' || param === 'vent') && (
-                <div className="mt-4 w-full flex justify-end">
-                  <Switch
-                    checked={true} // Тут підключити реальний стан
-                    className="data-[state=checked]:bg-[#53C904]"
-                  />
+                  {isSwitchable && (
+                    <div
+                      className="mb-2 h-6 flex items-center"
+                      onClick={(e) => e.stopPropagation()} // Зупиняємо перехід по картці
+                    >
+                      <Switch
+                        checked={getIsActive(param)}
+                        onCheckedChange={(checked) =>
+                          handleToggle(param, checked)
+                        }
+                        className="w-10 h-6 data-[state=checked]:bg-[#53C904]"
+                      />
+                    </div>
+                  )}
+
+                  <span className="text-black font-semibold text-[16px] md:text-[18px]">
+                    {param}
+                  </span>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
 

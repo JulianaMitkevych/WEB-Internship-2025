@@ -16,9 +16,16 @@
   --dark-100: #22222f;
 }
 
-body {
+/* body {
   font-family: system-ui, sans-serif;
-  /* overflow: hidden; */
+  overflow: hidden;
+} */
+body {
+  background-color: var(--bone-white);
+  font-family: var(--font-inter), sans-serif;
+  /* overflow: hidden;  */
+  height: 100vh;
+  height: 100dvh;  
 }
 
 @theme inline {
@@ -367,6 +374,8 @@ body {
     color: var(--color-foreground);
   }
 }
+
+
 
 @theme {
   --color-sidebar: var(--sidebar);
