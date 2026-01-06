@@ -23,7 +23,7 @@ export default function TemperatureSettingsPage() {
     () => [
       { label: 'Current', value: '24 °C' },
       { label: 'Recommended', value: '26 °C' },
-      { label: 'Week', value: '25.2 °C' }, 
+      { label: 'Week', value: '25.2 °C' },
       { label: 'Total', value: 'Avg 24.5' },
     ],
     []
@@ -40,7 +40,6 @@ export default function TemperatureSettingsPage() {
           className="mr-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
           <ChevronLeft className="size-6 stroke-[3px]" />
-         
         </Button>
         <h1 className="text-[24px] font-bold">Temperature</h1>
       </div>
@@ -49,9 +48,9 @@ export default function TemperatureSettingsPage() {
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <TempIcon />
+            <TempIcon className="size-8 md:size-10"  />
           </div>
-          <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full max-w-[200px]">
+          <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
             Set the ideal temperature range for your plants to thrive.
           </p>
         </div>

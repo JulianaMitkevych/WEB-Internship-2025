@@ -78,7 +78,7 @@ const DashboardContent = () => {
   return (
     <div className="h-screen bg-white flex flex-col max-w-[768px] mx-auto">
       {/* Plant Info Section */}
-      <div className="pt-[5px] pr-[20px] pb-[12px] pl-[20px]  flex flex-col items-center">
+      <div className=" p-[20px]  flex flex-col items-center">
         <div className="w-[148px] h-[148px] md:w-[168px] md:h-[168px] relative rounded-full border-2 border-[#53C904] p-1 overflow-hidden">
           <Image
             src="/images/green.png"
@@ -89,7 +89,7 @@ const DashboardContent = () => {
             className="object-cover"
           />
         </div>
-        <h1 className="text-[24px] font-bold text-black ">
+        <h1 className="text-[24px] p-[10px] font-bold text-black ">
           {store.user?.cropType
             ? CropTypeLabels[store.user.cropType]
             : 'Microgreens'}
@@ -116,7 +116,7 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      <div className="px-4 py-2  mb-[38px]">
+      <div className="px-4 py-2  mb:px-8 mb-[28px]">
         <div className="grid grid-cols-2 gap-4">
           {parameters.map((param) => {
             const key = param.toLowerCase();

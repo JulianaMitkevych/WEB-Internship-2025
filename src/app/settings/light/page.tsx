@@ -50,13 +50,12 @@ export default function LightSettingsPage() {
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <LightIcon />
+            <LightIcon className="size-8 md:size:10"   />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
             Adjust the light intensity for your plants growth cycles.
           </p>
         </div>
-        {/*!!!  `settings` або `chartData`!!! */}
         <span className="text-[24px] font-bold text-[#53C904]">60%</span>
       </div>
 

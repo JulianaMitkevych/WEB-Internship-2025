@@ -19,7 +19,6 @@ export default function SettingsPage() {
   const router = useRouter();
   const { settings, updateSettings, isLoading } = useSettings();
   const { post: apiPost } = useApi();
-  // const { post: apiPost } = useApi();
   const [lightValue, setLightValue] = useState<number>(8);
   const [temperatureValue, setTemperatureValue] = useState<number>(24);
   const [humidityValue, setHumidityValue] = useState<number>(50);
@@ -29,6 +28,8 @@ export default function SettingsPage() {
 
   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
   const [lightEnabled, setLightEnabled] = useState<boolean>(true);
+
+  // FUNCTION DATA GNERATION__________________________________
 
  const generateMonthlyStats = async () => {
    try {
@@ -86,7 +87,8 @@ export default function SettingsPage() {
      alert('Error saving data.');
    }
  };
-
+  // FUNCTION ENDS _______________________________________
+  
   useEffect(() => {
     if (settings) {
       const getVal = (field: any) =>
