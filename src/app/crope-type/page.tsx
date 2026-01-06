@@ -20,9 +20,16 @@ type UpdateCropTypeResponse = {
 export default function SelectCropTypePage() {
   const router = useRouter();
   const [store, setStore] = useStorage();
-  //  loading 
+  //  loading
   const { post, loading } = useApi<UpdateCropTypeResponse>();
   const [selectedId, setSelectedId] = useState<number>(1);
+
+  // If user already has crop type, redirect to dashboard
+  useEffect(() => {
+    if (store.user?.cropType) {
+      router.push(ROUTES.DASHBOARD);
+    }
+  }, [store.user?.cropType, router]);
 
   const handleStartPlanting = async () => {
     if (!store.user) {

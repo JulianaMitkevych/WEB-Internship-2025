@@ -74,9 +74,11 @@ const LoginForm = () => {
           createdAt: response.user.createdAt ?? null,
         };
         setStore((prev) => ({ ...prev, user: normalizedUser }));
-      }
 
-      router.push(ROUTES.ONBOARDING);
+        // Redirect to dashboard if user already has crop type selected, otherwise to onboarding
+        const redirectRoute = normalizedUser.cropType ? ROUTES.DASHBOARD : ROUTES.ONBOARDING;
+        router.push(redirectRoute);
+      }
     } catch (error: any) {
       if (error?.code?.startsWith('auth/')) {
         const errorMessages: Record<string, string> = {

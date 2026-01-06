@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import { useStorage } from '@/hooks/useStorage';
@@ -6,9 +5,9 @@ import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { History, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/utils/constants';
-import LogoutButton from '@/components/profile-user/LogoutButton'
+import LogoutButton from '@/components/profile-user/LogoutButton';
 
-import {PlantIcon} from '@/assets/svg/PlantIcon';
+import { PlantIcon } from '@/assets/svg/PlantIcon';
 import ChangeIcon from '@/assets/svg/ChangeIcon';
 import WhiteHarvest from '@/assets/svg/WhiteHarvest';
 
@@ -24,14 +23,18 @@ export default function ProfilePage() {
   const totalHarvest = 5;
   const totalDays = 84;
 
-  return (
-        <div className="min-h-screen bg-white flex flex-col items-center">
+  // Check if user can change crop type (only after harvest completion)
+  const canChangeCropType = () => {
+    if (!store.user?.cropType) return false; // Can't change if no crop type selected
+    if (!store.user.growthDay || !store.user.totalGrowthDays) return false; // Can't determine if harvest is complete
+    return store.user.growthDay >= store.user.totalGrowthDays; // Can change only after harvest
+  };
 
+  return (
+    <div className="min-h-screen bg-white flex flex-col items-center">
       <div className="text-center">
-        <h2 className="text-[28px] text-back font-bold text-black">
-          Profile
-        </h2>
-     </div>
+        <h2 className="text-[28px] text-back font-bold text-black">Profile</h2>
+      </div>
 
       <div className="w-full max-w-[768px] flex-1 pb-24">
         <div className="p-6">
@@ -62,7 +65,9 @@ export default function ProfilePage() {
                   Corp Type
                 </p>
                 <p className="text-[16px] md:text-[18px] font-bold text-[#53C904]">
-                  {mounted ? (store.user?.cropType || 'Microgreens') : 'Loading...'}
+                  {mounted
+                    ? store.user?.cropType || 'Microgreens'
+                    : 'Loading...'}
                 </p>
               </div>
               <div className="h-10 w-[1px] bg-[#48BB78] opacity-30"></div>
@@ -80,15 +85,31 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <button
               onClick={() => router.push(ROUTES.CHANGE_CROP_TYPE)}
-              className="w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
+              disabled={!canChangeCropType()}
+              className={`w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group transition-all ${
+                !canChangeCropType()
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'active:scale-[0.98] hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]'
+              }`}
             >
               <div className="flex items-center">
                 <div className="mr-4">
                   <ChangeIcon className="w-6 h-6" />
                 </div>
-                <span className="text-[16px] font-medium text-[#2D3748]">
-                  Change Crop Type
-                </span>
+                <div className="flex flex-col items-start">
+                  <span
+                    className={`text-[16px] font-medium ${
+                      !canChangeCropType() ? 'text-gray-400' : 'text-[#2D3748]'
+                    }`}
+                  >
+                    Change Crop Type
+                  </span>
+                  {!canChangeCropType() && store.user?.cropType && (
+                    <span className="text-xs text-gray-400 mt-1">
+                      Available after harvest completion
+                    </span>
+                  )}
+                </div>
               </div>
               <ChevronRight className="w-5 h-5 text-[#2D3748]" />
             </button>
@@ -134,6 +155,5 @@ export default function ProfilePage() {
         <BottomNavigation activeTab="profile" />
       </div>
     </div>
-
   );
 }

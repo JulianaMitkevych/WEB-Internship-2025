@@ -44,6 +44,12 @@ export const AuthInitializer = () => {
             };
 
             setStore((prev) => ({ ...prev, user: normalizedUser }));
+
+            // If user already has crop type and is trying to access onboarding or crop-type pages, redirect to dashboard
+            if (normalizedUser.cropType && (pathname === ROUTES.ONBOARDING || pathname === ROUTES.SELECT_CROP_TYPE)) {
+              router.push(ROUTES.DASHBOARD);
+              return;
+            }
           } else {
             // No valid session, redirect to login
             router.push(ROUTES.LOGIN);
@@ -53,6 +59,11 @@ export const AuthInitializer = () => {
           // Clear any stale data and redirect to login
           setStore((prev) => ({ ...prev, user: null }));
           router.push(ROUTES.LOGIN);
+        }
+      } else {
+        // User data exists, check if they should be redirected
+        if (store.user.cropType && (pathname === ROUTES.ONBOARDING || pathname === ROUTES.SELECT_CROP_TYPE)) {
+          router.push(ROUTES.DASHBOARD);
         }
       }
     };

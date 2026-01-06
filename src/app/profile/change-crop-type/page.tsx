@@ -22,6 +22,20 @@ export default function ChangeCropTypePage() {
   const [store, setStore] = useStorage();
   const { post, loading } = useApi<UpdateCropTypeResponse>();
 
+  // Check if user can change crop type (only after harvest completion)
+  const canChangeCropType = () => {
+    if (!store.user?.cropType) return false; // Can't change if no crop type selected
+    if (!store.user.growthDay || !store.user.totalGrowthDays) return false; // Can't determine if harvest is complete
+    return store.user.growthDay >= store.user.totalGrowthDays; // Can change only after harvest
+  };
+
+  // If user cannot change crop type, redirect back to profile
+  useEffect(() => {
+    if (!canChangeCropType()) {
+      router.push(ROUTES.PROFILE);
+    }
+  }, [store.user, router]);
+
   // Find the current crop type ID or default to 1
   const getCurrentCropId = () => {
     if (!store.user?.cropType) return 1;

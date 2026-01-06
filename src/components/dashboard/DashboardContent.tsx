@@ -1,11 +1,10 @@
-
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { useStorage } from '@/hooks/useStorage';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { ROUTES } from '@/utils/constants';
-import { CropTypeLabels } from '@/types/types';
 import { useCurrentValues } from '@/hooks/useCurrentValues';
 import { useSettings } from '@/hooks/useSettings';
 
@@ -24,6 +23,11 @@ const DashboardContent = () => {
   const [store] = useStorage();
   const { currentValues, loading: valuesLoading } = useCurrentValues();
   const { settings, updateSettings } = useSettings();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const currentDay = store.user?.growthDay || 12;
   const totalDays = store.user?.totalGrowthDays || 21;
@@ -90,13 +94,11 @@ const DashboardContent = () => {
           />
         </div>
         <h1 className="text-[24px] p-[10px] font-bold text-black ">
-          {store.user?.cropType
-            ? CropTypeLabels[store.user.cropType]
-            : 'Microgreens'}
+          {mounted ? store.user?.cropType || 'Microgreens' : 'Microgreens'}
         </h1>
 
-        <div className="w-full mt-[4px] px-4 flex flex-col items-center">
-          <div className="relative w-[196px] md:w-[450px] h-[8px] bg-gray-100 rounded-full overflow-hidden">
+        <div className="w-full mt-[10px] px-4 flex flex-col items-center">
+          <div className="relative w-[196px] sm:w-[450px] h-[8px] bg-gray-100 rounded-full overflow-hidden">
             <div
               className="absolute left-0 top-0 bg-[#53C904] h-[8px] transition-all duration-1000 ease-out rounded-full"
               style={{ width: `${progressPercentage}%` }}
@@ -116,7 +118,7 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      <div className="px-4 py-2  mb:px-8 mb-[28px]">
+      <div className="px-4 py-2 sm:px-8 mb-[38px]">
         <div className="grid grid-cols-2 gap-4">
           {parameters.map((param) => {
             const key = param.toLowerCase();
@@ -127,7 +129,7 @@ const DashboardContent = () => {
             return (
               <div
                 key={param}
-                className="bg-white p-[12px] md:p-[14px]  rounded-[12px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col justify-between h-[107px]  md:h-[118px]  w-full md:w-[300px] mx-auto cursor-pointer"
+                className="bg-white p-[12px] md:p-[14px]  rounded-[12px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col justify-between h-[107px]  md:h-[118px]  w-full sm:w-[280px] mx-auto cursor-pointer"
                 onClick={() =>
                   router.push(
                     ROUTES.PLANT_SETTINGS[param.toUpperCase() as any] ||
