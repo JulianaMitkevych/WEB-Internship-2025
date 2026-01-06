@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useChartData } from '@/hooks/useChartData'; 
+import { useChartData } from '@/hooks/useChartData';
 import { TChartPeriod } from '@/types/types';
 import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
@@ -48,10 +48,10 @@ export default function HumiditySettingsPage() {
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <HumidityIcon  className="size-8 md:size-10"   />
+            <HumidityIcon  className="size-8 sm:size-10"   />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
-            Maintain the optimal humidity levels for your plants health.
+            Maintain the optimal humidity levels for plants health.
           </p>
         </div>
         <span className="text-[24px] font-bold text-[#53C904]">58%</span>
@@ -63,7 +63,7 @@ export default function HumiditySettingsPage() {
           {(['Day', 'Week', 'Month'] as const).map((p) => (
             <button
               key={p}
-              onClick={() => setSelectedPeriod(p.toLowerCase() as TChartPeriod)} 
+              onClick={() => setSelectedPeriod(p.toLowerCase() as TChartPeriod)}
               className={cn(
                 'flex-1 py-3 text-sm font-semibold transition-all relative z-10',
                 selectedPeriod === p.toLowerCase()
@@ -81,7 +81,7 @@ export default function HumiditySettingsPage() {
       </div>
 
       {/* Chart Block */}
-      <div className="mx-4 mt-8">
+      <div className="mx-4 mt-8 p-1 sm:px-2">
         <div className="h-64 w-full relative">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
@@ -107,11 +107,11 @@ export default function HumiditySettingsPage() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-24">
+      <div className="grid grid-cols-2 gap-4 px-4 mt-8 justify-items-center pb-20">
         {metrics.map((item) => (
           <div
             key={item.label}
-            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+            className="bg-white flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px]  sm:h-[120px]  h-[80px]  shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
           >
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}

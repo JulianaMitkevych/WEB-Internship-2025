@@ -38,21 +38,20 @@ export default function NutritionSettingsPage() {
           variant="ghost"
           size="icon"
           className="mr-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
-
         >
           <ChevronLeft className="size-6 stroke-[3px]" />
         </Button>
-        <h1 className="text-[24px] font-bold">Nutrition</h1>
+        <h1 className="text-[24px]  text-black font-bold">Nutrition</h1>
       </div>
 
       {/* Info Section */}
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <NutritionIcon className="size-8 md:size-10"  />
+            <NutritionIcon className="size-8 sm:size-10" />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
-            Monitor and adjust the nutrient balance for optimal plant
+            Monitor the nutrient balance for plant
             development.
           </p>
         </div>
@@ -84,7 +83,7 @@ export default function NutritionSettingsPage() {
       </div>
 
       {/* Chart Block */}
-      <div className="mx-4 mt-8">
+      <div className="mx-4 mt-8 p-1 sm:px-2">
         <div className="h-64 w-full relative">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
@@ -99,18 +98,18 @@ export default function NutritionSettingsPage() {
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
-              unit="%" // Додано одиницю виміру
+              unit="%" 
             />
           )}
         </div>
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-24">
+      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-20">
         {metrics.map((item) => (
           <div
             key={item.label}
-            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30_rgba(0,0,0,0.04)] border border-gray-50"
+            className="bg-white flex flex-col justify-center p-[12px] sm:p-[20px]   pr-[27px] rounded-[12px] w-full ms:w-[300px] h-[80px] sm:h-[120px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
           >
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}

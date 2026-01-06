@@ -50,10 +50,10 @@ export default function LightSettingsPage() {
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <LightIcon className="size-8 md:size:10"   />
+            <LightIcon className="size-8 sm:size:10" />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
-            Adjust the light intensity for your plants growth cycles.
+            Adjust the light intensity for plants growth cycles.
           </p>
         </div>
         <span className="text-[24px] font-bold text-[#53C904]">60%</span>
@@ -83,7 +83,7 @@ export default function LightSettingsPage() {
       </div>
 
       {/* Chart Block */}
-      <div className="mx-4 mt-8">
+      <div className="mx-4 mt-8 p-1 sm:px-2">
         <div className="h-64 w-full relative">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
@@ -105,11 +105,11 @@ export default function LightSettingsPage() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-24">
+      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-20">
         {metrics.map((item) => (
           <div
             key={item.label}
-            className="bg-white flex flex-col justify-center p-[12px] pr-[27px] rounded-[12px] w-full md:w-[300px] h-[80px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+            className="bg-white flex flex-col justify-center p-[12px] sm:p-[20px]   pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
           >
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}
