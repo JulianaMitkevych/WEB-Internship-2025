@@ -33,19 +33,19 @@ const LogoutButton = () => {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
+      className="w-full flex items-center h-[67px]   sm:min-h-[97px]  justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
       aria-label="Log out"
     >
       <div className="flex items-center">
         <div className="mr-4">
-          <LogOut className="w-6 h-6 text-[#EB5757]" />
+          <LogOut className="w-6 h-6 sm:w-8 sm:h-8  text-[#EB5757]" />
         </div>
-        <span className="text-[16px] md:text-[18px] font-medium text-[#EB5757]">
+        <span className="text-[16px] md:text-[18px]  font-medium text-[#EB5757]">
           Log Out
         </span>
       </div>
 
-      <ChevronRight className="w-5 h-5 text-[#2D3748]" />
+      <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#2F7302]" />
     </button>
   );
 };
