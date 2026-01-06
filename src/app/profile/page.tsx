@@ -88,6 +88,7 @@
 //   );
 // }
 'use client';
+import { useState, useEffect } from 'react';
 import { useStorage } from '@/hooks/useStorage';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { History, ChevronRight } from 'lucide-react';
@@ -102,6 +103,11 @@ import WhiteHarvest from '@/assets/svg/WhiteHarvest';
 export default function ProfilePage() {
   const [store] = useStorage();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const totalHarvest = 5;
   const totalDays = 84;
@@ -125,7 +131,9 @@ export default function ProfilePage() {
             <h1 className="text-[22px] md:text-[24px] font-bold text-[#2F7302] mb-1">
               Fantastik Gin-10
             </h1>
-            <p className="text-gray-400 text-sm mb-6">{store.user?.email}</p>
+            <p className="text-gray-400 text-sm mb-6">
+              {mounted ? store.user?.email || 'No email' : ''}
+            </p>
 
             <div className="flex justify-between items-center border-t border-gray-50 pt-6">
               <div className="flex-1">
@@ -142,7 +150,7 @@ export default function ProfilePage() {
                   Corp Type
                 </p>
                 <p className="text-[16px] md:text-[18px] font-bold text-[#53C904]">
-                  {store.user?.cropType || 'Microgreens'}
+                  {mounted ? (store.user?.cropType || 'Microgreens') : 'Loading...'}
                 </p>
               </div>
               <div className="h-10 w-[1px] bg-[#48BB78] opacity-30"></div>
@@ -214,6 +222,6 @@ export default function ProfilePage() {
         <BottomNavigation activeTab="profile" />
       </div>
     </div>
-   
+
   );
 }
