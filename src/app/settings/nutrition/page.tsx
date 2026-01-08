@@ -48,14 +48,13 @@ export default function NutritionSettingsPage() {
       <div className="px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-[#53C904]">
-            <NutritionIcon className="size-8 sm:size-10" />
+            <NutritionIcon className="size-7 sm:size-8" />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
             Monitor the nutrient balance for plant
             development.
           </p>
         </div>
-        {/*  */}
         <span className="text-[24px] font-bold text-[#53C904]">78%</span>
       </div>
 
