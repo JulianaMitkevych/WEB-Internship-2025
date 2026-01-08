@@ -6,6 +6,7 @@ export const ROUTES = {
 
   // Protected routes
   PROFILE: '/profile',
+  CHANGE_CROP_TYPE_INTERMEDIATE: '/profile/change-crop-type-intermediate',
   CHANGE_CROP_TYPE: '/profile/change-crop-type',
   MY_HARVEST: '/profile/my-harvest',
   HISTORIC_DATA: '/profile/historic-data',
@@ -29,6 +30,14 @@ export const ROUTES = {
     VENT: '/settings/vent',
   },
 
+  // Historic data routes
+  HISTORIC_DATA_PARAMS: {
+    LIGHT: '/profile/historic-data/light',
+    HUMIDITY: '/profile/historic-data/humidity',
+    TEMPERATURE: '/profile/historic-data/temperature',
+    NUTRITION: '/profile/historic-data/nutrition',
+  },
+
   // API routes
   API: {
     AUTH: {
@@ -50,6 +59,7 @@ export const PUBLIC_ROUTES = [
 // Protected routes
 export const PROTECTED_ROUTES = [
   ROUTES.PROFILE,
+  ROUTES.CHANGE_CROP_TYPE_INTERMEDIATE,
   ROUTES.CHANGE_CROP_TYPE,
   ROUTES.MY_HARVEST,
   ROUTES.HISTORIC_DATA,

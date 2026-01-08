@@ -1,35 +1,41 @@
 'use client';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useChartData } from '@/hooks/useChartData';
-import { useTheme } from '@/hooks/useTheme';
-import { TChartPeriod } from '@/types/types';
 import { cn } from '@/utils';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
-import {SmartChart} from '@/components/SmartChart/SmartChart';
-import HumidityIcon from '@/assets/svg/HumidityIcon';
+import { useTheme } from '@/hooks/useTheme';
+import LightIcon from '@/assets/svg/LightIcon';
+import { SmartChart } from '@/components/SmartChart/SmartChart';
+import { useChartData } from '@/hooks/useChartData';
+import { TChartPeriod } from '@/types/types';
 
-export default function HumiditySettingsPage() {
+export default function LightHistoricDataPage() {
   const router = useRouter();
   const { classes: themeClasses } = useTheme();
   const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week');
 
   const { chartData, loading, error } = useChartData({
-    parameter: 'humidity',
+    parameter: 'light',
     period: selectedPeriod,
   });
 
-  const metrics = useMemo(
-    () => [
-      { label: 'Current', value: '58%' },
-      { label: 'Recommended', value: '74%' },
-      { label: 'Week', value: '40 ml' },
-      { label: 'Total', value: '142 ml' },
-    ],
-    []
-  );
+  // Calculate max and min values from chart data
+  const { maxValue, minValue } = useMemo(() => {
+    if (!chartData || chartData.length === 0) {
+      return { maxValue: null, minValue: null };
+    }
+
+    const values = chartData.map(point => point.value);
+    const max = Math.max(...values);
+    const min = Math.min(...values);
+
+    return {
+      maxValue: max,
+      minValue: min,
+    };
+  }, [chartData]);
 
   return (
     <div className={`flex flex-col max-w-[768px] mx-auto ${themeClasses.background}`}>
@@ -43,20 +49,22 @@ export default function HumiditySettingsPage() {
         >
           <ChevronLeft className="size-6 stroke-[3px]" />
         </Button>
-        <h1 className="text-[24px] font-bold">Humidity</h1>
+        <h1 className="text-[24px]  text-black font-bold">Light</h1>
       </div>
 
       {/* Info Section */}
-      <div className="px-6 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="px-6 py-2 flex items-center justify-between ">
+        <div className="flex items-center gap-2">
           <div className="text-[#53C904]">
-            <HumidityIcon  className="size-8 sm:size-10"   />
+            <LightIcon className="size-8 sm:size-10" />
           </div>
           <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
-            Maintain the optimal humidity levels for plants health.
+            Historical light data for your crop.
           </p>
         </div>
-        <span className="text-[24px] font-bold text-[#53C904]">58%</span>
+        <span className="text-[22px]  sm:tex-[24px] font-bold text-[#53C904]">
+          {maxValue ? `${maxValue}%` : '85%'}
+        </span>
       </div>
 
       {/* Tabs */}
@@ -93,10 +101,6 @@ export default function HumiditySettingsPage() {
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
               <div className="text-red-500 text-sm">{error}</div>
             </div>
-          ) : chartData.length === 0 ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
-              <div className="text-gray-500 text-sm">No data available</div>
-            </div>
           ) : (
             <SmartChart
               data={chartData}
@@ -108,24 +112,38 @@ export default function HumiditySettingsPage() {
         </div>
       </div>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 px-4 mt-8 justify-items-center pb-20">
-        {metrics.map((item) => (
-          <div
-            key={item.label}
-            className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] sm:h-[120px] h-[80px] ${themeClasses.shadow} ${themeClasses.border}`}
-          >
-            <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
-              {item.value}
-            </div>
-            <div className="text-black font-semibold text-[clamp(14px,4vw,16px)]">
-              {item.label}
+      {/* Max/Min Metrics Grid */}
+      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-20">
+        <div
+          className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] ${themeClasses.shadow} ${themeClasses.border}`}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <ArrowUp className="size-4 text-red-500" />
+            <div className="text-red-500 font-bold text-[clamp(20px,6vw,28px)] leading-tight">
+              {maxValue !== null ? `${maxValue}%` : 'N/A'}
             </div>
           </div>
-        ))}
+          <div className={`${themeClasses.textPrimary} font-semibold text-[clamp(14px,4vw,16px)]`}>
+            Maximum
+          </div>
+        </div>
+
+        <div
+          className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] ${themeClasses.shadow} ${themeClasses.border}`}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <ArrowDown className="size-4 text-blue-500" />
+            <div className="text-blue-500 font-bold text-[clamp(20px,6vw,28px)] leading-tight">
+              {minValue !== null ? `${minValue}%` : 'N/A'}
+            </div>
+          </div>
+          <div className={`${themeClasses.textPrimary} font-semibold text-[clamp(14px,4vw,16px)]`}>
+            Minimum
+          </div>
+        </div>
       </div>
 
-      <BottomNavigation activeTab="settings" />
+      <BottomNavigation activeTab="profile" />
     </div>
   );
 }

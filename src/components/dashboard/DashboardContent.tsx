@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useStorage } from '@/hooks/useStorage';
+import { useTheme } from '@/hooks/useTheme';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ROUTES } from '@/utils/constants';
@@ -23,6 +24,7 @@ const DashboardContent = () => {
   const [store] = useStorage();
   const { currentValues, loading: valuesLoading } = useCurrentValues();
   const { settings, updateSettings } = useSettings();
+  const { classes: themeClasses } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -80,7 +82,7 @@ const DashboardContent = () => {
   };
 
   return (
-    <div className="h-screen bg-white flex flex-col max-w-[768px] mx-auto">
+    <div className={`h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}>
       {/* Plant Info Section */}
       <div className=" p-[20px]  flex flex-col items-center">
         <div className="w-[148px] h-[148px] md:w-[168px] md:h-[168px] relative rounded-full border-2 border-[#53C904] p-1 overflow-hidden">
@@ -129,7 +131,7 @@ const DashboardContent = () => {
             return (
               <div
                 key={param}
-                className="bg-white p-[12px] md:p-[14px]  rounded-[12px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col justify-between h-[107px]  md:h-[118px]  w-full sm:w-[280px] mx-auto cursor-pointer"
+                className={`${themeClasses.cardBackground} p-[12px] md:p-[14px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[107px] md:h-[118px] w-full sm:w-[280px] mx-auto cursor-pointer`}
                 onClick={() =>
                   router.push(
                     ROUTES.PLANT_SETTINGS[param.toUpperCase() as any] ||
@@ -181,7 +183,9 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      <BottomNavigation activeTab="home" />
+      <div className={themeClasses.background}>
+        <BottomNavigation activeTab="home" />
+      </div>
     </div>
   );
 };

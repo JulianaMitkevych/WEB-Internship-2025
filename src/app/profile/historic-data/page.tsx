@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/utils/constants';
+import { useTheme } from '@/hooks/useTheme';
 import LightIcon from '@/assets/svg/LightIcon';
 import TempIcon from '@/assets/svg/TempIcon';
 import NutritionIcon from '@/assets/svg/NutritionIcon';
@@ -12,32 +12,47 @@ import { ChevronLeft } from 'lucide-react';
 
 const HistoricDataPage = () => {
   const router = useRouter();
+  const { classes: themeClasses, isDark } = useTheme();
 
   const parameters = [
     {
       name: 'Light',
-      icon: <LightIcon />,
-      route: ROUTES.PLANT_SETTINGS.LIGHT,
+      icon: <LightIcon className={isDark ? 'text-[#FFFFFF]' : ''} />,
+      route: ROUTES.HISTORIC_DATA_PARAMS.LIGHT,
     },
     {
       name: 'Temperature',
-      icon: <TempIcon className="size-8 sm:size-10" />,
-      route: ROUTES.PLANT_SETTINGS.TEMPERATURE,
+      icon: (
+        <TempIcon
+          className={`size-8 sm:size-10 ${isDark ? 'text-[#FFFFFF]' : ''}`}
+        />
+      ),
+      route: ROUTES.HISTORIC_DATA_PARAMS.TEMPERATURE,
     },
     {
       name: 'Humidity',
-      icon: <HumidityIcon className="sm:size-9" />,
-      route: ROUTES.PLANT_SETTINGS.HUMIDITY,
+      icon: (
+        <HumidityIcon
+          className={`sm:size-9 ${isDark ? 'text-[#FFFFFF]' : ''}`}
+        />
+      ),
+      route: ROUTES.HISTORIC_DATA_PARAMS.HUMIDITY,
     },
     {
       name: 'Nutrition',
-      icon: <NutritionIcon className="sm:size-8" />,
-      route: ROUTES.PLANT_SETTINGS.NUTRITION,
+      icon: (
+        <NutritionIcon
+          className={`sm:size-8 ${isDark ? 'text-[#FFFFFF]' : ''}`}
+        />
+      ),
+      route: ROUTES.HISTORIC_DATA_PARAMS.NUTRITION,
     },
   ];
 
   return (
-    <div className="h-screen bg-white flex flex-col max-w-[768px] mx-auto">
+    <div
+      className={`h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
+    >
       {/* Header */}
       <div className="flex items-center px-4 py-6">
         <button
@@ -46,7 +61,11 @@ const HistoricDataPage = () => {
         >
           <ChevronLeft className="w-6 h-6 text-black" />
         </button>
-        <h1 className="text-[24px] font-bold text-black ml-2">Historic Data</h1>
+        <h1
+          className={`text-[24px] font-bold ${themeClasses.textPrimary} ml-2`}
+        >
+          Historic Data
+        </h1>
       </div>
 
       {/* Grid Content */}
@@ -56,9 +75,8 @@ const HistoricDataPage = () => {
             <div
               key={param.name}
               onClick={() => router.push(param.route)}
-              className="bg-white p-[14px] sm:p-[20px] rounded-[12px] shadow-[0_4px_20px_rgba(0,0,0,0.07)] border border-gray-50 flex flex-col justify-between h-[95px] sm:h-[120px] w-full cursor-pointer active:scale-95 transition-transform"
+              className={`${themeClasses.cardBackground} p-[14px] sm:p-[20px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[95px] sm:h-[120px] w-full cursor-pointer active:scale-95 transition-transform`}
             >
-             
               <div className="text-[#53C904] flex items-start  w-[34px] h-[34px]  sm:w-[42px] sm:h-[42px] justify-start">
                 <div className="flex w-full items-center justify-center">
                   {param.icon}
@@ -66,7 +84,9 @@ const HistoricDataPage = () => {
               </div>
 
               <div className="flex flex-col mt-auto">
-                <span className="text-black text-[16px] font-semibold md:text-[18px] sm:font-bold text-left">
+                <span
+                  className={`${themeClasses.textPrimary} text-[16px] font-semibold md:text-[18px] sm:font-bold text-left`}
+                >
                   {param.name}
                 </span>
               </div>

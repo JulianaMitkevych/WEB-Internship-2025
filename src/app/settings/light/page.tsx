@@ -5,6 +5,7 @@ import { cn } from '@/utils';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
+import { useTheme } from '@/hooks/useTheme';
 import LightIcon from '@/assets/svg/LightIcon';
 import { SmartChart } from '@/components/SmartChart/SmartChart';
 import { useChartData } from '@/hooks/useChartData'; //import hook
@@ -12,7 +13,8 @@ import { TChartPeriod } from '@/types/types';
 
 export default function LightSettingsPage() {
   const router = useRouter();
-  
+  const { classes: themeClasses } = useTheme();
+
   const [selectedPeriod, setSelectedPeriod] = useState<TChartPeriod>('week'); // use TChartPeriod
 
   // call hook useChartData
@@ -32,7 +34,7 @@ export default function LightSettingsPage() {
   );
 
   return (
-    <div className="flex flex-col max-w-[768px] mx-auto">
+    <div className={`flex flex-col max-w-[768px] mx-auto ${themeClasses.background}`}>
       {/* Header */}
       <div className="p-4 flex items-center">
         <Button
@@ -109,7 +111,7 @@ export default function LightSettingsPage() {
         {metrics.map((item) => (
           <div
             key={item.label}
-            className="bg-white flex flex-col justify-center p-[12px] sm:p-[20px]   pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-50"
+            className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] ${themeClasses.shadow} ${themeClasses.border}`}
           >
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}

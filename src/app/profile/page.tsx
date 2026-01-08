@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useStorage } from '@/hooks/useStorage';
+import { useTheme } from '@/hooks/useTheme';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { History, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -13,6 +14,7 @@ import WhiteHarvest from '@/assets/svg/WhiteHarvest';
 
 export default function ProfilePage() {
   const [store] = useStorage();
+  const { classes: themeClasses } = useTheme();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
@@ -31,7 +33,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center">
+    <div className={`min-h-screen ${themeClasses.background} flex flex-col items-center`}>
       <div className="text-center">
         <h2 className="text-[28px] text-back font-bold text-black">Profile</h2>
       </div>
@@ -84,13 +86,8 @@ export default function ProfilePage() {
 
           <div className="space-y-4">
             <button
-              onClick={() => router.push(ROUTES.CHANGE_CROP_TYPE)}
-              disabled={!canChangeCropType()}
-              className={`w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group transition-all sm:min-h-[97px] ${
-                !canChangeCropType()
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'active:scale-[0.98] hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]'
-              }`}
+              onClick={() => router.push(ROUTES.CHANGE_CROP_TYPE_INTERMEDIATE)}
+              className="w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all sm:min-h-[97px] hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
             >
               <div className="flex items-center">
                 <div className="mr-4">
