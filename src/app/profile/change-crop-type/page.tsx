@@ -118,7 +118,7 @@ export default function ChangeCropTypePage() {
             variant="gradient"
             onClick={handleUpdateCropType}
             disabled={loading}
-            className="w-full max-w-[327px] h-12 text-base font-semibold text-white rounded-2xl shadow-md transition-all"
+            className="w-full max-w-[327px] h-12 text-base font-semibold text-black rounded-2xl shadow-md transition-all"
           >
             {loading ? 'Updating...' : 'Update Crop Type'}
           </Button>
@@ -130,4 +130,5 @@ export default function ChangeCropTypePage() {
     </div>
   );
 }
+
 

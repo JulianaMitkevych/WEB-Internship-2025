@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-night-sky text-white shadow-xs hover:bg-night-sky/90',
         gradient:
-          'bg-gradient-to-t from-[#2F9E44] to-[#4CAF50] text-white shadow-md hover:bg-none hover:bg-green-800  focus:text-white active:text-white',
+          'bg-gradient-to-b from-[#53C904] to-[#2F7302] rounded-[12px] text-white shadow-md  hover:bg-green-800  focus:text-white active:text-white',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:

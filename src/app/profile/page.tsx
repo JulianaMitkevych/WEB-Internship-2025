@@ -25,7 +25,6 @@ export default function ProfilePage() {
   const totalHarvest = 5;
   const totalDays = 84;
 
-  // Check if user can change crop type (only after harvest completion)
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
     if (!store.user.growthDay || !store.user.totalGrowthDays) return false; // Can't determine if harvest is complete
@@ -33,14 +32,16 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className={`min-h-screen ${themeClasses.background} flex flex-col items-center`}>
+    <div
+      className={`min-h-screen ${themeClasses.background} flex flex-col items-center`}
+    >
       <div className="text-center">
         <h2 className="text-[28px] text-back font-bold text-black">Profile</h2>
       </div>
 
       <div className="w-full max-w-[768px] flex-1 pb-6">
         <div className="p-6  sm:p-16">
-          <div className="bg-white rounded-[24px] p-6 shadow-[0_0_20px_rgba(0,0,0,0.1)] text-center mb-8">
+          <div className="bg-white rounded-[24px] p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] text-center mb-8">
             <div className="flex justify-center mb-4">
               <PlantIcon className="w-16 h-16  sm:w-18 sm:h-18" />
             </div>
@@ -61,18 +62,18 @@ export default function ProfilePage() {
                   {totalHarvest}
                 </p>
               </div>
-              <div className="h-10 w-[1px] bg-[#48BB78] opacity-30"></div>
+              <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904] "></div>
               <div className="flex-1">
                 <p className="text-[11px] md:text-[14px] text-black mb-1">
                   Corp Type
                 </p>
-                <p className="text-[16px] md:text-[18px] font-bold text-[#53C904]">
+                <p className="text-[16px] md:text-[18px]  font-bold text-[#53C904]">
                   {mounted
                     ? store.user?.cropType || 'Microgreens'
                     : 'Loading...'}
                 </p>
               </div>
-              <div className="h-10 w-[1px] bg-[#48BB78] opacity-30"></div>
+              <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904]"></div>
               <div className="flex-1">
                 <p className="text-[11px]  sm:text-[14px]  text-black mb-1">
                   Total Days
@@ -91,7 +92,7 @@ export default function ProfilePage() {
             >
               <div className="flex items-center">
                 <div className="mr-4">
-                  <ChangeIcon className="w-6 h-6 sm:w-8  sm:h-8"   />
+                  <ChangeIcon className="w-6 h-6 sm:w-8  sm:h-8" />
                 </div>
                 <div className="flex flex-col sm:flex-row sm:gap-[10px] items-start ">
                   <span
@@ -102,8 +103,8 @@ export default function ProfilePage() {
                     Change Crop Type
                   </span>
                   {!canChangeCropType() && store.user?.cropType && (
-                    <span className="text-[10px] sm:text-[14px] text-gray-400 mt-1">
-                      Available after harvest completion
+                    <span className="text-[10px] sm:text-[14px] text-gray-200 mt-1 sm:ml-[20px]">
+                      Available after harvest
                     </span>
                   )}
                 </div>

@@ -24,7 +24,7 @@ export const SmartChart = ({
   unit = '',
 }: SmartChartProps) => {
   // interval
-  const labelInterval = period === 'month' ? Math.floor(data.length / 5) : 0;
+  const labelInterval = period === 'month' ? Math.floor(data.length / 6) : 0;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -75,7 +75,6 @@ export const SmartChart = ({
         />
 
         <YAxis hide={true} domain={['auto', 'auto']} />
-        {/* <YAxis hide={true} domain={[0, 'dataMax + 20']}/> */}
 
         <Line
           type="monotone"
@@ -110,7 +109,7 @@ export const SmartChart = ({
               <text
                 key={`label-${index}`}
                 x={x}
-                y={15} // точки для кращої читаємості
+                y={15} 
                 fill={color}
                 fontSize={12}
                 fontWeight="400"

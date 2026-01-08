@@ -1,12 +1,16 @@
+
 'use client';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/utils';
-import { ChevronLeft, ArrowUp, ArrowDown } from 'lucide-react';
+import {
+  ChevronLeft,
+  ArrowUpNarrowWide,
+  ArrowDownNarrowWide,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useTheme } from '@/hooks/useTheme';
-import TempIcon from '@/assets/svg/TempIcon';
 import { SmartChart } from '@/components/SmartChart/SmartChart';
 import { useChartData } from '@/hooks/useChartData';
 import { TChartPeriod } from '@/types/types';
@@ -21,26 +25,30 @@ export default function TemperatureHistoricDataPage() {
     period: selectedPeriod,
   });
 
-  // Calculate max and min values from chart data
-  const { maxValue, minValue } = useMemo(() => {
+  const { maxPoint, minPoint } = useMemo(() => {
     if (!chartData || chartData.length === 0) {
-      return { maxValue: null, minValue: null };
+      return { maxPoint: null, minPoint: null };
     }
 
-    const values = chartData.map(point => point.value);
-    const max = Math.max(...values);
-    const min = Math.min(...values);
+    const max = chartData.reduce((prev, current) =>
+      prev.value > current.value ? prev : current
+    );
+    const min = chartData.reduce((prev, current) =>
+      prev.value < current.value ? prev : current
+    );
 
     return {
-      maxValue: max,
-      minValue: min,
+      maxPoint: max,
+      minPoint: min,
     };
   }, [chartData]);
 
   return (
-    <div className={`flex flex-col max-w-[768px] mx-auto ${themeClasses.background}`}>
+    <div
+      className={`flex flex-col max-w-[768px] px-4 sm:px-12 mx-auto ${themeClasses.background}`}
+    >
       {/* Header */}
-      <div className="p-4 flex items-center">
+      <div className="py-3 px-4 flex items-center">
         <Button
           onClick={() => router.back()}
           variant="ghost"
@@ -49,22 +57,7 @@ export default function TemperatureHistoricDataPage() {
         >
           <ChevronLeft className="size-6 stroke-[3px]" />
         </Button>
-        <h1 className="text-[24px]  text-black font-bold">Temperature</h1>
-      </div>
-
-      {/* Info Section */}
-      <div className="px-6 py-2 flex items-center justify-between ">
-        <div className="flex items-center gap-2">
-          <div className="text-[#53C904]">
-            <TempIcon className="size-8 sm:size-10" />
-          </div>
-          <p className="text-[#808080] text-[12px] md:text-[16px] leading-tight w-full">
-            Historical temperature data for your crop.
-          </p>
-        </div>
-        <span className="text-[22px]  sm:tex-[24px] font-bold text-[#53C904]">
-          {maxValue ? `${maxValue}°C` : '24°C'}
-        </span>
+        <h1 className="text-[24px] text-black font-bold">Temperature</h1>
       </div>
 
       {/* Tabs */}
@@ -106,39 +99,51 @@ export default function TemperatureHistoricDataPage() {
               data={chartData}
               period={selectedPeriod}
               color="#65D11F"
-              unit="°C"
+              unit="`C"
             />
           )}
         </div>
       </div>
 
       {/* Max/Min Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 px-4 mt-10 justify-items-center pb-20">
+      <div className="grid grid-cols-2 gap-4 px-1 sm:px-6 mt-10 pb-20">
+        {/* Lowest Card */}
         <div
-          className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] ${themeClasses.shadow} ${themeClasses.border}`}
+          className={`${themeClasses.cardBackground} p-4 rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col gap-1`}
         >
-          <div className="flex items-center gap-2 mb-1">
-            <ArrowUp className="size-4 text-red-500" />
-            <div className="text-red-500 font-bold text-[clamp(20px,6vw,28px)] leading-tight">
-              {maxValue !== null ? `${maxValue}°C` : 'N/A'}
-            </div>
+          <div className="flex items-center gap-1 sm:gap-4">
+            <ArrowDownNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
+            <span className="text-black font-semibold text-[16px] sm:text-[22px]">
+              Lowest
+            </span>
           </div>
-          <div className={`${themeClasses.textPrimary} font-semibold text-[clamp(14px,4vw,16px)]`}>
-            Maximum
+          <div className="text-[#53C904] font-bold text-[24px] leading-tight">
+            {minPoint !== null ? `${minPoint.value}\`C` : '--\`C'}
+          </div>
+          <div className="text-black text-[16px]">
+            {minPoint?.date
+              ? new Date(minPoint.date).toLocaleDateString('uk-UA')
+              : '00.00.0000'}
           </div>
         </div>
 
+        {/* Highest Card */}
         <div
-          className={`${themeClasses.cardBackground} flex flex-col justify-center p-[12px] sm:p-[20px] pr-[27px] rounded-[12px] w-full sm:w-[300px] h-[80px] sm:h-[120px] ${themeClasses.shadow} ${themeClasses.border}`}
+          className={`${themeClasses.cardBackground} p-4 rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col gap-1`}
         >
-          <div className="flex items-center gap-2 mb-1">
-            <ArrowDown className="size-4 text-blue-500" />
-            <div className="text-blue-500 font-bold text-[clamp(20px,6vw,28px)] leading-tight">
-              {minValue !== null ? `${minValue}°C` : 'N/A'}
-            </div>
+          <div className="flex items-center gap-1 sm:gap-4">
+            <ArrowUpNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
+            <span className="text-black text-[16px] font-semibold sm:text-[22px]">
+              Highest
+            </span>
           </div>
-          <div className={`${themeClasses.textPrimary} font-semibold text-[clamp(14px,4vw,16px)]`}>
-            Minimum
+          <div className="text-[#53C904] font-bold text-[24px] leading-tight">
+            {maxPoint !== null ? `${maxPoint.value}\`C` : '--\`C'}
+          </div>
+          <div className="text-black text-[16px]">
+            {maxPoint?.date
+              ? new Date(maxPoint.date).toLocaleDateString('uk-UA')
+              : '00.00.0000'}
           </div>
         </div>
       </div>

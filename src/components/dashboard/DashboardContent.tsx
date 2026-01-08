@@ -82,10 +82,12 @@ const DashboardContent = () => {
   };
 
   return (
-    <div className={`h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}>
+    <div
+      className={`h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
+    >
       {/* Plant Info Section */}
       <div className=" p-[20px]  flex flex-col items-center">
-        <div className="w-[148px] h-[148px] md:w-[168px] md:h-[168px] relative rounded-full border-2 border-[#53C904] p-1 overflow-hidden">
+        <div className="w-[148px] h-[148px] ms:w-[168px] ms:h-[168px] relative rounded-full border-2 border-[#53C904] p-1 overflow-hidden">
           <Image
             src="/images/green.png"
             alt="Plant"
@@ -100,16 +102,16 @@ const DashboardContent = () => {
         </h1>
 
         <div className="w-full mt-[10px] px-4 flex flex-col items-center">
-          <div className="relative w-[196px] sm:w-[450px] h-[8px] bg-gray-100 rounded-full overflow-hidden">
+          <div className="relative w-[196px] sm:w-[450px] h-[8px] bg-[#D5E3CC] rounded-full overflow-hidden">
             <div
-              className="absolute left-0 top-0 bg-[#53C904] h-[8px] transition-all duration-1000 ease-out rounded-full"
+              className="absolute left-0 top-0 bg-gradient-to-b from-[#53C904] to-[#2F7302] h-[8px]  sm:h-[10px]  transition-all duration-1000 ease-out rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
           <div className="flex justify-between mt-2 px-1">
             <span className="text-[#53C904] font-bold text-sm">
               {currentDay}
-              <span className="text-gray-300 font-medium ml-1">
+              <span className="text-gray-400 font-medium ml-1">
                 /{totalDays} days
               </span>
             </span>
@@ -120,7 +122,7 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      <div className="px-4 py-2 sm:px-8 mb-[38px]">
+      <div className="px-4 py-2  sm:px-16  mb-[38px]">
         <div className="grid grid-cols-2 gap-4">
           {parameters.map((param) => {
             const key = param.toLowerCase();
@@ -131,7 +133,7 @@ const DashboardContent = () => {
             return (
               <div
                 key={param}
-                className={`${themeClasses.cardBackground} p-[12px] md:p-[14px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[107px] md:h-[118px] w-full sm:w-[280px] mx-auto cursor-pointer`}
+                className={`${themeClasses.cardBackground} p-[12px] sm:px-[20px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[107px] sm:h-[118px] w-full sm:w-[280px] mx-auto cursor-pointer`}
                 onClick={() =>
                   router.push(
                     ROUTES.PLANT_SETTINGS[param.toUpperCase() as any] ||
@@ -147,13 +149,13 @@ const DashboardContent = () => {
                   {!isSwitchable && (
                     <span
                       className={`text-[24px] font-bold leading-tight ${
-                        hasData ? 'text-black' : 'text-gray-300'
+                        hasData ? 'text-black' : 'text-gray-200'
                       }`}
                     >
                       {valuesLoading
                         ? '...'
                         : hasData
-                          ? `${realValue}${param === 'Temperature' ? '°C' : '%'}`
+                          ? `${realValue}${param === 'Temperature' ? '`C' : '%'}`
                           : 'No data'}
                     </span>
                   )}
@@ -161,7 +163,7 @@ const DashboardContent = () => {
                   {isSwitchable && (
                     <div
                       className="mb-2 h-6 flex items-center"
-                      onClick={(e) => e.stopPropagation()} // Зупиняємо перехід по картці
+                      onClick={(e) => e.stopPropagation()} // stop
                     >
                       <Switch
                         checked={getIsActive(param)}

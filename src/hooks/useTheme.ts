@@ -43,7 +43,7 @@ export const useTheme = () => {
     border: theme === 'dark' ? 'border-gray-700' : 'border-gray-50',
 
     // Shadow colors
-    shadow: theme === 'dark' ? 'shadow-[0_4px_20px_rgba(255,255,255,0.05)]' : 'shadow-[0_4px_20px_rgba(0,0,0,0.05)]',
+    shadow: theme === 'dark' ? 'shadow-[0_4px_20px_rgba(255,255,255,0.06)]' : 'shadow-[0_4px_20px_rgba(0,0,0,0.06)]',
     shadowHover: theme === 'dark' ? 'hover:shadow-[0_0_25px_rgba(255,255,255,0.1)]' : 'hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]',
   };
 

@@ -88,7 +88,7 @@ export default function SettingsPage() {
    }
  };
   // FUNCTION ENDS _______________________________________
-  
+
   useEffect(() => {
     if (settings) {
       const getVal = (field: any) =>
@@ -142,7 +142,7 @@ export default function SettingsPage() {
       setVal: setTemperatureValue,
       min: 10,
       max: 36,
-      labels: ['10°C', '24°C', '36°C'],
+      labels: ['10`C', '24`C', '36`C'],
     },
     {
       id: 'humidity',
@@ -181,9 +181,7 @@ export default function SettingsPage() {
       className={`h-screen max-w-[768px] mx-auto  flex flex-col pb-24 ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
     >
       <div className="p-6">
-        <h1 className="text-xl font-bold text-center text-gray-900">
-          Settings
-        </h1>
+        <h1 className="text-[24px] sm:text-[28px] font-bold text-center text-black">Settings</h1>
       </div>
 
       <div className="flex-1 px-4 space-y-4 max-w-md mx-auto w-full">
@@ -197,8 +195,8 @@ export default function SettingsPage() {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => router.push(`/settings/${item.id}`)}
               >
-                <item.icon className="w-6 h-6 text-green-700" />
-                <span className="font-bold text-gray-800">{item.title}</span>
+                <item.icon className="w-6 h-6 text-[#2F7302]" />
+                <span className="font-bold text-black">{item.title}</span>
               </div>
               {item.hasSwitch && (
                 <Switch
@@ -212,7 +210,7 @@ export default function SettingsPage() {
                       },
                     });
                   }}
-                  className="data-[state=checked]:bg-green-500"
+                  className="data-[state=checked]:bg-[#53C904]"
                 />
               )}
             </div>
@@ -230,13 +228,13 @@ export default function SettingsPage() {
                 max={item.max}
                 min={item.min}
                 step={1}
-                className="[&_[role=slider]]:bg-white [&_[role=slider]]:border-green-500"
+                className="[&_[role=slider]]:bg-white [&_[role=slider]]:border-[#2F7302]"
               />
               <div className="flex justify-between mt-2">
                 {item.labels.map((lbl) => (
                   <span
                     key={lbl}
-                    className="text-[10px] text-gray-400 font-medium"
+                    className="text-[10px] text-[#90949D] mt-[5px]  font-medium"
                   >
                     {lbl}
                   </span>

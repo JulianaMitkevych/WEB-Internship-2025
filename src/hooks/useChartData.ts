@@ -53,7 +53,7 @@ export const useChartData = ({ parameter, period }: UseChartDataOptions) => {
               return tA - tB;
             })
             .map((item: any) => {
-              // Конвертуємо для відображення часу
+              // convert time for display
               const dateSource = item.timestamp?.seconds
                 ? new Date(item.timestamp.seconds * 1000)
                 : new Date(item.timestamp || item.date);
