@@ -28,7 +28,7 @@ export const onboardingData: OnboardingStep[] = [
     id: '3',
     title: 'Observe and Grow',
     description:
-      "See your plants flourish with helpful graphs. You're set to grow and succeed!",
+      "See your plants flourish with helpful graphs. You're set to grow and \n succeed!",
     Icon: PlantThree,
   },
 ];

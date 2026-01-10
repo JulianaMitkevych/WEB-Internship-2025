@@ -40,7 +40,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="w-full max-w-[768px] flex-1 pb-6">
-        <div className="p-6  sm:p-16">
+        <div className="p-6  sm:px-16">
           <div className="bg-white rounded-[24px] p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] text-center mb-8">
             <div className="flex justify-center mb-4">
               <PlantIcon className="w-16 h-16  sm:w-18 sm:h-18" />

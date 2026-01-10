@@ -89,12 +89,12 @@ const SignUpForm = () => {
         <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0_14px_50px_rgba(0,0,0,0.08)]">
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
-              <PlantIcon size={50} />
+              <PlantIcon size={65} />
             </div>
-            <h1 className="text-3xl font-bold text-[#343434]">
+            <h1 className="text-3xl font-bold text-[#020202]">
               Create an account
             </h1>
-            <p className="mt-2 text-base text-grey-400">
+            <p className="mt-2 text-base text-[#6D6D6D]">
               Create an account to start growing plants
             </p>
           </div>

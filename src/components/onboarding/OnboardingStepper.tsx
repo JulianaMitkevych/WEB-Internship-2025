@@ -57,7 +57,7 @@ const OnboardingStepper = () => {
   return (
     <div className="flex flex-col items-center  bg-white pt-[10px] h-screen ">
       <div className="text-center">
-        <h2 className="text-[28px] font-bold text-[#323232]">
+        <h2 className="text-[28px] font-bold text-[#020202]">
           {currentStep.title}
         </h2>
       </div>
@@ -69,26 +69,26 @@ const OnboardingStepper = () => {
           disabled={false}
           className="relative w-full h-[320px] flex items-center justify-center transition-transform active:scale-95 disabled:opacity-100 disabled:pointer-events-none"
         >
-          <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 w-[326px] h-[238px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)]"></div>
-          <div className="relative z-20 h-[320px] w-[288px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)] flex items-center justify-center overflow-hidden">
+          <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 w-[312px] sm:w-[326px] h-[238px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)]"></div>
+          <div className="relative z-20 h-[320px] w-[280px] sm:w-[288px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)] flex items-center justify-center overflow-hidden">
             <StepIcon className="w-48 h-48 object-contain" />
           </div>
         </button>
 
         <div className="text-center mt-[16px]  ">
-          <p className="text-base text-grey-x-dark leading-relaxed">
+          <p className="text-[16px]  sm:text-[18px] text-[#020202] leading-relaxed  whitespace-pre-line">
             {currentStep.description}
           </p>
         </div>
 
-        <div className="flex justify-center space-x-2 mt-[20px]">
+        <div className="flex justify-center space-x-2 mt-[22px]">
           {onboardingData.map((step) => (
             <div
               key={step.id}
               className={`h-2 rounded-full transition-all duration-300 ${
                 step.id === currentStepId
-                  ? 'w-8 bg-[#4CAF50]'
-                  : 'w-2 bg-gray-200'
+                  ? 'w-8 bg-gradient-to-b from-[#53C904] to-[#2F7302]'
+                  : 'w-2 bg-[#D5E3CC]'
               }`}
             />
           ))}
@@ -97,7 +97,7 @@ const OnboardingStepper = () => {
         <div className="flex justify-between items-center w-full mt-[22px] ">
           <button
             onClick={handleSkip}
-            className="text-base text-[#4CAF50] font-semibold hover:opacity-80 transition-opacity"
+            className="text-base text-[#2F7302] font-semibold hover:opacity-70 transition-opacity"
           >
             Skip
           </button>
@@ -105,10 +105,13 @@ const OnboardingStepper = () => {
           <Button
             onClick={handleNext}
             variant="gradient"
-            className="px-10 py-6 text-base w-[121px]  h-[44px] rounded-[12px] bg-[#4CAF50] text-white hover:bg-[#45a049]"
+            className="px-10 py-6 text-base w-[121px] h-[44px] rounded-[12px] text-white 
+                   bg-gradient-to-b from-[#53C904] to-[#2F7302] 
+                   hover:from-[#2F7302] hover:to-[#53C904] 
+                   focus:from-[#2F7302] focus:to-[#53C904]"
           >
-            Next 
-            <ChevronRight className="w-5 h-5 text-green-800" strokeWidth={3} />
+            Next
+            <ChevronRight className="size-5 text-[#2F7302]" strokeWidth={3} />
           </Button>
         </div>
       </div>
