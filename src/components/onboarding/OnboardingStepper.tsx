@@ -2,16 +2,25 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { onboardingData, TOTAL_ONBOARDING_STEPS } from '@/data/onboardingData';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/utils/constants';
 import { ChevronRight } from 'lucide-react';
+import { useStorage } from '@/hooks/useStorage';
 
 const OnboardingStepper = () => {
   const [currentStepId, setCurrentStepId] = useState(onboardingData[0].id);
   const router = useRouter();
+  const [store] = useStorage();
+
+  // Redirect to dashboard if user already has crop type
+  useEffect(() => {
+    if (store.user?.cropType) {
+      router.push(ROUTES.DASHBOARD);
+    }
+  }, [store.user?.cropType, router]);
 
   const { currentStep, isLastStep, nextStepId } = useMemo(() => {
     const currentIndex = onboardingData.findIndex(
@@ -33,17 +42,22 @@ const OnboardingStepper = () => {
 
   // Handle card click navigation
   const handleCardClick = () => {
-    if (currentStep.title.includes('Plants')) {
+    if (currentStep.title.includes('Choose Your Plants')) {
       router.push(ROUTES.SELECT_CROP_TYPE);
-    } else if (currentStep.title.includes('Connect')) {
+    } else if (currentStep.title.includes('Connect and Control')) {
       router.push(ROUTES.CONNECT_DEVICE);
     }
   };
 
   const handleNext = () => {
     if (isLastStep) {
-      // TODO: Add check if crop type is selected before going to dashboard
-      // For now, just go to dashboard
+      // Check if user has selected crop type before allowing access to dashboard
+      if (!store.user?.cropType) {
+        // If no crop type selected, redirect to first step (plant selection)
+        setCurrentStepId(onboardingData[0].id);
+        return;
+      }
+      // If crop type is selected, allow access to dashboard
       router.push(ROUTES.DASHBOARD);
     } else if (nextStepId) {
       setCurrentStepId(nextStepId);

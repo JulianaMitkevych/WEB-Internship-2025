@@ -4,7 +4,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Check, Eye, EyeOff, TriangleAlert } from 'lucide-react';
 import { PlantIcon } from '@/assets/svg/PlantIcon';
@@ -22,6 +22,7 @@ import { useApi } from '@/hooks/useApi';
 import { SignUpFormValues, SignUpSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils/constants';
 import { Input } from '@/components/ui/input';
+import { useStorage } from '@/hooks/useStorage';
 
 const inputStyles =
   'h-12 rounded-xl border-2 border-[#EB5757]/60 bg-white pr-12 text-[#020202]';
@@ -29,8 +30,22 @@ const inputStyles =
 const SignUpForm = () => {
   const router = useRouter();
   const { post, error, loading } = useApi();
+  const [store] = useStorage();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Check if user is already authenticated and redirect accordingly
+  useEffect(() => {
+    if (store.user) {
+      // If user is authenticated but hasn't selected crop type, redirect to onboarding
+      if (!store.user.cropType) {
+        router.push(ROUTES.ONBOARDING);
+      } else {
+        // If user is authenticated and has crop type, redirect to dashboard
+        router.push(ROUTES.DASHBOARD);
+      }
+    }
+  }, [store.user, router]);
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpSchema),

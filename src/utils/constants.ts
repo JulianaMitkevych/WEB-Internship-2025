@@ -12,7 +12,7 @@ export const ROUTES = {
   HISTORIC_DATA: '/profile/historic-data',
   ONBOARDING: '/onboarding',
   SELECT_CROP_TYPE: '/crope-type',
-  CONNECT_DEVICE: '/onboarding/connect-device',
+  CONNECT_DEVICE: '/connect-device',
   DASHBOARD: '/dashboard',
   SETTINGS: '/settings',
 
