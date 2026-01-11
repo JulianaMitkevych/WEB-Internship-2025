@@ -59,7 +59,7 @@ const HistoricDataPage = () => {
           onClick={() => router.back()}
           className="p-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
-          <ChevronLeft className="w-6 h-6 text-black" />
+          <ChevronLeft className={`w-6 h-6 ${themeClasses.textPrimary}`} />
         </button>
         <h1
           className={`text-[24px] font-bold ${themeClasses.textPrimary} ml-2`}

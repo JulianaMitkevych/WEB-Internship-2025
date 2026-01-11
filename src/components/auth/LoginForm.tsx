@@ -22,6 +22,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useApi } from '@/hooks/useApi';
 import { useStorage } from '@/hooks/useStorage';
+import { useTheme } from '@/hooks/useTheme';
 import { LogInFormValues, LogInSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils';
 import { TUser } from '@/types/types';
@@ -32,11 +33,12 @@ type LoginResponse = {
   token: string;
 };
 
-const inputStyles =
-  'h-12 rounded-xl border-2 border-[#4CAF50]/60 bg-white pr-12 text-[#020202]';
+const inputStyles = (isDark: boolean, themeClasses: any) =>
+  `h-12 rounded-xl border-2 border-[#4CAF50]/60 ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} pr-12 ${themeClasses.textPrimary}`;
 
 const LoginForm = () => {
   const router = useRouter();
+  const { classes: themeClasses, isDark } = useTheme();
   const form = useForm<LogInFormValues>({
     resolver: zodResolver(LogInSchema),
     defaultValues: {
@@ -122,14 +124,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="h-screen bg-white flex items-center justify-center">
+    <div className={`h-screen ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} flex items-center justify-center`}>
       <div className="mx-auto w-full max-w-xl flex flex-col items-center justify-center px-6 py-8">
-        <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
+        <div className={`w-full max-w-3xl rounded-2xl ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]`}>
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={65} />
             </div>
-            <h1 className="text-3xl font-bold  text-[#020202]">Welcome back</h1>
+            <h1 className={`text-3xl font-bold ${themeClasses.textPrimary}`}>Welcome back</h1>
             <p className="mt-2 text-base  text-[#6D6D6D]">
               Sign in to grow your plants
             </p>
@@ -149,7 +151,7 @@ const LoginForm = () => {
                       <div className="relative">
                         <Input
                           placeholder="nick.name@mail.com"
-                          className={inputStyles}
+                          className={inputStyles(isDark, themeClasses)}
                           aria-invalid={!!fieldState.error}
                           {...field}
                         />
@@ -174,7 +176,7 @@ const LoginForm = () => {
                         <Input
                           type={showPassword ? 'text' : 'password'}
                           placeholder="••••••••"
-                          className={inputStyles}
+                          className={inputStyles(isDark, themeClasses)}
                           aria-invalid={!!fieldState.error}
                           {...field}
                         />

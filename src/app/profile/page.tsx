@@ -36,7 +36,11 @@ export default function ProfilePage() {
       className={`min-h-screen ${themeClasses.background} flex flex-col items-center`}
     >
       <div className="text-center">
-        <h2 className="text-[28px] text-back font-bold text-black">Profile</h2>
+        <h2
+          className={`text-[28px] text-back font-bold ${themeClasses.textPrimary}`}
+        >
+          Profile
+        </h2>
       </div>
 
       <div className="w-full max-w-[768px] flex-1 pb-6">
@@ -57,7 +61,9 @@ export default function ProfilePage() {
 
             <div className="flex justify-between items-center border-t border-gray-50 pt-6">
               <div className="flex-1">
-                <p className="text-[11px] md:text-[14px] text-black mb-1">
+                <p
+                  className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
+                >
                   Total Harvest
                 </p>
                 <p className="text-[16px]  md:text-[18px] font-bold text-[#53C904]">
@@ -66,7 +72,9 @@ export default function ProfilePage() {
               </div>
               <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904] "></div>
               <div className="flex-1">
-                <p className="text-[11px] md:text-[14px] text-black mb-1">
+                <p
+                  className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
+                >
                   Corp Type
                 </p>
                 <p className="text-[16px] md:text-[18px]  font-bold text-[#53C904]">
@@ -77,7 +85,9 @@ export default function ProfilePage() {
               </div>
               <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904]"></div>
               <div className="flex-1">
-                <p className="text-[11px]  sm:text-[14px]  text-black mb-1">
+                <p
+                  className={`text-[11px] sm:text-[14px] mb-1 ${themeClasses.textPrimary}`}
+                >
                   Total Days
                 </p>
                 <p className="text-[16px]  sm:text-[18px]  font-bold text-[#53C904]">
@@ -122,7 +132,9 @@ export default function ProfilePage() {
                 <div className="mr-4">
                   <WhiteHarvest className="w-6 h-6 sm:w-8 sm:h-8" />
                 </div>
-                <span className="text-[16px]  sm:text-[18px]  font-medium text-black">
+                <span
+                  className={`text-[16px] sm:text-[18px] font-medium ${themeClasses.textPrimary}`}
+                >
                   My Harvest
                 </span>
               </div>
@@ -137,7 +149,9 @@ export default function ProfilePage() {
                 <div className="mr-4">
                   <History className="w-6 h-6  sm:w-8 sm:h-8 text-[#2D5A27]" />
                 </div>
-                <span className="text-[16px] sm:text-[18px]    font-medium text-black">
+                <span
+                  className={`text-[16px] sm:text-[18px] font-medium ${themeClasses.textPrimary}`}
+                >
                   Historic Data
                 </span>
               </div>

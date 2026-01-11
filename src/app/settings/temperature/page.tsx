@@ -41,9 +41,9 @@ export default function TemperatureSettingsPage() {
           size="icon"
           className="mr-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
-          <ChevronLeft className="size-6 stroke-[3px]" />
+          <ChevronLeft className={`size-6 stroke-[3px] ${themeClasses.textPrimary}`} />
         </Button>
-        <h1 className="text-[24px]  text-black font-bold">Temperature</h1>
+        <h1 className={`text-[24px] font-bold ${themeClasses.textPrimary}`}>Temperature</h1>
       </div>
 
       {/* Info Section */}
@@ -114,7 +114,7 @@ export default function TemperatureSettingsPage() {
             <div className="font-bold text-[#53C904] text-[clamp(20px,6vw,28px)] leading-tight mb-1">
               {item.value}
             </div>
-            <div className="text-black font-semibold text-[clamp(14px,4vw,16px)]">
+            <div className={`font-semibold text-[clamp(14px,4vw,16px)] ${themeClasses.textPrimary}`}>
               {item.label}
             </div>
           </div>

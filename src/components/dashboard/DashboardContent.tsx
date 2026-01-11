@@ -97,7 +97,7 @@ const DashboardContent = () => {
             className="object-cover"
           />
         </div>
-        <h1 className="text-[24px] p-[10px] font-bold text-black ">
+        <h1 className={`text-[24px] p-[10px] font-bold ${themeClasses.textPrimary} `}>
           {mounted ? store.user?.cropType || 'Microgreens' : 'Microgreens'}
         </h1>
 

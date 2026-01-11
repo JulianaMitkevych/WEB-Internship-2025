@@ -54,9 +54,9 @@ export default function MyHarvestPage() {
           onClick={() => router.back()}
           className="absolute left-6 p-1  hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
-          <ChevronLeft className="w-8 h-8 text-black " />
+          <ChevronLeft className={`w-8 h-8 ${themeClasses.textPrimary}`} />
         </button>
-        <h1 className="text-[24px] sm:text-[26px]  pl-16  font-bold text-black">
+        <h1 className={`text-[24px] sm:text-[26px] pl-16 font-bold ${themeClasses.textPrimary}`}>
           My Harvest
         </h1>
       </div>

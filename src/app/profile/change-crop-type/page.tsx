@@ -10,6 +10,7 @@ import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { ROUTES } from '@/utils/constants';
 import { useStorage } from '@/hooks/useStorage';
 import { useApi } from '@/hooks/useApi';
+import { useTheme } from '@/hooks/useTheme';
 import { ECropType } from '@/types/types';
 
 type UpdateCropTypeResponse = {
@@ -21,6 +22,7 @@ export default function ChangeCropTypePage() {
   const router = useRouter();
   const [store, setStore] = useStorage();
   const { post, loading } = useApi<UpdateCropTypeResponse>();
+  const { classes: themeClasses } = useTheme();
 
   // Check if user can change crop type (only after harvest completion)
   const canChangeCropType = () => {
@@ -77,7 +79,7 @@ export default function ChangeCropTypePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className={`min-h-screen ${themeClasses.background} flex flex-col`}>
       <div className="max-w-md mx-auto w-full px-6 py-8 flex flex-col min-h-screen">
         {/* Header */}
         <div className="mb-8 w-full">
@@ -86,10 +88,10 @@ export default function ChangeCropTypePage() {
             className="mb-[16px] p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Go back"
           >
-            <ChevronLeft className="size-7 sm:size-8 text-black" />
+            <ChevronLeft className={`size-7 sm:size-8 ${themeClasses.textPrimary}`} />
           </button>
 
-          <h1 className="text-[28px] text-center font-bold text-black leading-tight">
+          <h1 className={`text-[28px] text-center font-bold ${themeClasses.textPrimary} leading-tight`}>
             Change Crop Type
           </h1>
 

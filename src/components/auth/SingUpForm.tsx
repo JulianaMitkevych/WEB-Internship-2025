@@ -19,16 +19,18 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useApi } from '@/hooks/useApi';
+import { useTheme } from '@/hooks/useTheme';
 import { SignUpFormValues, SignUpSchema } from '@/lib/zod-schemas';
 import { ROUTES } from '@/utils/constants';
 import { Input } from '@/components/ui/input';
 // import { useStorage } from '@/hooks/useStorage';
 
-const inputStyles =
-  'h-12 rounded-xl border-2 border-[#EB5757]/60 bg-white pr-12 text-[#020202]';
+const inputStyles = (isDark: boolean, themeClasses: any) =>
+  `h-12 rounded-xl border-2 border-[#EB5757]/60 ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} pr-12 ${themeClasses.textPrimary}`;
 
 const SignUpForm = () => {
   const router = useRouter();
+  const { classes: themeClasses, isDark } = useTheme();
   const { post, error, loading } = useApi();
   // const [store] = useStorage();
   const [showPassword, setShowPassword] = useState(false);
@@ -87,14 +89,14 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-y-auto md:overflow-y-visible">
+    <div className={`min-h-screen ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} overflow-y-auto md:overflow-y-visible`}>
       <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-center px-6 py-10">
-        <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-[0_14px_50px_rgba(0,0,0,0.08)]">
+        <div className={`w-full max-w-3xl rounded-2xl ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} p-8 shadow-[0_14px_50px_rgba(0,0,0,0.08)]`}>
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={65} />
             </div>
-            <h1 className="text-3xl font-bold text-[#020202]">
+            <h1 className={`text-3xl font-bold ${themeClasses.textPrimary}`}>
               Create an account
             </h1>
             <p className="mt-2 text-base text-[#6D6D6D]">
@@ -116,7 +118,7 @@ const SignUpForm = () => {
                         <div className="relative">
                           <Input
                             placeholder="John"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />
@@ -140,7 +142,7 @@ const SignUpForm = () => {
                         <div className="relative">
                           <Input
                             placeholder="Doe"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />
@@ -171,7 +173,7 @@ const SignUpForm = () => {
                         <div className="relative">
                           <Input
                             placeholder="+380XXXXXXXXX"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />
@@ -195,7 +197,7 @@ const SignUpForm = () => {
                         <div className="relative">
                           <Input
                             placeholder="nick.name@mail.com"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />
@@ -222,7 +224,7 @@ const SignUpForm = () => {
                           <Input
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />
@@ -257,7 +259,7 @@ const SignUpForm = () => {
                           <Input
                             type={showConfirmPassword ? 'text' : 'password'}
                             placeholder="••••••••"
-                            className={inputStyles}
+                            className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
                             {...field}
                           />

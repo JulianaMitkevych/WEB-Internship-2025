@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/utils/constants';
 import { useStorage } from '@/hooks/useStorage';
 import { useApi } from '@/hooks/useApi';
+import { useTheme } from '@/hooks/useTheme';
 import { ECropType } from '@/types/types';
 
 type UpdateCropTypeResponse = {
@@ -22,6 +22,7 @@ export default function SelectCropTypePage() {
   const [store, setStore] = useStorage();
   //  loading
   const { post, loading } = useApi<UpdateCropTypeResponse>();
+  const { classes: themeClasses } = useTheme();
   const [selectedId, setSelectedId] = useState<number>(1);
 
   // If user already has crop type, redirect to dashboard
@@ -57,7 +58,7 @@ export default function SelectCropTypePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className={`min-h-screen ${themeClasses.background} flex flex-col`}>
       <div className="max-w-md mx-auto w-full px-6 py-8  flex flex-col min-h-screen">
         {/* Header */}
         <div className=" mb-8 w-full">

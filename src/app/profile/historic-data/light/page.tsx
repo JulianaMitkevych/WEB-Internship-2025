@@ -55,7 +55,7 @@ export default function LightHistoricDataPage() {
           size="icon"
           className="mr-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
-          <ChevronLeft className="size-6 stroke-[3px]" />
+          <ChevronLeft className={`size-6 stroke-[3px] ${themeClasses.textPrimary}`} />
         </Button>
         <h1 className={`text-[24px] ${themeClasses.textPrimary} font-bold`}>Light</h1>
       </div>

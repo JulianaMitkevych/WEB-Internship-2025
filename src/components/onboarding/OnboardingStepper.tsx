@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/utils/constants';
 import { ChevronRight } from 'lucide-react';
 import { useStorage } from '@/hooks/useStorage';
+import { useTheme } from '@/hooks/useTheme';
 
 const OnboardingStepper = () => {
   const [currentStepId, setCurrentStepId] = useState(onboardingData[0].id);
   const router = useRouter();
   const [store, setStore] = useStorage();
+  const { classes: themeClasses, isDark } = useTheme();
 
   // Redirect to dashboard if user already has crop type
   useEffect(() => {
@@ -81,9 +83,9 @@ const OnboardingStepper = () => {
   };
 
   return (
-    <div className="flex flex-col items-center  bg-white pt-[10px] h-screen ">
+    <div className={`flex flex-col items-center ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} pt-[10px] h-screen `}>
       <div className="text-center">
-        <h2 className="text-[28px] font-bold text-[#020202]">
+        <h2 className={`text-[28px] font-bold ${themeClasses.textPrimary}`}>
           {currentStep.title}
         </h2>
       </div>
@@ -102,7 +104,7 @@ const OnboardingStepper = () => {
         </button>
 
         <div className="text-center mt-[16px]  ">
-          <p className="text-[16px]  sm:text-[18px] text-[#020202] leading-relaxed  whitespace-pre-line">
+          <p className={`text-[16px] sm:text-[18px] leading-relaxed whitespace-pre-line ${themeClasses.textPrimary}`}>
             {currentStep.description}
           </p>
         </div>
@@ -123,7 +125,7 @@ const OnboardingStepper = () => {
         <div className="flex justify-between items-center w-full mt-[22px] ">
           <button
             onClick={handleSkip}
-            className="text-base text-[#2F7302] font-semibold hover:opacity-70 transition-opacity"
+            className={`text-base font-semibold hover:opacity-70 transition-opacity ${isDark ? 'bg-[#2E2E2E] text-white' : 'text-[#2F7302]'}`}
           >
             Skip
           </button>
