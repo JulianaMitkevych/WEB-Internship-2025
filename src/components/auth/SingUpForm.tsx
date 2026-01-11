@@ -89,9 +89,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} overflow-y-auto md:overflow-y-visible`}>
+    <div className={`min-h-screen ${themeClasses.background} overflow-y-auto md:overflow-y-visible`}>
       <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-center px-6 py-10">
-        <div className={`w-full max-w-3xl rounded-2xl ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} p-8 shadow-[0_14px_50px_rgba(0,0,0,0.08)]`}>
+        <div className={`w-full max-w-3xl rounded-2xl ${themeClasses.cardBackground} p-8 shadow-[0_14px_50px_rgba(0,0,0,0.08)]`}>
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={65} />
@@ -120,6 +120,7 @@ const SignUpForm = () => {
                             placeholder="John"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           {renderStatusIcon('firstName')}
@@ -144,6 +145,7 @@ const SignUpForm = () => {
                             placeholder="Doe"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           {renderStatusIcon('lastName')}
@@ -175,6 +177,7 @@ const SignUpForm = () => {
                             placeholder="+380XXXXXXXXX"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           {renderStatusIcon('phoneNumber')}
@@ -199,6 +202,7 @@ const SignUpForm = () => {
                             placeholder="nick.name@mail.com"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           {renderStatusIcon('email')}
@@ -226,6 +230,7 @@ const SignUpForm = () => {
                             placeholder="••••••••"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           <button
@@ -261,6 +266,7 @@ const SignUpForm = () => {
                             placeholder="••••••••"
                             className={inputStyles(isDark, themeClasses)}
                             aria-invalid={!!fieldState.error}
+                            isDark={isDark}
                             {...field}
                           />
                           <button

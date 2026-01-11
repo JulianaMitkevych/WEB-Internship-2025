@@ -11,8 +11,9 @@ function Input({
   type,
   onFocus,
   onBlur,
+  isDark,
   ...props
-}: React.ComponentProps<'input'>) {
+}: React.ComponentProps<'input'> & { isDark?: boolean }) {
   const [isFocused, setIsFocused] = React.useState(false);
 
   // check error
@@ -20,19 +21,19 @@ function Input({
     props['aria-invalid'] === true || props['aria-invalid'] === 'true';
 
   const styleWhenNotInvalidAndNotFocused: CSSProperties = {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
     border: '1px solid #E5E7EB',
     borderRadius: '0.75rem',
   };
 
   const styleWhenFocusedAndNotInvalid: CSSProperties = {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
     border: `1px solid ${GREEN_ACCENT}`,
     borderRadius: '0.75rem',
   };
 
   const styleWhenInvalid: CSSProperties = {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
     border: `1px solid ${RED_ACCENT}`,
     borderRadius: '0.75rem',
   };

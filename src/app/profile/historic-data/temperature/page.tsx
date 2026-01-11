@@ -113,7 +113,7 @@ export default function TemperatureHistoricDataPage() {
         >
           <div className="flex items-center gap-1 sm:gap-4">
             <ArrowDownNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
-            <span className="${themeClasses.textPrimary} font-semibold text-[16px] sm:text-[22px]">
+            <span className={`${themeClasses.textPrimary} font-semibold text-[16px] sm:text-[22px]`}>
               Lowest
             </span>
           </div>
@@ -133,7 +133,7 @@ export default function TemperatureHistoricDataPage() {
         >
           <div className="flex items-center gap-1 sm:gap-4">
             <ArrowUpNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
-            <span className="${themeClasses.textPrimary} text-[16px] font-semibold sm:text-[22px]">
+            <span className={`${themeClasses.textPrimary} text-[16px] font-semibold sm:text-[22px]`}>
               Highest
             </span>
           </div>

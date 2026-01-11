@@ -149,7 +149,7 @@ const DashboardContent = () => {
                   {!isSwitchable && (
                     <span
                       className={`text-[24px] font-bold leading-tight ${
-                        hasData ? 'text-black' : 'text-gray-200'
+                        hasData ? themeClasses.textPrimary : 'text-gray-200'
                       }`}
                     >
                       {valuesLoading
@@ -175,7 +175,7 @@ const DashboardContent = () => {
                     </div>
                   )}
 
-                  <span className="text-black font-semibold text-[16px] md:text-[18px]">
+                  <span className={`${themeClasses.textPrimary} font-semibold text-[16px] md:text-[18px]`}>
                     {param}
                   </span>
                 </div>

@@ -88,7 +88,7 @@ export default function MyHarvestPage() {
               </h3>
 
               <div className="space-y-1 w-full">
-                <p className="text-[14px] text-black">
+                <p className={`text-[14px] ${themeClasses.textPrimary}`}>
                   <span className={`${themeClasses.textPrimary} font-regular`}>Harvests: </span>
                   <span
                     className={
@@ -100,7 +100,7 @@ export default function MyHarvestPage() {
                     {!harvest.isPlaceholder ? harvest.harvests : 'no data'}
                   </span>
                 </p>
-                <p className="text-[14px] text-black">
+                <p className={`text-[14px] ${themeClasses.textPrimary}`}>
                   <span className={`${themeClasses.textPrimary} font-medium`}>Total Days:</span>
                   <span
                     className={

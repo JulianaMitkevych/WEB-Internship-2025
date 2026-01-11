@@ -124,9 +124,9 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={`h-screen ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} flex items-center justify-center`}>
+    <div className={`h-screen ${themeClasses.background} flex items-center justify-center`}>
       <div className="mx-auto w-full max-w-xl flex flex-col items-center justify-center px-6 py-8">
-        <div className={`w-full max-w-3xl rounded-2xl ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]`}>
+        <div className={`w-full max-w-3xl rounded-2xl ${themeClasses.cardBackground} p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]`}>
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={65} />
@@ -153,6 +153,7 @@ const LoginForm = () => {
                           placeholder="nick.name@mail.com"
                           className={inputStyles(isDark, themeClasses)}
                           aria-invalid={!!fieldState.error}
+                          isDark={isDark}
                           {...field}
                         />
                         {renderStatusIcon('email')}
@@ -178,6 +179,7 @@ const LoginForm = () => {
                           placeholder="••••••••"
                           className={inputStyles(isDark, themeClasses)}
                           aria-invalid={!!fieldState.error}
+                          isDark={isDark}
                           {...field}
                         />
                         <button

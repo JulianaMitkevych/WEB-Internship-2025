@@ -67,10 +67,10 @@ export default function SelectCropTypePage() {
             className="mb-[16px] p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Go back"
           >
-            <ChevronLeft className="size-7 sm:size-8 text-black" />
+            <ChevronLeft className={`size-7 sm:size-8 ${themeClasses.textPrimary}`} />
           </button>
 
-          <h1 className="text-[28px] text-center font-bold text-black leading-tight">
+          <h1 className={`text-[28px] text-center font-bold ${themeClasses.textPrimary} leading-tight`}>
             Select crop type
           </h1>
         </div>
