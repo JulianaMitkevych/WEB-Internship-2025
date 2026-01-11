@@ -7,6 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { useSettings } from '@/hooks/useSettings';
 import { useApi } from './../../hooks/useApi';
+import { useTheme } from '@/hooks/useTheme';
 
 import TempIcon from '@/assets/svg/TempIcon';
 import HumidityIcon from '@/assets/svg/HumidityIcon';
@@ -19,6 +20,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { settings, updateSettings, isLoading } = useSettings();
   const { post: apiPost } = useApi();
+  const { classes: themeClasses } = useTheme();
   const [lightValue, setLightValue] = useState<number>(8);
   const [temperatureValue, setTemperatureValue] = useState<number>(24);
   const [humidityValue, setHumidityValue] = useState<number>(50);
@@ -178,10 +180,10 @@ export default function SettingsPage() {
 
   return (
     <div
-      className={`h-screen max-w-[768px] mx-auto  flex flex-col pb-24 ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
+      className={`${themeClasses.background} min-h-screen max-w-[768px] mx-auto  flex flex-col  ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
     >
       <div className="p-6">
-        <h1 className="text-[24px] sm:text-[28px] font-bold text-center text-black">
+        <h1 className={`text-[24px] sm:text-[28px] font-bold text-center ${themeClasses.textPrimary}`}>
           Settings
         </h1>
       </div>
@@ -190,7 +192,7 @@ export default function SettingsPage() {
         {config.map((item) => (
           <div
             key={item.id}
-            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+            className={`${themeClasses.cardBackground} rounded-2xl p-4 ${themeClasses.shadow} ${themeClasses.border}`}
           >
             <div className="flex items-center justify-between mb-6">
               <div
@@ -198,7 +200,7 @@ export default function SettingsPage() {
                 onClick={() => router.push(`/settings/${item.id}`)}
               >
                 <item.icon className="w-6 h-6 text-[#2F7302]" />
-                <span className="font-bold text-black">{item.title}</span>
+                <span className={`font-bold ${themeClasses.textPrimary}`}>{item.title}</span>
               </div>
               {item.hasSwitch && (
                 <Switch
@@ -252,7 +254,7 @@ export default function SettingsPage() {
             onClick={generateMonthlyStats}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
           >
-            📊 Generate Monthly Data
+           Generate Monthly Data
           </button>
         </div>
         {/* --- DELETE THIS BUTTON END --- */}

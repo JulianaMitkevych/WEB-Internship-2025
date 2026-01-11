@@ -56,7 +56,7 @@ export default function HumidityHistoricDataPage() {
         >
           <ChevronLeft className="size-6 stroke-[3px]" />
         </Button>
-        <h1 className="text-[24px] text-black font-bold">Humidity</h1>
+        <h1 className={`text-[24px] ${themeClasses.textPrimary} font-bold`}>Humidity</h1>
       </div>
 
       
@@ -109,14 +109,14 @@ export default function HumidityHistoricDataPage() {
         >
           <div className="flex items-center gap-1 sm:gap-4 ">
             <ArrowDownNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
-            <span className="text-black font-semibold text-[16px] sm:text-[22px]">
+            <span className="${themeClasses.textPrimary} font-semibold text-[16px] sm:text-[22px]">
               Lowest
             </span>
           </div>
           <div className="text-[#53C904] font-bold text-[24px] leading-tight">
             {minPoint !== null ? `${minPoint.value}%` : '--%'}
           </div>
-          <div className="text-black text-[16px]">
+          <div className="${themeClasses.textPrimary} text-[16px]">
             {minPoint?.date
               ? new Date(minPoint.date).toLocaleDateString('uk-UA')
               : '00.00.0000'}
@@ -128,14 +128,14 @@ export default function HumidityHistoricDataPage() {
         >
           <div className="flex items-center gap-1 sm:gap-4">
             <ArrowUpNarrowWide className="size-5 sm:size-8 text-[#2F7302]" />
-            <span className="text-black text-[16px] font-semibold sm:text-[22px]">
+            <span className="${themeClasses.textPrimary} text-[16px] font-semibold sm:text-[22px]">
               Highest
             </span>
           </div>
           <div className="text-[#53C904] font-bold text-[24px] leading-tight">
             {maxPoint !== null ? `${maxPoint.value}%` : '--%'}
           </div>
-          <div className="text-black text-[16px]">
+          <div className="${themeClasses.textPrimary} text-[16px]">
             {maxPoint?.date
               ? new Date(maxPoint.date).toLocaleDateString('uk-UA')
               : '00.00.0000'}

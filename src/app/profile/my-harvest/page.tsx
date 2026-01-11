@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
+import { useTheme } from '@/hooks/useTheme';
 
 interface Harvestharvest {
   id: string | number;
@@ -16,6 +17,7 @@ interface Harvestharvest {
 
 export default function MyHarvestPage() {
   const router = useRouter();
+  const { classes: themeClasses } = useTheme();
 
   const realHarvests: Harvestharvest[] = [
     {
@@ -46,7 +48,7 @@ export default function MyHarvestPage() {
   });
 
   return (
-    <div className="h-screen bg-white flex flex-col  max-w-[768px] mx-auto ">
+    <div className={`min-h-screen ${themeClasses.background} flex flex-col  max-w-[768px] mx-auto `}>
       <div className="relative flex  items-center justify-start py-8 px-4  sm:px-12">
         <button
           onClick={() => router.back()}
@@ -64,7 +66,7 @@ export default function MyHarvestPage() {
           {gridCards.map((harvest) => (
             <div
               key={harvest.id}
-              className="bg-white rounded-[24px]  sm:min-w-[156px] p-[14px]  sm:p-6  flex flex-col  text-left sm:text-center  items-start justify-start sm:items-center sm:justify-center shadow-[0_4px_20px_rgba(0,0,0,0.07)] border border-gray-50 "
+              className={`${themeClasses.cardBackground} rounded-[24px]  sm:min-w-[156px] p-[14px]  sm:p-6  flex flex-col  text-left sm:text-center  items-start justify-start sm:items-center sm:justify-center ${themeClasses.shadow} ${themeClasses.border}`}
             >
               <div className="  w-[60px]  h-[60px]  sm:w-[86px] sm:h-[86px] relative mb-4  ">
                 <Image
@@ -87,7 +89,7 @@ export default function MyHarvestPage() {
 
               <div className="space-y-1 w-full">
                 <p className="text-[14px] text-black">
-                  <span className="text-black font-regular">Harvests: </span>
+                  <span className={`${themeClasses.textPrimary} font-regular`}>Harvests: </span>
                   <span
                     className={
                       !harvest.isPlaceholder
@@ -99,7 +101,7 @@ export default function MyHarvestPage() {
                   </span>
                 </p>
                 <p className="text-[14px] text-black">
-                  <span className="text-black font-medium">Total Days:</span>
+                  <span className={`${themeClasses.textPrimary} font-medium`}>Total Days:</span>
                   <span
                     className={
                       !harvest.isPlaceholder

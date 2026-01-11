@@ -83,7 +83,7 @@ const DashboardContent = () => {
 
   return (
     <div
-      className={`h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
+      className={`min-h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
     >
       {/* Plant Info Section */}
       <div className=" p-[20px]  flex flex-col items-center">
@@ -185,9 +185,7 @@ const DashboardContent = () => {
         </div>
       </div>
 
-      <div className={themeClasses.background}>
-        <BottomNavigation activeTab="home" />
-      </div>
+      <BottomNavigation activeTab="home" />
     </div>
   );
 };

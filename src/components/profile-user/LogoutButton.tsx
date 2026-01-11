@@ -7,11 +7,13 @@ import { useRouter } from 'next/navigation';
 import { useApi } from '@/hooks/useApi';
 import { useStorage } from '@/hooks/useStorage';
 import { ROUTES } from '@/utils/constants';
+import { useTheme } from '@/hooks/useTheme';
 
 const LogoutButton = () => {
   const router = useRouter();
   const { post, loading } = useApi();
   const [, setStore] = useStorage();
+  const { classes: themeClasses } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -33,7 +35,7 @@ const LogoutButton = () => {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="w-full flex items-center h-[67px]   sm:min-h-[97px]  justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
+      className={`w-full flex items-center h-[67px]   sm:min-h-[97px]  justify-between p-4 ${themeClasses.cardBackground} rounded-[16px] ${themeClasses.shadow} group active:scale-[0.98] transition-all ${themeClasses.shadowHover}`}
       aria-label="Log out"
     >
       <div className="flex items-center">

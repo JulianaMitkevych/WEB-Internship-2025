@@ -41,7 +41,9 @@ export default function ProfilePage() {
 
       <div className="w-full max-w-[768px] flex-1 pb-6">
         <div className="p-6  sm:px-16">
-          <div className="bg-white rounded-[24px] p-5 shadow-[0_0_20px_rgba(0,0,0,0.1)] text-center mb-8">
+          <div
+            className={`${themeClasses.cardBackground} rounded-[24px] p-5 ${themeClasses.shadow} ${themeClasses.border} text-center mb-8`}
+          >
             <div className="flex justify-center mb-4">
               <PlantIcon className="w-16 h-16  sm:w-18 sm:h-18" />
             </div>
@@ -88,7 +90,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <button
               onClick={() => router.push(ROUTES.CHANGE_CROP_TYPE_INTERMEDIATE)}
-              className="w-full flex items-center justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all sm:min-h-[97px] hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
+              className={`w-full flex items-center justify-between p-4 ${themeClasses.cardBackground} rounded-[16px] ${themeClasses.shadow} group active:scale-[0.98] transition-all sm:min-h-[97px] ${themeClasses.shadowHover}`}
             >
               <div className="flex items-center">
                 <div className="mr-4">
@@ -114,7 +116,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => router.push(ROUTES.MY_HARVEST)}
-              className="w-full flex items-center sm:min-h-[97px] justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
+              className={`w-full flex items-center sm:min-h-[97px] justify-between p-4 ${themeClasses.cardBackground} rounded-[16px] ${themeClasses.shadow} group active:scale-[0.98] transition-all ${themeClasses.shadowHover}`}
             >
               <div className="flex items-center">
                 <div className="mr-4">
@@ -129,7 +131,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => router.push(ROUTES.HISTORIC_DATA)}
-              className="w-full  flex items-center justify-between sm:min-h-[97px] p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
+              className={`w-full  flex items-center justify-between sm:min-h-[97px] p-4 ${themeClasses.cardBackground} rounded-[16px] ${themeClasses.shadow} group active:scale-[0.98] transition-all ${themeClasses.shadowHover}`}
             >
               <div className="flex items-center">
                 <div className="mr-4">
@@ -149,7 +151,9 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className=" bottom-0 w-full max-w-[768px] bg-white">
+      <div
+        className={` bottom-0 w-full max-w-[768px] ${themeClasses.cardBackground}`}
+      >
         <BottomNavigation activeTab="profile" />
       </div>
     </div>
