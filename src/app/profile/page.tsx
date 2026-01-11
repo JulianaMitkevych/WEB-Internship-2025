@@ -114,7 +114,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => router.push(ROUTES.MY_HARVEST)}
-              className="w-full flex items-center sm:min-h-[97px] justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
+              className="w-full flex items-center sm:min-h-[97px] justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
             >
               <div className="flex items-center">
                 <div className="mr-4">
@@ -129,7 +129,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => router.push(ROUTES.HISTORIC_DATA)}
-              className="w-full  flex items-center justify-between sm:min-h-[97px] p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
+              className="w-full  flex items-center justify-between sm:min-h-[97px] p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
             >
               <div className="flex items-center">
                 <div className="mr-4">

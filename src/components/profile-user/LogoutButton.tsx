@@ -33,7 +33,7 @@ const LogoutButton = () => {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="w-full flex items-center h-[67px]   sm:min-h-[97px]  justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all"
+      className="w-full flex items-center h-[67px]   sm:min-h-[97px]  justify-between p-4 bg-white rounded-[16px] shadow-[0_0_20px_rgba(0,0,0,0.1)] group active:scale-[0.98] transition-all hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
       aria-label="Log out"
     >
       <div className="flex items-center">

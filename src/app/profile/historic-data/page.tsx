@@ -57,7 +57,7 @@ const HistoricDataPage = () => {
       <div className="flex items-center px-4 py-6">
         <button
           onClick={() => router.back()}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
           <ChevronLeft className="w-6 h-6 text-black" />
         </button>

@@ -50,9 +50,9 @@ export default function MyHarvestPage() {
       <div className="relative flex  items-center justify-start py-8 px-4  sm:px-12">
         <button
           onClick={() => router.back()}
-          className="absolute left-6 p-1 hover:bg-gray-100 rounded-full transition-colors"
+          className="absolute left-6 p-1  hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
         >
-          <ChevronLeft className="w-8 h-8 text-black" />
+          <ChevronLeft className="w-8 h-8 text-black " />
         </button>
         <h1 className="text-[24px] sm:text-[26px]  pl-16  font-bold text-black">
           My Harvest

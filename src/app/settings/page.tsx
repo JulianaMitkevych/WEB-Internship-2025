@@ -29,7 +29,7 @@ export default function SettingsPage() {
   const [ventEnabled, setVentEnabled] = useState<boolean>(true);
   const [lightEnabled, setLightEnabled] = useState<boolean>(true);
 
-  // FUNCTION DATA GNERATION__________________________________
+  // FUNCTION DATA GENERATION__________________________________
 
  const generateMonthlyStats = async () => {
    try {
@@ -181,7 +181,9 @@ export default function SettingsPage() {
       className={`h-screen max-w-[768px] mx-auto  flex flex-col pb-24 ${isLoading ? 'opacity-70 pointer-events-none' : ''}`}
     >
       <div className="p-6">
-        <h1 className="text-[24px] sm:text-[28px] font-bold text-center text-black">Settings</h1>
+        <h1 className="text-[24px] sm:text-[28px] font-bold text-center text-black">
+          Settings
+        </h1>
       </div>
 
       <div className="flex-1 px-4 space-y-4 max-w-md mx-auto w-full">

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { cropTypes } from '@/app/crope-type/cropeList';
@@ -59,21 +59,21 @@ export default function SelectCropTypePage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="max-w-md mx-auto w-full px-6 py-8  flex flex-col min-h-screen">
-      {/* Header */}
-<div className=" mb-8 w-full">
-  <button
-    onClick={() => router.back()}
-    className="mb-[16px] p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
-    aria-label="Go back"
-  >
-    <ChevronLeft className="size-7 sm:size-8 text-black" />
-  </button>
-  
-  <h1 className="text-[28px] text-center font-bold text-black leading-tight">
-    Select crop type
-  </h1>
-</div>
-         <div className="flex flex-col sm:gap-1  flex-grow justify-center items-center">
+        {/* Header */}
+        <div className=" mb-8 w-full">
+          <button
+            onClick={() => router.back()}
+            className="mb-[16px] p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Go back"
+          >
+            <ChevronLeft className="size-7 sm:size-8 text-black" />
+          </button>
+
+          <h1 className="text-[28px] text-center font-bold text-black leading-tight">
+            Select crop type
+          </h1>
+        </div>
+        <div className="flex flex-col sm:gap-1  flex-grow justify-center items-center">
           {cropTypes.map((crop) => (
             <CropButton
               key={crop.id}
@@ -82,8 +82,8 @@ export default function SelectCropTypePage() {
               onClick={() => setSelectedId(crop.id)}
             />
           ))}
-        </div> 
-         
+        </div>
+
         {/* Bottom Button Container */}
         <div className="mt-auto pt-6 sm:pt-10 flex justify-center">
           <Button
@@ -91,7 +91,9 @@ export default function SelectCropTypePage() {
             variant="gradient"
             onClick={handleStartPlanting}
             disabled={loading}
-            className="w-full max-w-[327px] h-12 text-base font-semibold text-white rounded-2xl shadow-md transition-all"
+            className="w-full max-w-[327px] h-12 text-base font-semibold text-white rounded-2xl shadow-md  bg-gradient-to-b from-[#53C904] to-[#2F7302]
+                   hover:from-[#2F7302] hover:to-[#53C904]
+                   focus:from-[#2F7302] focus:to-[#53C904] "
           >
             {loading ? 'Saving...' : 'Start planting'}
           </Button>

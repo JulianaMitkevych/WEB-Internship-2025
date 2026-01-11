@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -13,7 +11,7 @@ import { useStorage } from '@/hooks/useStorage';
 const OnboardingStepper = () => {
   const [currentStepId, setCurrentStepId] = useState(onboardingData[0].id);
   const router = useRouter();
-  const [store] = useStorage();
+  const [store, setStore] = useStorage();
 
   // Redirect to dashboard if user already has crop type
   useEffect(() => {
@@ -46,6 +44,20 @@ const OnboardingStepper = () => {
       router.push(ROUTES.SELECT_CROP_TYPE);
     } else if (currentStep.title.includes('Connect and Control')) {
       router.push(ROUTES.CONNECT_DEVICE);
+    } else if (currentStep.title.includes('Observe and Grow')) {
+      // Check if user has selected crop type before allowing access to plant page
+      if (!store.user?.cropType) {
+        // If no crop type selected, show error message and redirect to first step
+        setStore((prev) => ({
+          ...prev,
+          error:
+            'Please select your plant type first by going back to the first step.',
+        }));
+        setCurrentStepId(onboardingData[0].id);
+        return;
+      }
+      // If crop type is selected, allow access to dashboard (plant page)
+      router.push(ROUTES.DASHBOARD);
     }
   };
 
@@ -119,9 +131,9 @@ const OnboardingStepper = () => {
           <Button
             onClick={handleNext}
             variant="gradient"
-            className="px-10 py-6 text-base w-[121px] h-[44px] rounded-[12px] text-white 
-                   bg-gradient-to-b from-[#53C904] to-[#2F7302] 
-                   hover:from-[#2F7302] hover:to-[#53C904] 
+            className="px-10 py-6 text-base w-[121px] h-[44px] rounded-[12px] text-white
+                   bg-gradient-to-b from-[#53C904] to-[#2F7302]
+                   hover:from-[#2F7302] hover:to-[#53C904]
                    focus:from-[#2F7302] focus:to-[#53C904]"
           >
             Next

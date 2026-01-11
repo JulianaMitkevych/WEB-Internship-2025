@@ -7,7 +7,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { ChevronLeft } from 'lucide-react';
 import { ROUTES } from '@/utils/constants';
 import { Button } from '@/components/ui/button';
-import PlantIcon from '@/assets/svg/PlantIcon';
+import{ PlantIcon} from '@/assets/svg/PlantIcon';
 
 export default function ConnectDevicePage() {
   const [store] = useStorage();
@@ -30,9 +30,9 @@ export default function ConnectDevicePage() {
 
   return (
     <div
-      className={`min-h-screen ${theme.background} flex flex-col  px-5  sm:px-15    transition-colors duration-300`}
+      className={`h-screen ${theme.background} flex flex-col  px-5  sm:px-15 max-w-[768px] m-auto  transition-colors duration-300`}
     >
-      <div className="w-full max-w-[768px] mx-auto py-6 px-5    flex relative">
+      <div className="w-full max-w-[768px] mx-auto py-6 px-2 sm:py-7 sm:px-5 flex relative">
         <button
           onClick={() => router.back()}
           className="p-1 absolute left-4 rounded-full transition-all"
@@ -40,7 +40,7 @@ export default function ConnectDevicePage() {
           <ChevronLeft className={`w-8 h-8 ${theme.textPrimary}`} />
         </button>
         <h1
-          className={`text-[24px]  ml-[45px]  sm:ml-[60px] sm:text-[26px] font-bold ${theme.textPrimary} w-full`}
+          className={`text-[22px]  ml-[50px]  sm:ml-[60px] sm:text-[24px] font-bold ${theme.textPrimary} w-full`}
         >
           Connect your mobile device to GrowBox
         </h1>
@@ -48,9 +48,9 @@ export default function ConnectDevicePage() {
 
       <div className="max-w-[768px] mx-auto w-full px-7 sm:px-15    flex flex-col flex-1">
         <p
-          className={`${theme.textPrimary} text-[16px] sm:text-[18px] mb-10 leading-snug font-medium`}
+          className={`${theme.textPrimary} text-[14px] text-start sm:text-[16px]  leading-snug font-medium`}
         >
-          Make sure that Bluetooth on your mobile device is turned on
+          Make sure that Bluetooth on your mobile device is turned on.
         </p>
 
         <div className="flex-1 flex flex-col items-center justify-center">
@@ -58,7 +58,7 @@ export default function ConnectDevicePage() {
             <PlantIcon size={120} />
           </div>
 
-          <p className={`${theme.textPrimary} text-[16px] sm:text-[18px] text-center leading-snug font-medium`}>
+          <p className={`${theme.textPrimary} text-[16px] sm:text-[18px] text-[#999999] text-center leading-snug font-medium`}>
             This feature is currently unavailable to you.
           </p>
         </div>
