@@ -7,7 +7,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { ChevronLeft } from 'lucide-react';
 import { ROUTES } from '@/utils/constants';
 import { Button } from '@/components/ui/button';
-import{ PlantIcon} from '@/assets/svg/PlantIcon';
+import GrowBoxIcon from '@/assets/svg/GrowBoxIcon';
 
 export default function ConnectDevicePage() {
   const [store] = useStorage();
@@ -55,10 +55,12 @@ export default function ConnectDevicePage() {
 
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="mb-8">
-            <PlantIcon size={120} />
+            <GrowBoxIcon size={130} />
           </div>
 
-          <p className={`${theme.textPrimary} text-[16px] sm:text-[18px] text-[#999999] text-center leading-snug font-medium`}>
+          <p
+            className={`${theme.textPrimary} text-[16px] sm:text-[18px] text-[#999999] text-center leading-snug font-medium`}
+          >
             This feature is currently unavailable to you.
           </p>
         </div>
