@@ -6,6 +6,7 @@ import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { History, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/utils/constants';
+import { EGrowthStatus } from '@/types/types';
 import LogoutButton from '@/components/profile-user/LogoutButton';
 
 import { PlantIcon } from '@/assets/svg/PlantIcon';
@@ -22,13 +23,9 @@ export default function ProfilePage() {
     setMounted(true);
   }, []);
 
-  const totalHarvest = 5;
-  const totalDays = 84;
-
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
-    if (!store.user.growthDay || !store.user.totalGrowthDays) return false; // Can't determine if harvest is complete
-    return store.user.growthDay >= store.user.totalGrowthDays; // Can change only after harvest
+    return store.user.status === EGrowthStatus.HARVEST; // Can change only after harvest
   };
 
   return (
@@ -64,10 +61,10 @@ export default function ProfilePage() {
                 <p
                   className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
                 >
-                  Total Harvest
+                  Current Day
                 </p>
                 <p className="text-[16px]  md:text-[18px] font-bold text-[#53C904]">
-                  {totalHarvest}
+                  {mounted ? store.user?.growthDay || 0 : 'Loading...'}
                 </p>
               </div>
               <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904] "></div>
@@ -75,7 +72,7 @@ export default function ProfilePage() {
                 <p
                   className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
                 >
-                  Corp Type
+                  Crop Type
                 </p>
                 <p className="text-[16px] md:text-[18px]  font-bold text-[#53C904]">
                   {mounted
@@ -91,7 +88,7 @@ export default function ProfilePage() {
                   Total Days
                 </p>
                 <p className="text-[16px]  sm:text-[18px]  font-bold text-[#53C904]">
-                  {totalDays}
+                  {mounted ? store.user?.totalGrowthDays || 0 : 'Loading...'}
                 </p>
               </div>
             </div>

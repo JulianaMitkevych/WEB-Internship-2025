@@ -12,6 +12,12 @@ export type TTab = {
   icon: LucideIcon;
 };
 
+export enum EGrowthStatus {
+  SETUP = 'setup', // користувач ще не обрав дату початку вирощування
+  GROWING = 'growing', // вирощування в процесі
+  HARVEST = 'harvest', // час збору врожаю
+}
+
 export type TUser = {
   id: string;
   firstName: string | null;
@@ -22,6 +28,9 @@ export type TUser = {
   cropType: ECropType | null;
   growthDay?: number;
   totalGrowthDays?: number;
+  startDate?: string; // дата початку вирощування
+  expectedDays?: number; // очікувана кількість днів вирощування
+  status?: EGrowthStatus; // статус вирощування
 };
 
 export type TDevice = {

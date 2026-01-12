@@ -29,8 +29,8 @@ export default function ChangeCropTypeIntermediatePage() {
 
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false;
-    if (!store.user.growthDay || !store.user.totalGrowthDays) return false;
-    return store.user.growthDay >= store.user.totalGrowthDays;
+    // Можна змінювати тип рослини тільки коли статус HARVEST
+    return store.user.status === 'harvest';
   };
 
   const handleChangeCropType = () => {

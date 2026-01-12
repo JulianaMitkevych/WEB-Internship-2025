@@ -27,8 +27,7 @@ export default function ChangeCropTypePage() {
   // Check if user can change crop type (only after harvest completion)
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
-    if (!store.user.growthDay || !store.user.totalGrowthDays) return false; // Can't determine if harvest is complete
-    return store.user.growthDay >= store.user.totalGrowthDays; // Can change only after harvest
+    return store.user.status === 'harvest'; // Can change only after harvest
   };
 
   // If user cannot change crop type, redirect back to profile
