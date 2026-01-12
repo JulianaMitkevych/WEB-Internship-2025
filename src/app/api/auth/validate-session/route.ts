@@ -39,6 +39,11 @@ export async function POST(request: NextRequest) {
           createdAt: userProfile.createdAt
             ? (userProfile.createdAt as Timestamp).toDate().toISOString()
             : null,
+          startDate: userProfile.startDate ?? null,
+          expectedDays: userProfile.expectedDays ?? null,
+          status: userProfile.status ?? null,
+          growthDay: userProfile.growthDay ?? null,
+          totalGrowthDays: userProfile.totalGrowthDays ?? null,
         }
       : null;
 

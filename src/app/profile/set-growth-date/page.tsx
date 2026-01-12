@@ -14,6 +14,55 @@ import { useTheme } from '@/hooks/useTheme';
 import { EGrowthStatus } from '@/types/types';
 import 'react-day-picker/dist/style.css';
 
+// Custom calendar styles
+const calendarStyles = `
+  .rdp {
+    background-color: #2E2E2E !important;
+    border-radius: 12px !important;
+  }
+
+  .rdp-head_cell {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+  }
+
+  .rdp-day {
+    color: #FFFFFF !important;
+  }
+
+  .rdp-day:hover {
+    background-color: rgba(83, 201, 4, 0.1) !important;
+  }
+
+  .rdp-day_selected {
+    background-color: #53C904 !important;
+    color: white !important;
+  }
+
+  .rdp-day_today {
+    background-color: #53C904 !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  .rdp-button:hover {
+    background-color: rgba(83, 201, 4, 0.1) !important;
+  }
+
+  .rdp-nav_button {
+    color: #53C904 !important;
+  }
+
+  .rdp-nav_button:hover {
+    background-color: rgba(83, 201, 4, 0.1) !important;
+  }
+
+  .rdp-caption_label {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+  }
+`;
+
 type UpdateGrowthDateResponse = {
   message: string;
   startDate: string;
@@ -102,244 +151,267 @@ export default function SetGrowthDatePage() {
     : null;
 
   return (
-    <div className={`min-h-screen ${themeClasses.background} flex flex-col`}>
-      <div className="max-w-md mx-auto w-full px-6 py-8 flex flex-col min-h-screen">
-        {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => router.back()}
-            className="mb-4 p-1 -ml-1 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Go back"
-          >
-            <ChevronLeft
-              className={`size-7 sm:size-8 ${themeClasses.textPrimary}`}
-            />
-          </button>
+    <>
+      <style dangerouslySetInnerHTML={{ __html: calendarStyles }} />
+      <div
+        className={`min-h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
+      >
+        <div className="max-w-md mx-auto w-full px-6 py-8 flex flex-col min-h-screen">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center relative mb-4">
+              <button
+                onClick={() => router.back()}
+                className="absolute left-0 p-1 -ml-1 hover:bg-transparent hover:opacity-70 transition-opacity active:scale-95"
+                aria-label="Go back"
+              >
+                <ChevronLeft
+                  className={`size-7 sm:size-8 ${themeClasses.textPrimary}`}
+                />
+              </button>
 
-          <h1
-            className={`text-[28px] text-center font-bold ${themeClasses.textPrimary} leading-tight`}
-          >
-            {store.user?.startDate
-              ? 'Change Growth Period'
-              : 'Set Growth Period'}
-          </h1>
+              <h1
+                className={`text-[28px] font-bold ${themeClasses.textPrimary} leading-tight`}
+              >
+                {store.user?.startDate
+                  ? 'Change Growth Period'
+                  : 'Set Growth Period'}
+              </h1>
+            </div>
 
-          <p className="text-center text-gray-600 mt-2 text-sm max-w-xs mx-auto">
-            {store.user?.startDate
-              ? 'Update when to start growing and how long it will take'
-              : 'Select the date when you want to start growing and choose how many days the growth period will last'}
-          </p>
-        </div>
-
-        <div className="flex flex-col flex-grow space-y-6">
-          {/* Вибір дати початку */}
-          {(() => {
-            const userStartDate = store.user?.startDate
-              ? new Date(store.user.startDate)
-              : null;
-            const now = new Date();
-            const growthStarted = userStartDate && now >= userStartDate;
-
-            return growthStarted ? (
-              /* Режим зміни існуючого вирощування - тільки читання дати початку */
-              <div className="space-y-3">
-                <label
-                  className={`text-lg font-semibold ${themeClasses.textPrimary} flex items-center gap-2`}
-                >
-                  <CalendarIcon className="w-5 h-5" />
-                  Start Date (Cannot be changed)
-                </label>
-
-                <div className="bg-gray-50 rounded-[12px] border p-4 shadow-sm">
-                  <div className="text-center">
-                    <p
-                      className={`text-lg font-semibold ${themeClasses.textPrimary}`}
-                    >
-                      {format(new Date(store.user.startDate), 'PPP')}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Growth started on this date • Cannot be modified
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-[12px] p-3">
-                  <p className="text-sm text-yellow-800">
-                    <span className="font-semibold">Note:</span> You can only
-                    change the growth duration. The start date cannot be
-                    modified once growth has begun.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              /* Режим зміни дати або першого налаштування - можна вибирати дату */
-              <div className="space-y-3">
-                <label
-                  className={`text-lg font-semibold ${themeClasses.textPrimary} flex items-center gap-2`}
-                >
-                  <CalendarIcon className="w-5 h-5" />
-                  Start Date
-                </label>
-
-                <div className="bg-white rounded-[12px] border p-4 shadow-sm">
-                  <DayPicker
-                    mode="single"
-                    selected={selectedStartDate}
-                    onSelect={setSelectedStartDate}
-                    disabled={(date) => {
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0); // скидаємо час для порівняння тільки дат
-                      const checkDate = new Date(date);
-                      checkDate.setHours(0, 0, 0, 0);
-
-                      // Якщо вирощування ще не почалося, дозволяємо обирати від сьогоднішньої дати
-                      // Якщо вирощування вже почалося, забороняємо змінювати дату взагалі
-                      const userStartDate = store.user?.startDate
-                        ? new Date(store.user.startDate)
-                        : null;
-                      const now = new Date();
-
-                      if (userStartDate && now >= userStartDate) {
-                        // Вирощування вже почалося - не дозволяємо змінювати дату
-                        return true;
-                      }
-
-                      // Вирощування ще не почалося - дозволяємо обирати від сьогоднішньої дати
-                      return checkDate < today;
-                    }}
-                    className="mx-auto"
-                  />
-                </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-[12px] p-3 mb-4">
-                  <p className="text-sm text-blue-800">
-                    <span className="font-semibold">Note:</span>{' '}
-                    {(() => {
-                      const userStartDate = store.user?.startDate
-                        ? new Date(store.user.startDate)
-                        : null;
-                      const now = new Date();
-
-                      if (userStartDate && now >= userStartDate) {
-                        return 'Growth has already started. You cannot change the start date.';
-                      }
-                      return "Past dates are disabled. You can select today's date or any future date for growth start.";
-                    })()}
-                  </p>
-                </div>
-
-                {selectedStartDate && (
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">
-                      Selected: {format(selectedStartDate, 'PPP')}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Growth will start on this date
-                    </p>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* Вибір кількості днів */}
-          <div className="space-y-3">
-            <label
-              className={`text-lg font-semibold ${themeClasses.textPrimary}`}
+            <p
+              className={`text-center mt-2 text-sm max-w-xs mx-auto ${themeClasses.textSecondary}`}
             >
-              Growth Duration (days)
-            </label>
-            <p className="text-sm text-gray-600 mt-1">
-              How many days from the start date until harvest
+              {store.user?.startDate
+                ? 'Update when to start growing and how long it will take'
+                : 'Select the date when you want to start growing and choose how many days the growth period will last'}
             </p>
-
-            <div className="bg-white rounded-[12px] border p-4">
-              <div className="grid grid-cols-3 gap-3">
-                {[14, 21, 28, 30, 35, 42].map((days) => (
-                  <button
-                    key={days}
-                    onClick={() => setSelectedDays(days)}
-                    className={`p-3 rounded-[12px] border text-center transition-colors ${
-                      selectedDays === days
-                        ? ' text-white  bg-gradient-to-b from-[#53C904] to-[#2F7302] hover:from-[#2F7302] hover:to-[#53C904] focus:from-[#2F7302] focus:to-[#53C904]'
-                        : 'bg-white border-gray-300 hover:border-[#53C904]'
-                    }`}
-                  >
-                    {days}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Кастомний ввод */}
-            <div className="mt-4">
-              <label className="text-sm text-gray-600 block mb-2">
-                Custom duration:
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="365"
-                value={selectedDays}
-                onChange={(e) => setSelectedDays(Number(e.target.value))}
-                className="w-full p-3 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#53C904] focus:border-transparent"
-                placeholder="Enter days"
-              />
-            </div>
           </div>
 
-          {/* Інформація про очікувану дату збору */}
-          {expectedHarvestDate && selectedStartDate && (
-            <div
-              className={`p-4 rounded-[12px] ${themeClasses.cardBackground} border`}
-            >
-              <h3 className={`font-semibold ${themeClasses.textPrimary} mb-2`}>
-                Growth Timeline
-              </h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Start date:</span>
-                  <span className={`${themeClasses.textPrimary} font-medium`}>
-                    {format(selectedStartDate, 'MMM dd, yyyy')}
-                  </span>
+          <div className="flex flex-col flex-grow space-y-6">
+            {/* date */}
+            {(() => {
+              const userStartDate = store.user?.startDate
+                ? new Date(store.user.startDate)
+                : null;
+              const now = new Date();
+              const growthStarted = userStartDate && now >= userStartDate;
+
+              return growthStarted ? (
+                /*\only read*/
+                <div className="space-y-3">
+                  <label
+                    className={`text-lg font-semibold ${themeClasses.textPrimary} flex items-center gap-2`}
+                  >
+                    <CalendarIcon className="w-5 h-5" />
+                    Start Date (Cannot be changed)
+                  </label>
+
+                  <div
+                    className={`${themeClasses.cardBackground} rounded-[12px] ${themeClasses.border} p-4 ${themeClasses.shadow}`}
+                  >
+                    <div className="text-center">
+                      <p
+                        className={`text-lg font-semibold ${themeClasses.textPrimary}`}
+                      >
+                        {format(new Date(store.user.startDate), 'PPP')}
+                      </p>
+                      <p className={`text-xs mt-1 ${themeClasses.textMuted}`}>
+                        Growth started on this date • Cannot be modified
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-[12px] p-3">
+                    <p className="text-sm text-yellow-800">
+                      <span className="font-semibold">Note:</span> You can only
+                      change the growth duration. The start date cannot be
+                      modified once growth has begun.
+                    </p>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Duration:</span>
-                  <span className={`${themeClasses.textPrimary} font-medium`}>
-                    {selectedDays} days
-                  </span>
+              ) : (
+                /* choose */
+                <div className="space-y-3">
+                  <label
+                    className={`text-lg font-semibold ${themeClasses.textPrimary} flex items-center gap-2`}
+                  >
+                    <CalendarIcon className="w-5 h-5" />
+                    Start Date
+                  </label>
+
+                  <div
+                    className={`${themeClasses.cardBackground} rounded-[12px] ${themeClasses.border} p-4 ${themeClasses.shadow}`}
+                  >
+                    <DayPicker
+                      mode="single"
+                      selected={selectedStartDate}
+                      onSelect={setSelectedStartDate}
+                      disabled={(date) => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const checkDate = new Date(date);
+                        checkDate.setHours(0, 0, 0, 0);
+
+                        //if grow start forbit choose date
+                        const userStartDate = store.user?.startDate
+                          ? new Date(store.user.startDate)
+                          : null;
+                        const now = new Date();
+
+                        if (userStartDate && now >= userStartDate) {
+                          return true;
+                        }
+
+                        // grow day not starn user can change date
+                        return checkDate < today;
+                      }}
+                      className="mx-auto"
+                    />
+                  </div>
+
+                  <div className="bg-blue-50 border border-blue-200 rounded-[12px] p-3 mb-4">
+                    <p className="text-sm text-blue-800">
+                      <span className="font-semibold">Note:</span>{' '}
+                      {(() => {
+                        const userStartDate = store.user?.startDate
+                          ? new Date(store.user.startDate)
+                          : null;
+                        const now = new Date();
+
+                        if (userStartDate && now >= userStartDate) {
+                          return 'Growth has already started. You cannot change the start date.';
+                        }
+                        return "Past dates are disabled. You can select today's date or any future date for growth start.";
+                      })()}
+                    </p>
+                  </div>
+
+                  {selectedStartDate && (
+                    <div className="text-center">
+                      <p className={`text-sm ${themeClasses.textSecondary}`}>
+                        Selected: {format(selectedStartDate, 'PPP')}
+                      </p>
+                      <p className={`text-xs mt-1 ${themeClasses.textMuted}`}>
+                        Growth will start on this date
+                      </p>
+                    </div>
+                  )}
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Harvest date:</span>
-                  <span className={`${themeClasses.textPrimary} font-medium`}>
-                    {format(expectedHarvestDate, 'MMM dd, yyyy')}
-                  </span>
+              );
+            })()}
+
+            {/* select quantity date */}
+            <div className="space-y-3">
+              <label
+                className={`text-lg font-semibold ${themeClasses.textPrimary}`}
+              >
+                Growth Duration (days)
+              </label>
+              <p className={`text-sm mt-1 ${themeClasses.textSecondary}`}>
+                How many days from the start date until harvest
+              </p>
+
+              <div
+                className={`${themeClasses.cardBackground} rounded-[12px] border p-4`}
+              >
+                <div className="grid grid-cols-3 gap-3">
+                  {[14, 21, 28, 30, 35, 42].map((days) => (
+                    <button
+                      key={days}
+                      onClick={() => setSelectedDays(days)}
+                      className={`p-3 rounded-[12px] border text-center transition-colors ${
+                        selectedDays === days
+                          ? ' text-white  bg-gradient-to-b from-[#53C904] to-[#2F7302] hover:from-[#2F7302] hover:to-[#53C904] focus:from-[#2F7302] focus:to-[#53C904]'
+                          : `${themeClasses.cardBackground} border-gray-300 hover:border-[#53C904] ${themeClasses.textPrimary}`
+                      }`}
+                    >
+                      {days}
+                    </button>
+                  ))}
                 </div>
               </div>
+
+              {/* casto quantity date */}
+              <div className="mt-4">
+                <label
+                  className={`text-sm block mb-2 ${themeClasses.textSecondary}`}
+                >
+                  Custom duration:
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="365"
+                  value={selectedDays}
+                  onChange={(e) => setSelectedDays(Number(e.target.value))}
+                  className={`w-full p-3 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#53C904] focus:border-transparent ${themeClasses.cardBackground} ${themeClasses.textPrimary}`}
+                  placeholder="Enter days"
+                />
+              </div>
             </div>
-          )}
+
+            {/* info */}
+            {expectedHarvestDate && selectedStartDate && (
+              <div
+                className={`p-4 rounded-[12px] ${themeClasses.cardBackground} border`}
+              >
+                <h3
+                  className={`font-semibold ${themeClasses.textPrimary} mb-2`}
+                >
+                  Growth Timeline
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className={themeClasses.textSecondary}>
+                      Start date:
+                    </span>
+                    <span className={`${themeClasses.textPrimary} font-medium`}>
+                      {format(selectedStartDate, 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className={themeClasses.textSecondary}>
+                      Duration:
+                    </span>
+                    <span className={`${themeClasses.textPrimary} font-medium`}>
+                      {selectedDays} days
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className={themeClasses.textSecondary}>
+                      Harvest date:
+                    </span>
+                    <span className={`${themeClasses.textPrimary} font-medium`}>
+                      {format(expectedHarvestDate, 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* save */}
+          <div className="mt-auto pt-6 flex justify-center">
+            <Button
+              type="button"
+              variant="gradient"
+              onClick={handleSave}
+              disabled={loading || !canSave}
+              className="w-full max-w-[327px] h-12 text-base font-semibold text-white bg-gradient-to-b from-[#53C904] to-[#2F7302] hover:from-[#2F7302] hover:to-[#53C904] focus:from-[#2F7302] focus:to-[#53C904] rounded-2xl transition-all disabled:opacity-50"
+            >
+              {loading
+                ? 'Saving...'
+                : store.user?.startDate
+                  ? 'Update Growth Settings'
+                  : 'Start Growing'}
+            </Button>
+          </div>
         </div>
 
-        {/* Кнопка збереження */}
-        <div className="mt-auto pt-6 flex justify-center">
-          <Button
-            type="button"
-            variant="gradient"
-            onClick={handleSave}
-            disabled={loading || !canSave}
-            className="w-full max-w-[327px] h-12 text-base font-semibold text-white bg-gradient-to-b from-[#53C904] to-[#2F7302] hover:from-[#2F7302] hover:to-[#53C904] focus:from-[#2F7302] focus:to-[#53C904] rounded-2xl shadow-md transition-all disabled:opacity-50"
-          >
-            {loading
-              ? 'Saving...'
-              : store.user?.startDate
-                ? 'Update Growth Settings'
-                : 'Start Growing'}
-          </Button>
-        </div>
+        {/* Bottom Navigation */}
+        <BottomNavigation activeTab="profile" />
       </div>
-
-      {/* Bottom Navigation */}
-      <BottomNavigation activeTab="profile" />
-    </div>
+    </>
   );
 }

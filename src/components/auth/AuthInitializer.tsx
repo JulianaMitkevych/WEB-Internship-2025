@@ -41,6 +41,11 @@ export const AuthInitializer = () => {
               phoneNumber: response.user.phoneNumber ?? null,
               cropType: response.user.cropType ?? null,
               createdAt: response.user.createdAt ?? null,
+              startDate: response.user.startDate ?? undefined,
+              expectedDays: response.user.expectedDays ?? undefined,
+              status: response.user.status ?? undefined,
+              growthDay: response.user.growthDay ?? undefined,
+              totalGrowthDays: response.user.totalGrowthDays ?? undefined,
             };
 
             setStore((prev) => ({ ...prev, user: normalizedUser }));
