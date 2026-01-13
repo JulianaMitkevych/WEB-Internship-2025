@@ -41,7 +41,7 @@ export default function SettingsPage() {
      for (let i = 30; i >= 0; i--) {
        // add data for past 30 days including today
        const currentDate = new Date(now.getTime());
-       //past 2025 December and today 2026 January
+       //past 2025 and today 2026 
        currentDate.setDate(now.getDate() - i);
 
        if (i === 0) {
