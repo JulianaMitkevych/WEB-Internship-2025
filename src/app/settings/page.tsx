@@ -41,7 +41,7 @@ export default function SettingsPage() {
      for (let i = 30; i >= 0; i--) {
        // add data for past 30 days including today
        const currentDate = new Date(now.getTime());
-       //past 2025 and today 2026 
+       //past 2025 and today 2026
        currentDate.setDate(now.getDate() - i);
 
        if (i === 0) {
@@ -82,7 +82,7 @@ export default function SettingsPage() {
 
      await apiPost('/api/settings/history', { monthlyStats: sortedStats });
   // eslint-disable-next-line no-alert
-     alert('Success! Data for Dec 2025 - Jan 2026 generated correctly.');
+     alert('Success! Data  2025 - 2026 generated correctly.');
    } catch (error) {
      console.error('Firebase Error:', error);
      // eslint-disable-next-line no-alert

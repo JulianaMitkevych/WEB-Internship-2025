@@ -129,14 +129,20 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={`h-screen ${themeClasses.background} flex items-center justify-center`}>
+    <div
+      className={`h-screen ${themeClasses.background} flex items-center justify-center`}
+    >
       <div className="mx-auto w-full max-w-xl flex flex-col items-center justify-center px-6 py-8">
-        <div className={`w-full max-w-3xl rounded-2xl ${themeClasses.cardBackground} p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]`}>
+        <div
+          className={`w-full max-w-3xl rounded-2xl ${themeClasses.cardBackground} p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]`}
+        >
           <div className="mb-8 text-center">
             <div className="grid place-items-center mb-6">
               <PlantIcon size={65} />
             </div>
-            <h1 className={`text-3xl font-bold ${themeClasses.textPrimary}`}>Welcome back</h1>
+            <h1 className={`text-3xl font-bold ${themeClasses.textPrimary}`}>
+              Welcome back
+            </h1>
             <p className="mt-2 text-base  text-[#6D6D6D]">
               Sign in to grow your plants
             </p>
@@ -186,6 +192,7 @@ const LoginForm = () => {
                           aria-invalid={!!fieldState.error}
                           isDark={isDark}
                           {...field}
+                          autoComplete="email"
                         />
                         <button
                           type="button"
