@@ -9,6 +9,8 @@ import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { ChevronLeft } from 'lucide-react';
 import { ROUTES } from '@/utils/constants';
 import { Button } from '@/components/ui/button';
+import { differenceInDays } from 'date-fns';
+import { EGrowthStatus } from '@/types/types';
 
 export default function ChangeCropTypeIntermediatePage() {
   const [store] = useStorage();
@@ -20,17 +22,54 @@ export default function ChangeCropTypeIntermediatePage() {
     setMounted(true);
   }, []);
 
-  const currentDay = store.user?.growthDay || 12;
-  const totalDays = store.user?.totalGrowthDays || 21;
   const cropType = store.user?.cropType || 'Microgreens';
 
-  const progressPercentage = Math.min((currentDay / totalDays) * 100, 100);
-  const isHarvestDay = currentDay >= totalDays;
+  const calculateGrowthData = () => {
+    if (!store.user?.startDate || !store.user?.expectedDays) {
+      return {
+        currentDay: 0,
+        totalDays: store.user?.expectedDays || 21,
+        progressPercentage: 0,
+        isSetupMode: true,
+        isHarvestDay: false,
+      };
+    }
+
+    const startDate = new Date(store.user.startDate);
+    const now = new Date();
+    const isFutureStart = now < startDate;
+    const currentDay = isFutureStart
+      ? 0
+      : Math.max(1, differenceInDays(now, startDate) + 1);
+
+    const totalDays = store.user.expectedDays;
+    const progressPercentage = isFutureStart
+      ? 0
+      : Math.min((currentDay / totalDays) * 100, 100);
+    const isHarvestDay = !isFutureStart && currentDay >= totalDays;
+
+    return {
+      currentDay,
+      totalDays,
+      progressPercentage,
+      isSetupMode: false,
+      isHarvestDay,
+    };
+  };
+
+  const {
+    currentDay,
+    totalDays,
+    progressPercentage,
+    isSetupMode,
+    isHarvestDay,
+  } = calculateGrowthData();
 
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false;
-    // Можна змінювати тип рослини тільки коли статус HARVEST
-    return store.user.status === 'harvest';
+    return (
+      isSetupMode || isHarvestDay || store.user.status === EGrowthStatus.HARVEST
+    );
   };
 
   const handleChangeCropType = () => {
@@ -43,27 +82,31 @@ export default function ChangeCropTypeIntermediatePage() {
 
   return (
     <div
-      className={`min-h-screen ${theme.background} flex flex-col  px-5  sm:px-15    transition-colors duration-300`}
+      className={`min-h-screen ${theme.background} flex flex-col max-w-[768px] mx-auto transition-colors duration-300`}
     >
-      <div className="w-full max-w-[768px] mx-auto py-6 px-5    flex relative">
+      <div className="w-full py-6 px-5 sm:px-6 mt-4 flex items-center gap:3 sm:gap-4">
         <button
           onClick={() => router.back()}
-          className="p-1 absolute left-4 rounded-full transition-all"
+          className="p-1 flex-shrink-0 rounded-full transition-all hover:bg-white/10"
         >
           <ChevronLeft className={`w-8 h-8 ${theme.textPrimary}`} />
         </button>
         <h1
-          className={`text-[24px]  ml-[45px]  sm:ml-[60px] sm:text-[26px] font-bold ${theme.textPrimary} w-full`}
+          className={`text-[24px] sm:text-[26px] font-bold ${theme.textPrimary} leading-none`}
         >
           Change Crop Type
         </h1>
       </div>
 
-      <div className="max-w-[768px] mx-auto w-full px-7 sm:px-15    flex flex-col flex-1">
+      <div className="max-w-[768px] mx-auto w-full px-7 sm:px-15 flex flex-col flex-1">
         <p
           className={`${theme.textPrimary} text-[16px] sm:text-[18px] mb-10 leading-snug font-medium`}
         >
-          You cannot change crop type until you harvest the current crop.
+          {isSetupMode
+            ? 'You can change crop type since growth period is not set yet.'
+            : isHarvestDay
+            ? 'You can now change crop type since harvest day has arrived.'
+            : 'You cannot change crop type until you harvest the current crop.'}
         </p>
 
         <div className="mb-12">
@@ -78,20 +121,28 @@ export default function ChangeCropTypeIntermediatePage() {
 
           <div className="w-full h-2 bg-[#E5F6D9] rounded-full overflow-hidden">
             <div
-              className="bg-gradient-to-b from-[#53C904] to-[#2F7302] h-[8px]  sm:h-[10px]  transition-all duration-1000 ease-out"
-              style={{ width: `${progressPercentage}%` }}
+              className={`${
+                isSetupMode ? 'bg-gray-300' : 'bg-gradient-to-b from-[#53C904] to-[#2F7302]'
+              } h-full transition-all duration-1000 ease-out`}
+              style={{ width: isSetupMode ? '0%' : `${progressPercentage}%` }}
             />
           </div>
 
           <div className="flex gap-1 mt-2 items-baseline text-[14px]">
-            <span className="text-[#53C904] font-bold">{currentDay}</span>
-            <span className="text-gray-400">
-              /{totalDays} days (
-              {isHarvestDay
-                ? 'harvest day'
-                : `${totalDays - currentDay} days till harvest`}
-              )
-            </span>
+            {isSetupMode ? (
+              <span className="text-gray-400">Growth period not set</span>
+            ) : (
+              <>
+                <span className="text-[#53C904] font-bold">{currentDay}</span>
+                <span className="text-gray-400">
+                  /{totalDays} days (
+                  {isHarvestDay
+                    ? 'harvest day'
+                    : `${totalDays - currentDay} days till harvest`}
+                  )
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -100,7 +151,10 @@ export default function ChangeCropTypeIntermediatePage() {
             onClick={handleChangeCropType}
             disabled={!canChangeCropType()}
             variant="gradient"
-            className="w-full  sm:max-w-[400px] h-[56px] text-[18px] disabled:bg-gradient-to-b disabled:from-[#AEAEAE] disabled:to-[#BDBDBD] font-bold "
+            className="w-full sm:max-w-[400px] h-[56px] text-[18px] bg-gradient-to-b from-[#53C904] to-[#2F7302]
+                   hover:from-[#2F7302] hover:to-[#53C904]
+                   focus:from-[#2F7302] focus:to-[#53C904]
+                   disabled:bg-gradient-to-b disabled:from-[#AEAEAE] disabled:to-[#BDBDBD] font-bold "
           >
             Change Crop Type
           </Button>

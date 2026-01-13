@@ -6,8 +6,9 @@ import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { History, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/utils/constants';
-import { EGrowthStatus } from '@/types/types';
 import LogoutButton from '@/components/profile-user/LogoutButton';
+import { EGrowthStatus } from '@/types/types';
+import { differenceInDays } from 'date-fns';
 
 import { PlantIcon } from '@/assets/svg/PlantIcon';
 import ChangeIcon from '@/assets/svg/ChangeIcon';
@@ -23,9 +24,55 @@ export default function ProfilePage() {
     setMounted(true);
   }, []);
 
+  // Розрахунок днів вирощування на основі реальних дат
+  const calculateGrowthData = () => {
+    if (!store.user?.startDate || !store.user?.expectedDays) {
+      return {
+        currentDay: 0,
+        totalDays: store.user?.expectedDays || 21,
+        progressPercentage: 0,
+        isSetupMode: true,
+        isHarvestDay: false,
+      };
+    }
+
+    const startDate = new Date(store.user.startDate);
+    const now = new Date();
+
+    // Якщо вибрана дата старту в майбутньому - вирощування ще не почалося
+    const isFutureStart = now < startDate;
+    const currentDay = isFutureStart
+      ? 0 // вирощування ще не почалося
+      : Math.max(1, differenceInDays(now, startDate) + 1); // звичайний розрахунок
+
+    const totalDays = store.user.expectedDays;
+    const progressPercentage = isFutureStart
+      ? 0 // якщо ще не почалося, прогрес = 0
+      : Math.min((currentDay / totalDays) * 100, 100);
+    const isHarvestDay = !isFutureStart && currentDay >= totalDays;
+
+    return {
+      currentDay,
+      totalDays,
+      progressPercentage,
+      isSetupMode: false,
+      isHarvestDay,
+    };
+  };
+
+  const { isSetupMode, isHarvestDay } = calculateGrowthData();
+
+  const totalHarvest = (store.user as any)?.totalHarvest || 0; // Загальна кількість урожаїв користувача
+  const totalDays = (store.user as any)?.totalDays || 0; // Загальна кількість днів всіх вирощувань
+
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
-    return store.user.status === EGrowthStatus.HARVEST; // Can change only after harvest
+    // Можна змінювати тип рослини коли:
+    // 1. Вирощування ще не налаштоване (setup mode)
+    // 2. Або настав день врожаю (harvest)
+    return (
+      isSetupMode || isHarvestDay || store.user.status === EGrowthStatus.HARVEST
+    );
   };
 
   return (
@@ -61,10 +108,10 @@ export default function ProfilePage() {
                 <p
                   className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
                 >
-                  Current Day
+                  Total Harvest
                 </p>
                 <p className="text-[16px]  md:text-[18px] font-bold text-[#53C904]">
-                  {mounted ? store.user?.growthDay || 0 : 'Loading...'}
+                  {totalHarvest}
                 </p>
               </div>
               <div className="h-[28px] w-[1px] m-[3px] bg-[#53C904] "></div>
@@ -72,7 +119,7 @@ export default function ProfilePage() {
                 <p
                   className={`text-[11px] md:text-[14px] mb-1 ${themeClasses.textPrimary}`}
                 >
-                  Crop Type
+                  Corp Type
                 </p>
                 <p className="text-[16px] md:text-[18px]  font-bold text-[#53C904]">
                   {mounted
@@ -88,7 +135,7 @@ export default function ProfilePage() {
                   Total Days
                 </p>
                 <p className="text-[16px]  sm:text-[18px]  font-bold text-[#53C904]">
-                  {mounted ? store.user?.totalGrowthDays || 0 : 'Loading...'}
+                  {totalDays}
                 </p>
               </div>
             </div>
@@ -106,16 +153,11 @@ export default function ProfilePage() {
                 <div className="flex flex-col sm:flex-row sm:gap-[10px] items-start ">
                   <span
                     className={`text-[16px]  sm:text-[18px]    font-medium ${
-                      !canChangeCropType() ? 'text-gray-400' : 'text-[#2D3748]'
-                    }`}
+                      !canChangeCropType() ? 'opacity-50' : ''
+                    } ${themeClasses.textPrimary}`}
                   >
                     Change Crop Type
                   </span>
-                  {!canChangeCropType() && store.user?.cropType && (
-                    <span className="text-[10px] sm:text-[14px] text-gray-200 mt-1 sm:ml-[20px]">
-                      Available after harvest
-                    </span>
-                  )}
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#2F7302]" />
