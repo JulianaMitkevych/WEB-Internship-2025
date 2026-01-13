@@ -40,7 +40,7 @@ export default function ConnectDevicePage() {
           <ChevronLeft className={`w-8 h-8 ${theme.textPrimary}`} />
         </button>
         <h1
-          className={`text-[22px]  ml-[50px]  sm:ml-[60px] sm:text-[24px] font-bold ${theme.textPrimary} w-full`}
+          className={`text-[22px]  ml-[55px]  sm:ml-[60px] sm:text-[24px] font-bold ${theme.textPrimary} w-full`}
         >
           Connect your mobile device to GrowBox
         </h1>
@@ -55,14 +55,13 @@ export default function ConnectDevicePage() {
 
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="mb-8">
-            <GrowBoxIcon size={130} />
+            <GrowBoxIcon size={135} />
           </div>
-
-          <p
-            className={`${theme.textPrimary} text-[16px] sm:text-[18px] text-[#999999] text-center leading-snug font-medium`}
-          >
-            This feature is currently unavailable to you.
+        <div className="bg-yellow-50 border border-yellow-200 rounded-[12px] p-3">
+          <p className="text-sm text-yellow-800">
+            <span className="font-semibold">Note:</span>This feature is currentyly unavailable to you. 
           </p>
+        </div>
         </div>
 
         <div className="mt-auto py-10 flex justify-center">
