@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { DayPicker } from 'react-day-picker';
+import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { ROUTES } from '@/utils/constants';
@@ -12,56 +12,6 @@ import { useStorage } from '@/hooks/useStorage';
 import { useApi } from '@/hooks/useApi';
 import { useTheme } from '@/hooks/useTheme';
 import { EGrowthStatus } from '@/types/types';
-import 'react-day-picker/dist/style.css';
-
-// Custom calendar styles
-const calendarStyles = `
-  .rdp {
-    background-color: #2E2E2E !important;
-    border-radius: 12px !important;
-  }
-
-  .rdp-head_cell {
-    color: #FFFFFF !important;
-    font-weight: 600 !important;
-  }
-
-  .rdp-day {
-    color: #FFFFFF !important;
-  }
-
-  .rdp-day:hover {
-    background-color: rgba(83, 201, 4, 0.1) !important;
-  }
-
-  .rdp-day_selected {
-    background-color: #53C904 !important;
-    color: white !important;
-  }
-
-  .rdp-day_today {
-    background-color: #53C904 !important;
-    color: white !important;
-    font-weight: bold !important;
-  }
-
-  .rdp-button:hover {
-    background-color: rgba(83, 201, 4, 0.1) !important;
-  }
-
-  .rdp-nav_button {
-    color: #53C904 !important;
-  }
-
-  .rdp-nav_button:hover {
-    background-color: rgba(83, 201, 4, 0.1) !important;
-  }
-
-  .rdp-caption_label {
-    color: #FFFFFF !important;
-    font-weight: 600 !important;
-  }
-`;
 
 type UpdateGrowthDateResponse = {
   message: string;
@@ -152,7 +102,6 @@ export default function SetGrowthDatePage() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: calendarStyles }} />
       <div
         className={`min-h-screen ${themeClasses.background} flex flex-col max-w-[768px] mx-auto`}
       >
@@ -243,7 +192,7 @@ export default function SetGrowthDatePage() {
                   <div
                     className={`${themeClasses.cardBackground} rounded-[12px] ${themeClasses.border} p-4 ${themeClasses.shadow}`}
                   >
-                    <DayPicker
+                    <Calendar
                       mode="single"
                       selected={selectedStartDate}
                       onSelect={setSelectedStartDate}
@@ -270,8 +219,8 @@ export default function SetGrowthDatePage() {
                     />
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-[12px] p-3 mb-4">
-                    <p className="text-sm text-blue-800">
+                  <div className="bg-[#D5E3CC] border border-[#2F7302] rounded-[12px] p-3 mb-4">
+                    <p className="text-sm text-[#2F7302]">
                       <span className="font-semibold">Note:</span>{' '}
                       {(() => {
                         const userStartDate = store.user?.startDate
