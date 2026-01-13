@@ -158,7 +158,7 @@ const DashboardContent = () => {
 
         <div className="w-full mt-[10px] px-4 flex flex-col items-center">
           {isSetupMode ? (
-            // Режим налаштування - показуємо кнопку вибору дати
+            // button date
             <div className="text-center py-8">
               <h3
                 className={`text-lg font-semibold ${themeClasses.textPrimary} mb-2 flex items-center justify-center gap-2`}
@@ -178,7 +178,7 @@ const DashboardContent = () => {
               </Button>
             </div>
           ) : (
-            // Звичайний режим - показуємо прогрес бар
+            // progress bar
             <>
               <div className="relative w-[196px] sm:w-[450px] h-[8px] bg-[#D5E3CC] rounded-full overflow-hidden">
                 <div
@@ -202,7 +202,7 @@ const DashboardContent = () => {
                 </span>
               </div>
 
-              {/* Інформація про дати */}
+              {/* info date */}
               {store.user?.startDate && (
                 <div className="mt-3 text-center">
                   <p className="text-xs text-gray-500">
@@ -224,7 +224,7 @@ const DashboardContent = () => {
                 </div>
               )}
 
-              {/* Кнопка зміни дати вирощування */}
+              {/* button change date */}
               <Button
                 onClick={() => router.push(ROUTES.SET_GROWTH_DATE)}
                 variant="gradient"
@@ -252,7 +252,7 @@ const DashboardContent = () => {
             return (
               <div
                 key={param}
-                className={`${themeClasses.cardBackground} p-[12px] sm:px-[20px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[107px] sm:h-[118px] w-full sm:w-[280px] mx-auto cursor-pointer`}
+                className={`${themeClasses.cardBackground} p-[12px]  sm:px-[20px] rounded-[12px] ${themeClasses.shadow} ${themeClasses.border} flex flex-col justify-between h-[107px] sm:h-[118px] w-full sm:w-[280px] mx-auto cursor-pointer`}
                 onClick={() =>
                   router.push(
                     ROUTES.PLANT_SETTINGS[param.toUpperCase() as any] ||
@@ -268,7 +268,7 @@ const DashboardContent = () => {
                   {!isSwitchable && (
                     <span
                       className={`text-[24px] font-bold leading-tight ${
-                        hasData ? themeClasses.textPrimary : 'text-gray-200'
+                        hasData ? 'text-[#53c904]' : 'text-[#53C904]'
                       }`}
                     >
                       {valuesLoading
