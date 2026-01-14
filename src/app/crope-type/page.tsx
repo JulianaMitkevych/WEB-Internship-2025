@@ -20,7 +20,6 @@ type UpdateCropTypeResponse = {
 export default function SelectCropTypePage() {
   const router = useRouter();
   const [store, setStore] = useStorage();
-  //  loading
   const { post, loading } = useApi<UpdateCropTypeResponse>();
   const { classes: themeClasses } = useTheme();
   const [selectedId, setSelectedId] = useState<number>(1);
@@ -58,7 +57,7 @@ export default function SelectCropTypePage() {
   };
 
   return (
-    <div className={`min-h-screen ${themeClasses.background} flex flex-col`}>
+    <div className={`min-h-screen max-w-[768px] mx-auto ${themeClasses.background} flex flex-col`}>
       <div className="max-w-md mx-auto w-full px-6 py-8  flex flex-col min-h-screen">
         {/* Header */}
         <div className=" mb-8 w-full">
@@ -85,7 +84,7 @@ export default function SelectCropTypePage() {
           ))}
         </div>
 
-        {/* Bottom Button Container */}
+        {/* Bottom Container */}
         <div className="mt-auto pt-6 sm:pt-10 flex justify-center">
           <Button
             type="button"

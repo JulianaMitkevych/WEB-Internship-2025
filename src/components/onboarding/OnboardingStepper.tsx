@@ -91,7 +91,6 @@ const OnboardingStepper = () => {
       </div>
 
       <div className="w-full max-w-sm px-6 flex flex-col items-center mt-[20px]  min-h-0">
-        {/* button =disabled*/}
         <button
           onClick={handleCardClick}
           disabled={false}
