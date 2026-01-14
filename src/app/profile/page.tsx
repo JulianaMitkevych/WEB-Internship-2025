@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react';
 import { useStorage } from '@/hooks/useStorage';
 import { useTheme } from '@/hooks/useTheme';
-import { BottomNavigation } from '@/components/ui/bottom-navigation';
-import { History, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { ROUTES } from '@/utils/constants';
-import LogoutButton from '@/components/profile-user/LogoutButton';
+import { History, ChevronRight } from 'lucide-react';
 import { EGrowthStatus } from '@/types/types';
+import LogoutButton from '@/components/profile-user/LogoutButton';
 import { differenceInDays } from 'date-fns';
 
 import { PlantIcon } from '@/assets/svg/PlantIcon';
@@ -24,7 +24,7 @@ export default function ProfilePage() {
     setMounted(true);
   }, []);
 
-  // Розрахунок днів вирощування на основі реальних дат
+  
   const calculateGrowthData = () => {
     if (!store.user?.startDate || !store.user?.expectedDays) {
       return {
@@ -39,15 +39,15 @@ export default function ProfilePage() {
     const startDate = new Date(store.user.startDate);
     const now = new Date();
 
-    // Якщо вибрана дата старту в майбутньому - вирощування ще не почалося
+    // if not start date grow
     const isFutureStart = now < startDate;
     const currentDay = isFutureStart
-      ? 0 // вирощування ще не почалося
-      : Math.max(1, differenceInDays(now, startDate) + 1); // звичайний розрахунок
+      ? 0 //grow not start
+      : Math.max(1, differenceInDays(now, startDate) + 1); 
 
     const totalDays = store.user.expectedDays;
     const progressPercentage = isFutureStart
-      ? 0 // якщо ще не почалося, прогрес = 0
+      ? 0 // if not start progress
       : Math.min((currentDay / totalDays) * 100, 100);
     const isHarvestDay = !isFutureStart && currentDay >= totalDays;
 
@@ -62,14 +62,14 @@ export default function ProfilePage() {
 
   const { isSetupMode, isHarvestDay } = calculateGrowthData();
 
-  const totalHarvest = (store.user as any)?.totalHarvest || 0; // Загальна кількість урожаїв користувача
-  const totalDays = (store.user as any)?.totalDays || 0; // Загальна кількість днів всіх вирощувань
+  const totalHarvest = (store.user as any)?.totalHarvest || 0; // general harvest
+  const totalDays = (store.user as any)?.totalDays || 0; // general day
 
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
-    // Можна змінювати тип рослини коли:
-    // 1. Вирощування ще не налаштоване (setup mode)
-    // 2. Або настав день врожаю (harvest)
+    // user can shange date:
+    // 1. not set (setup mode)
+    // 2. not start day grow /(harvest)
     return (
       isSetupMode || isHarvestDay || store.user.status === EGrowthStatus.HARVEST
     );
@@ -77,7 +77,7 @@ export default function ProfilePage() {
 
   return (
     <div
-      className={`min-h-screen ${themeClasses.background} flex flex-col items-center`}
+      className={`min-h-screen  max-w-[768px] mx-auto ${themeClasses.background} flex flex-col items-center`}
     >
       <div className="text-center">
         <h2
@@ -87,7 +87,7 @@ export default function ProfilePage() {
         </h2>
       </div>
 
-      <div className="w-full max-w-[768px] flex-1 pb-6">
+      <div className="w-full  flex-1 pb-6">
         <div className="p-6  sm:px-16">
           <div
             className={`${themeClasses.cardBackground} rounded-[24px] p-5 ${themeClasses.shadow} ${themeClasses.border} text-center mb-8`}

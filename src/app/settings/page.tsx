@@ -249,10 +249,10 @@ export default function SettingsPage() {
         ))}
 
         {/* --- DELETE THIS BUTTON START --- */}
-        <div className="mt-8 pt-4 border-t border-dashed border-gray-200">
+        <div className="mt-8 pt-2 pb-2  border-gray-200">
           <button
             onClick={generateMonthlyStats}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="w-full bg-indigo-400 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
           >
            Generate Monthly Data
           </button>

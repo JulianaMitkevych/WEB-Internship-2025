@@ -53,7 +53,7 @@ export const SmartChart = ({
                 >
                   {payload.value}
                 </text>
-                
+
                 {/* additional date */}
                 {(period === 'week' || period === 'month') && item?.date && (
                   <text
@@ -63,7 +63,7 @@ export const SmartChart = ({
                     fill="#A3A3A3"
                     fontSize={11}
                   >
-                    {new Date(item.date).toLocaleDateString('uk-UA', {
+                    {new Date(item.date).toLocaleDateString('en-US', {
                       day: '2-digit',
                       month: 'short',
                     })}

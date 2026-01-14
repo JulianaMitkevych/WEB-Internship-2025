@@ -14,7 +14,7 @@ const WelcomeScreen = () => {
   };
 
   return (
-    <div className={`flex min-h-screen items-center justify-center ${themeClasses.background}`}>
+    <div className={`max-w-[768px]  mx-auto flex min-h-screen items-center justify-center ${themeClasses.background}`}>
       <div className="flex flex-col items-center justify-center text-center px-6">
         <div
           role="button"
@@ -25,7 +25,7 @@ const WelcomeScreen = () => {
           <PlantIcon size={84} />
         </div>
 
-        <h1 className={`mt-8 text-3xl font-bold md:text-4xl ${themeClasses.textPrimary}`}>
+        <h1 className={`mt-10 text-3xl font-bold md:text-4xl ${themeClasses.textPrimary}`}>
           Welcome to App
         </h1>
       </div>

@@ -27,11 +27,9 @@ export default function SetGrowthDatePage() {
   const { post, loading } = useApi<UpdateGrowthDateResponse>();
   const { classes: themeClasses } = useTheme();
 
-  // Стан для вибору дати початку
   const [selectedStartDate, setSelectedStartDate] = useState<
     Date | undefined
   >();
-  // Стан для вибору кількості днів
   const [selectedDays, setSelectedDays] = useState<number>(21);
   const [mounted, setMounted] = useState(false);
 
@@ -39,10 +37,10 @@ export default function SetGrowthDatePage() {
     setMounted(true);
   }, []);
 
-  // Якщо користувач вже має встановлену дату початку, ініціалізуємо стан
+  // initial state
   useEffect(() => {
     if (store.user?.startDate) {
-      // Для існуючого вирощування - ініціалізуємо поточну дату початку
+      // initial date
       setSelectedStartDate(new Date(store.user.startDate));
     }
     if (store.user?.expectedDays) {
@@ -53,7 +51,7 @@ export default function SetGrowthDatePage() {
   const handleSave = async () => {
     if (!store.user) return;
 
-    // Використовуємо selectedStartDate якщо він вибраний, інакше поточну дату користувача
+    // use selectedStartDate if chosed,or  carrent date user
     const startDateToSave =
       selectedStartDate ||
       (store.user.startDate ? new Date(store.user.startDate) : null);
@@ -190,7 +188,7 @@ export default function SetGrowthDatePage() {
                   </label>
 
                   <div
-                    className={`${themeClasses.cardBackground} rounded-[12px] ${themeClasses.border} p-4 ${themeClasses.shadow}`}
+                    className={`${themeClasses.cardBackground} rounded-[12px] ${themeClasses.border} p-4 mb-6 ${themeClasses.shadow}`}
                   >
                     <Calendar
                       mode="single"
@@ -219,7 +217,7 @@ export default function SetGrowthDatePage() {
                     />
                   </div>
 
-                  <div className="bg-[#D5E3CC] border border-[#2F7302] rounded-[12px] p-3 mb-4">
+                  <div className="bg-[#D5E3CC] border border-[#2F7302] rounded-[12px] p-3 mb-4 ">
                     <p className="text-sm text-[#2F7302]">
                       <span className="font-semibold">Note:</span>{' '}
                       {(() => {
