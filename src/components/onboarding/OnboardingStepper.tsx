@@ -83,7 +83,9 @@ const OnboardingStepper = () => {
   };
 
   return (
-    <div className={`flex flex-col items-center ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'} pt-[10px] h-screen `}>
+    <div
+      className={`max-w-[768px] mx-auto flex flex-col items-center ${isDark ? 'bg-[#000000]' : 'bg-white'} pt-[10px] h-screen `}
+    >
       <div className="text-center">
         <h2 className={`text-[28px] font-bold ${themeClasses.textPrimary}`}>
           {currentStep.title}
@@ -96,14 +98,20 @@ const OnboardingStepper = () => {
           disabled={false}
           className="relative w-full h-[320px] flex items-center justify-center transition-transform active:scale-95 disabled:opacity-100 disabled:pointer-events-none"
         >
-          <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 w-[312px] sm:w-[326px] h-[238px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)]"></div>
-          <div className="relative z-20 h-[320px] w-[280px] sm:w-[288px] bg-white rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)] flex items-center justify-center overflow-hidden">
+          <div
+            className={`absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10 w-[312px] sm:w-[326px] h-[238px] rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)] ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'}`}
+          ></div>
+          <div
+            className={`relative z-20 h-[320px] w-[280px] sm:w-[288px] rounded-[40px] shadow-[0_0_20px_rgba(0,0,0,0.1)] flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#2E2E2E]' : 'bg-white'}`}
+          >
             <StepIcon className="w-48 h-48 object-contain" />
           </div>
         </button>
 
         <div className="text-center mt-[16px]  ">
-          <p className={`text-[16px] sm:text-[18px] leading-relaxed whitespace-pre-line ${themeClasses.textPrimary}`}>
+          <p
+            className={`text-[16px] sm:text-[18px] leading-relaxed whitespace-pre-line ${themeClasses.textPrimary}`}
+          >
             {currentStep.description}
           </p>
         </div>

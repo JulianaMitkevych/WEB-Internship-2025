@@ -24,7 +24,6 @@ export default function ProfilePage() {
     setMounted(true);
   }, []);
 
-  
   const calculateGrowthData = () => {
     if (!store.user?.startDate || !store.user?.expectedDays) {
       return {
@@ -43,7 +42,7 @@ export default function ProfilePage() {
     const isFutureStart = now < startDate;
     const currentDay = isFutureStart
       ? 0 //grow not start
-      : Math.max(1, differenceInDays(now, startDate) + 1); 
+      : Math.max(1, differenceInDays(now, startDate) + 1);
 
     const totalDays = store.user.expectedDays;
     const progressPercentage = isFutureStart
@@ -62,8 +61,8 @@ export default function ProfilePage() {
 
   const { isSetupMode, isHarvestDay } = calculateGrowthData();
 
-  const totalHarvest = (store.user as any)?.totalHarvest || 0; // general harvest
-  const totalDays = (store.user as any)?.totalDays || 0; // general day
+  const totalHarvest = store.user?.cropType ? 1 : 0; // кількість рослин - 1 якщо обрана рослина
+  const totalDays = store.user?.expectedDays || 0; // загальна кількість днів вирощування
 
   const canChangeCropType = () => {
     if (!store.user?.cropType) return false; // Can't change if no crop type selected
