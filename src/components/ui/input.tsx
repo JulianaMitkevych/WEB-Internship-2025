@@ -1,53 +1,54 @@
-import * as React from 'react';
 
+import * as React from 'react';
 import { cn } from '../../utils';
 import { CSSProperties } from 'react';
+
+const GREEN_ACCENT = '#2F9E44';
+const RED_ACCENT = '#EB5757';
+
 function Input({
   className,
   type,
   onFocus,
   onBlur,
+  isDark,
   ...props
-}: React.ComponentProps<'input'>) {
+}: React.ComponentProps<'input'> & { isDark?: boolean }) {
   const [isFocused, setIsFocused] = React.useState(false);
-  const isAriaInvalid =
+
+  // check error
+  const isInvalid =
     props['aria-invalid'] === true || props['aria-invalid'] === 'true';
 
   const styleWhenNotInvalidAndNotFocused: CSSProperties = {
-    backgroundImage:
-      'linear-gradient(94.99deg, #FCF9F2 -15.53%, #FFFDF6 132.51%), linear-gradient(181.78deg, #EEE5D2 0.25%, rgba(250, 247, 240, 0) 48.39%, rgba(235, 227, 208, 0.29) 98.49%)',
-    backgroundOrigin: 'border-box',
-    backgroundClip: 'padding-box, border-box',
-    border: '1px solid transparent',
-    boxShadow:
-      '1px 1px 5px 0px #F2E8D3CC inset, -4px -4px 5px 0px #FFFEFC inset',
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
+    border: '1px solid #E5E7EB',
+    borderRadius: '0.75rem',
   };
 
-  const styleWhenFocusedAndNotInvalid: React.CSSProperties = {
-    background: 'transparent',
-    border: '1px solid',
-    borderColor: 'var(--color-input-border)',
-    boxShadow: 'none',
+  const styleWhenFocusedAndNotInvalid: CSSProperties = {
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
+    border: `1px solid ${GREEN_ACCENT}`,
+    borderRadius: '0.75rem',
   };
 
-  const computedStyle: React.CSSProperties | undefined = isAriaInvalid
-    ? undefined
+  const styleWhenInvalid: CSSProperties = {
+    backgroundColor: isDark ? '#2E2E2E' : '#FFFFFF',
+    border: `1px solid ${RED_ACCENT}`,
+    borderRadius: '0.75rem',
+  };
+
+  const computedStyle = isInvalid
+    ? styleWhenInvalid
     : isFocused
       ? styleWhenFocusedAndNotInvalid
       : styleWhenNotInvalidAndNotFocused;
+
   return (
     <input
       type={type}
-      data-slot="input"
       className={cn(
-        'file:text-foreground placeholder:text-grey-x-dark selection:text-bone selection:bg-blue-500 flex h-11 w-full min-w-0 rounded-sm border bg-transparent px-3 py-1 text-base text-night-sky shadow-xs transition-all duration-200 ease-in-out outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-base file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-base',
-        'border-gray-200 dark:border-gray-800',
-        // Focused state should show night-sky border
-        'focus-visible:border-night-sky',
-        // Error state: solid red border, no gradient/shadow
-        'aria-invalid:border-destructive aria-invalid:shadow-none dark:aria-invalid:border-destructive',
-        // Keep red border on focus when invalid
-        'aria-invalid:focus-visible:border-destructive',
+        'file:text-foreground placeholder:text-grey-x-dark flex h-12 w-full min-w-0 px-3 py-1 text-base text-night-sky transition-all duration-200 outline-none disabled:opacity-50',
         className
       )}
       style={computedStyle}

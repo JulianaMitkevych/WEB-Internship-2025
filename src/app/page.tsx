@@ -1,8 +1,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { ROUTES } from '@/utils';
-import { RefreshToken } from '@/components/ui';
+import { ROUTES } from '@/utils/constants';
+import WelcomeScreen from '@/components/auth/WelcomeScreen';
+import { RefreshToken } from '@/components/ui/refresh-token';
 
 export default async function HomePage() {
   const cookieStore = await cookies();
@@ -10,12 +11,12 @@ export default async function HomePage() {
   const refreshToken = cookieStore.get('refreshToken');
 
   if (isAuthenticated) {
-    redirect(ROUTES.LOGIN);
+    redirect(ROUTES.PROFILE);
   }
 
   if (refreshToken?.value) {
     return <RefreshToken />;
   }
 
-  redirect(ROUTES.LOGIN);
+  return <WelcomeScreen />;
 }

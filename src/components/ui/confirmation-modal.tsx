@@ -104,7 +104,7 @@ export default function ConfirmationModal({
                 }}
               />
             </DialogTitle>
-            <DialogDescription className="text-center text-center text-base font-normal text-black">
+            <DialogDescription className="text-center text-base font-normal text-black">
               <Trans
                 i18nKey={descriptionKey}
                 values={descriptionValues}

@@ -94,13 +94,12 @@ export { RefreshToken } from './refresh-token';
 export { Switch } from './switch';
 export { Checkbox } from './checkbox';
 export { PasswordFieldWithValidation } from './password-field-with-validation';
-export { default as ConfirmationModal } from './confirmation-modal';
 export { RoundedGradientButton } from './rounded-gradient-button';
-export { Tabs } from './tabs';
 export { UnderlineTabs } from './underline-tabs';
 export { RadioButton } from './radio-button';
 export { SuccessPopup } from './success-popup';
 export { PercentageIndicator } from './percentage-indicator';
+export { Slider } from './slider';
 export {
   DropdownMenu,
   DropdownMenuTrigger,

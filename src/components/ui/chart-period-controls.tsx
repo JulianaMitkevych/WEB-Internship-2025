@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -9,7 +10,7 @@ type TChartPeriodControlsProps = {
   years: ReadonlyArray<number> | number[];
   months: MonthOption[];
   selectedYear: number;
-  selectedMonth?: number; // undefined means no month filter
+  selectedMonth?: number;
   onYearChange: (year: number) => void;
   onMonthChange: (month: number | undefined) => void;
   labels?: { yearPlaceholder?: string; monthPlaceholder?: string };
@@ -30,36 +31,30 @@ export function ChartPeriodControls({
 }: TChartPeriodControlsProps) {
   return (
     <div
-      className={`flex items-center gap-3 w-full sm:w-auto ${className || ''}`}
+      className={`flex items-center gap-3 w-full sm:w-auto p-2  ${className || ''}`}
     >
       <Select
         options={years.map((year) => ({ value: year, label: year.toString() }))}
         value={selectedYear}
         onValueChange={(value) => onYearChange(Number(value))}
         size={size}
-        className="w-37"
+        className="w-full bg-white border-none "
         placeholder={labels?.yearPlaceholder}
       />
 
       <Select
         options={[
-          { value: '', label: labels?.monthPlaceholder || '' },
+          { value: '', label: labels?.monthPlaceholder || 'All Months' },
           ...months,
         ]}
         value={typeof selectedMonth === 'number' ? selectedMonth : ''}
         onValueChange={(value) => {
-          if (value === '') {
-            onMonthChange(undefined);
-          } else {
-            onMonthChange(Number(value));
-          }
+          onMonthChange(value === '' ? undefined : Number(value));
         }}
         size={size}
-        className="w-37"
+        className="w-full bg-white border-none"
         placeholder={labels?.monthPlaceholder}
       />
     </div>
   );
 }
-
-export default ChartPeriodControls;

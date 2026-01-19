@@ -193,7 +193,7 @@ function Sidebar({
 
   return (
     <div
-      className="group peer text-sidebar-foreground hidden md:block flex h-full"
+      className="group peer text-sidebar-foreground hidden md:block  h-full"
       data-state={state}
       data-collapsible={state === 'collapsed' ? collapsible : ''}
       data-variant={variant}
