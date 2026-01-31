@@ -184,7 +184,7 @@ const DashboardContent = () => {
                 <div
                   className="absolute left-0 top-0 bg-gradient-to-b from-[#53C904] to-[#2F7302] h-[8px]  sm:h-[10px]  transition-all duration-1000 ease-out rounded-full"
                   style={{ width: `${progressPercentage}%` }}
-                />
+                ></div>
               </div>
               <div className="flex justify-between mt-2 px-1 w-full max-w-[450px]">
                 <span className="text-[#53C904] font-bold text-sm">
